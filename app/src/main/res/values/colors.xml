@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- AgriGo Primary Colors -->
+    <color name="primary_green">#2E7D32</color>
+    <color name="primary_green_light">#4CAF50</color>
+    <color name="primary_green_dark">#1B5E20</color>
+    
+    <!-- Secondary Colors -->
+    <color name="secondary_yellow">#FFC107</color>
+    <color name="secondary_yellow_light">#FFD54F</color>
+    <color name="secondary_orange">#FF9800</color>
+    
+    <!-- Status Colors -->
+    <color name="status_ongoing">#2196F3</color>
+    <color name="status_completed">#4CAF50</color>
+    <color name="status_requested">#FF9800</color>
+    <color name="status_cancelled">#F44336</color>
+    
+    <!-- Neutral Colors -->
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="gray_dark">#333333</color>
+    <color name="gray_medium">#666666</color>
+    <color name="gray_light">#EEEEEE</color>
+    <color name="gray_very_light">#F5F5F5</color>
+    
+    <!-- Transparent -->
+    <color name="transparent">#00000000</color>
+    
+    <!-- Gradient Colors -->
+    <color name="gradient_green_start">#4CAF50</color>
+    <color name="gradient_green_end">#2E7D32</color>
+    
+    <!-- Card Background -->
+    <color name="card_background">#FFFFFF</color>
+    <color name="card_shadow">#1A000000</color>
+    
+    <!-- Text Colors -->
+    <color name="text_primary">#212121</color>
+    <color name="text_secondary">#666666</color>
+    <color name="text_hint">#BDBDBD</color>
+    <color name="text_white">#FFFFFF</color>
+    
+    <!-- Additional colors for dashboard -->
+    <color name="green_primary">#2E7D32</color>
+    <color name="green_dark">#1B5E20</color>
+    <color name="green_light_bg">#E8F5E9</color>
+    <color name="red_error">#F44336</color>
+    <color name="divider_color">#BDBDBD</color>
+</resources>

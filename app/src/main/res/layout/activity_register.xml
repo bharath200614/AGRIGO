@@ -1,0 +1,369 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/farm_background_register"
+    android:paddingTop="16dp"
+    android:paddingBottom="16dp"
+    android:fitsSystemWindows="true">
+
+    <!-- Gradient Overlay -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:alpha="0.94" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="24dp"
+            android:paddingTop="30dp"
+            android:paddingBottom="30dp"
+            android:gravity="center_horizontal">
+
+            <!-- Back Button -->
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginBottom="20dp">
+
+                <ImageButton
+                    android:id="@+id/btn_back"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="start|center_vertical"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:src="@drawable/ic_back_arrow"
+                    android:contentDescription="@string/back_button"
+                    android:scaleType="centerInside"
+                    app:tint="@color/primary_green" />
+
+            </FrameLayout>
+
+            <!-- Registration Header -->
+            <TextView
+                android:id="@+id/tv_register_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/register_title"
+                style="@style/TextStyle.Heading1"
+                android:gravity="start"
+                android:layout_marginBottom="8dp" />
+
+            <TextView
+                android:id="@+id/tv_register_subtitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/register_subtitle"
+                style="@style/TextStyle.Body2"
+                android:gravity="start"
+                android:layout_marginBottom="40dp"
+                android:textColor="@color/text_secondary" />
+
+            <!-- Full Name Input -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginBottom="20dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/full_name"
+                    style="@style/TextStyle.Body1"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="8dp"
+                    android:textColor="@color/text_primary" />
+
+                <EditText
+                    android:id="@+id/et_full_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/button_height"
+                    android:inputType="text"
+                    android:hint="@string/name_hint"
+                    android:background="@drawable/bg_input_field"
+                    android:paddingHorizontal="16dp"
+                    android:fontFamily="@font/poppins_regular"
+                    android:textSize="@dimen/text_size_body1"
+                    android:textColor="@color/text_primary"
+                    android:textColorHint="@color/text_hint" />
+
+                <TextView
+                    android:id="@+id/tv_name_error"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/status_cancelled"
+                    android:textSize="@dimen/text_size_caption"
+                    android:layout_marginTop="4dp"
+                    android:visibility="gone" />
+
+            </LinearLayout>
+
+            <!-- Phone Number Input -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginBottom="20dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/phone_number"
+                    style="@style/TextStyle.Body1"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="8dp"
+                    android:textColor="@color/text_primary" />
+
+                <EditText
+                    android:id="@+id/et_phone"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/button_height"
+                    android:inputType="phone"
+                    android:hint="@string/phone_hint"
+                    android:background="@drawable/bg_input_field"
+                    android:paddingHorizontal="16dp"
+                    android:fontFamily="@font/poppins_regular"
+                    android:textSize="@dimen/text_size_body1"
+                    android:textColor="@color/text_primary"
+                    android:textColorHint="@color/text_hint" />
+
+                <TextView
+                    android:id="@+id/tv_phone_error"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/status_cancelled"
+                    android:textSize="@dimen/text_size_caption"
+                    android:layout_marginTop="4dp"
+                    android:visibility="gone" />
+
+            </LinearLayout>
+
+            <!-- Password Input -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginBottom="20dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/password"
+                    style="@style/TextStyle.Body1"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="8dp"
+                    android:textColor="@color/text_primary" />
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/button_height">
+
+                    <EditText
+                        android:id="@+id/et_password"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:inputType="textPassword"
+                        android:hint="@string/password_hint"
+                        android:background="@drawable/bg_input_field"
+                        android:paddingHorizontal="16dp"
+                        android:paddingEnd="48dp"
+                        android:fontFamily="@font/poppins_regular"
+                        android:textSize="@dimen/text_size_body1"
+                        android:textColor="@color/text_primary"
+                        android:textColorHint="@color/text_hint" />
+
+                    <ImageButton
+                        android:id="@+id/btn_toggle_password"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_gravity="end|center_vertical"
+                        android:background="@android:color/transparent"
+                        android:src="@drawable/ic_eye_hidden"
+                        android:contentDescription="@string/toggle_password"
+                        android:scaleType="centerInside"
+                        app:tint="@color/text_secondary" />
+
+                </FrameLayout>
+
+                <TextView
+                    android:id="@+id/tv_password_error"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/status_cancelled"
+                    android:textSize="@dimen/text_size_caption"
+                    android:layout_marginTop="4dp"
+                    android:visibility="gone" />
+
+            </LinearLayout>
+
+            <!-- Role Selection -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginBottom="30dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/role_selection"
+                    style="@style/TextStyle.Body1"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="12dp"
+                    android:textColor="@color/text_primary" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:spacing="12dp">
+
+                    <!-- Farmer Role -->
+                    <FrameLayout
+                        android:layout_width="0dp"
+                        android:layout_height="120dp"
+                        android:layout_weight="1"
+                        android:id="@+id/role_farmer_container"
+                        android:background="@drawable/bg_role_card_selected">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:gravity="center"
+                            android:padding="12dp">
+
+                            <ImageView
+                                android:layout_width="48dp"
+                                android:layout_height="48dp"
+                                android:src="@drawable/ic_farmer_role"
+                                android:contentDescription="@string/role_farmer"
+                                android:layout_marginBottom="8dp"
+                                android:scaleType="centerInside" />
+
+                            <TextView
+                                android:id="@+id/tv_role_farmer"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/role_farmer"
+                                android:textSize="@dimen/text_size_body2"
+                                android:fontFamily="@font/poppins_semibold"
+                                android:textColor="@color/white" />
+
+                        </LinearLayout>
+
+                    </FrameLayout>
+
+                    <!-- Driver Role -->
+                    <FrameLayout
+                        android:layout_width="0dp"
+                        android:layout_height="120dp"
+                        android:layout_weight="1"
+                        android:id="@+id/role_driver_container"
+                        android:background="@drawable/bg_role_card_unselected">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:gravity="center"
+                            android:padding="12dp">
+
+                            <ImageView
+                                android:layout_width="48dp"
+                                android:layout_height="48dp"
+                                android:src="@drawable/ic_driver_role"
+                                android:contentDescription="@string/role_driver"
+                                android:layout_marginBottom="8dp"
+                                android:scaleType="centerInside" />
+
+                            <TextView
+                                android:id="@+id/tv_role_driver"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/role_driver"
+                                android:textSize="@dimen/text_size_body2"
+                                android:fontFamily="@font/poppins_semibold"
+                                android:textColor="@color/gray_medium" />
+
+                        </LinearLayout>
+
+                    </FrameLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!-- Register Button -->
+            <Button
+                android:id="@+id/btn_register_account"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/button_height"
+                android:text="@string/register_account"
+                android:background="@drawable/bg_button_green_ripple"
+                android:textColor="@color/white"
+                android:fontFamily="@font/poppins_semibold"
+                android:textSize="@dimen/text_size_body1"
+                android:textAllCaps="false"
+                android:elevation="4dp"
+                android:layout_marginBottom="20dp" />
+
+            <!-- Login Link -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginTop="20dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/have_account"
+                    android:textSize="@dimen/text_size_body2"
+                    android:textColor="@color/text_secondary"
+                    android:fontFamily="@font/poppins_regular"
+                    android:layout_marginEnd="4dp" />
+
+                <TextView
+                    android:id="@+id/tv_login_link"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/login_here"
+                    android:textColor="@color/primary_green"
+                    android:textSize="@dimen/text_size_body2"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:background="?attr/selectableItemBackground"
+                    android:paddingHorizontal="4dp" />
+
+            </LinearLayout>
+
+            <!-- Error Message -->
+            <TextView
+                android:id="@+id/tv_error_message"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:textColor="@color/status_cancelled"
+                android:textSize="@dimen/text_size_body2"
+                android:gravity="center"
+                android:layout_marginTop="20dp"
+                android:padding="12dp"
+                android:background="@drawable/bg_error_message" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

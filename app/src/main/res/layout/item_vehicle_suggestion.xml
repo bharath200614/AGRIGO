@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Vehicle suggestion card layout for RecyclerView -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="8dp"
+    android:layout_marginBottom="8dp"
+    android:background="@drawable/bg_card">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:gravity="center_vertical">
+
+        <!-- Vehicle icon -->
+        <ImageView
+            android:id="@+id/ivVehicleIcon"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:src="@drawable/ic_truck"
+            android:contentDescription="@string/vehicle" />
+
+        <!-- Vehicle details -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:layout_marginStart="12dp">
+
+            <!-- Vehicle name -->
+            <TextView
+                android:id="@+id/tvVehicleName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Standard Truck"
+                android:textColor="@color/text_primary"
+                android:textSize="14sp"
+                android:fontFamily="@font/poppins_semibold" />
+
+            <!-- Vehicle type -->
+            <TextView
+                android:id="@+id/tvVehicleType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Capacity: 2000 kg"
+                android:textColor="@color/text_secondary"
+                android:textSize="12sp"
+                android:fontFamily="@font/poppins_regular"
+                android:layout_marginTop="4dp" />
+
+        </LinearLayout>
+
+        <!-- Estimated cost -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="end">
+
+            <TextView
+                android:id="@+id/tvEstimatedCost"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="₹500"
+                android:textColor="@color/green_primary"
+                android:textSize="16sp"
+                android:fontFamily="@font/poppins_bold" />
+
+            <Button
+                android:id="@+id/btnSelectVehicle"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:text="@string/select"
+                android:textSize="12sp"
+                android:background="@drawable/bg_button_green"
+                android:textColor="@color/white"
+                android:fontFamily="@font/poppins_semibold"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:layout_marginTop="4dp"
+                android:stateListAnimator="@null" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

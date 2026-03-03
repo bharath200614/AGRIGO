@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Farmer dashboard background -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="360dp"
+    android:height="120dp"
+    android:viewportWidth="360"
+    android:viewportHeight="120">
+    <!-- Sky background -->
+    <path
+        android:fillColor="#E8F5E9"
+        android:pathData="M0,0 L360,0 L360,80 L0,80 Z" />
+    <!-- Green field -->
+    <path
+        android:fillColor="#7CB342"
+        android:pathData="M0,80 L360,80 L360,120 L0,120 Z" />
+    
+    <!-- Decorative clouds -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:fillAlpha="0.8"
+        android:pathData="M50,25 Q50,20 55,20 Q56,15 61,15 Q66,15 67,20 Q72,20 72,25 Q72,30 67,31 L51,31 Q50,30 50,25" />
+    
+    <path
+        android:fillColor="#FFFFFF"
+        android:fillAlpha="0.6"
+        android:pathData="M280,35 Q280,32 284,32 Q285,28 289,28 Q293,28 294,32 Q298,32 298,35 Q298,39 294,40 L281,40 Q280,39 280,35" />
+</vector>

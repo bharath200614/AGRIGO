@@ -1,0 +1,71 @@
+# Gradle files
+.gradle/
+build/
+*.apk
+*.ap_
+
+# IDE
+.idea/
+.vscode/
+*.iml
+*.iws
+*.ipr
+.DS_Store
+
+# Local properties
+local.properties
+
+# Android Studio
+.Android/
+*.jks
+*.keystore
+
+# Build output
+bin/
+gen/
+out/
+
+# Signing
+*.jks
+
+# Google Services
+google-services.json
+
+# Firebase
+google-services-debug.json
+
+# Logs
+*.log
+
+# Production
+release/
+
+# Environment
+.env
+.env.local
+
+# Cache
+.cache/
+*.cache
+
+# System files
+Thumbs.db
+.DS_Store
+
+# Gradle
+gradle-app.setting
+gradle.settings
+
+# gradle wrapper
+!gradle/wrapper/gradle-wrapper.jar
+
+# Maven
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+
+# Random files
+.fatjar

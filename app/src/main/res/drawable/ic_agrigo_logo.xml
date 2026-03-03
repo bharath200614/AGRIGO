@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="128dp"
+    android:height="128dp"
+    android:viewportWidth="128"
+    android:viewportHeight="128">
+    <!-- Outer circle background -->
+    <path
+        android:fillColor="#4CAF50"
+        android:pathData="M 64,4 A 60,60 0 1,1 64,124 A 60,60 0 1,1 64,4 Z" />
+    <!-- Inner circle -->
+    <path
+        android:fillColor="#2E7D32"
+        android:pathData="M 64,9 A 55,55 0 1,1 64,119 A 55,55 0 1,1 64,9 Z" />
+    <!-- Leaf symbol -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M 64,30 Q 70,35 70,45 Q 70,60 64,70 Q 58,60 58,45 Q 58,35 64,30 Z" />
+    <!-- Truck body -->
+    <path
+        android:fillColor="#FFD54F"
+        android:pathData="M 40,75 L 85,75 L 85,85 L 40,85 Z" />
+    <!-- Truck wheels -->
+    <path
+        android:fillColor="#333333"
+        android:pathData="M 46,90 A 4,4 0 1,1 54,90 A 4,4 0 1,1 46,90 Z" />
+    <path
+        android:fillColor="#333333"
+        android:pathData="M 71,90 A 4,4 0 1,1 79,90 A 4,4 0 1,1 71,90 Z" />
+</vector>

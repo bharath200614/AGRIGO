@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/farm_background_login"
+    android:paddingTop="16dp"
+    android:paddingBottom="16dp"
+    android:fitsSystemWindows="true">
+
+    <!-- Gradient Overlay -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:alpha="0.94" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="24dp"
+            android:paddingTop="30dp"
+            android:paddingBottom="30dp"
+            android:gravity="center_horizontal">
+
+            <!-- Back Button Area -->
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginBottom="20dp">
+
+                <ImageButton
+                    android:id="@+id/btn_back"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="start|center_vertical"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:src="@drawable/ic_back_arrow"
+                    android:contentDescription="@string/back_button"
+                    android:scaleType="centerInside"
+                    app:tint="@color/primary_green" />
+
+            </FrameLayout>
+
+            <!-- Login Header -->
+            <TextView
+                android:id="@+id/tv_login_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/login_title"
+                style="@style/TextStyle.Heading1"
+                android:gravity="start"
+                android:layout_marginBottom="8dp" />
+
+            <TextView
+                android:id="@+id/tv_login_subtitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/login_subtitle"
+                style="@style/TextStyle.Body2"
+                android:gravity="start"
+                android:layout_marginBottom="40dp"
+                android:textColor="@color/text_secondary" />
+
+            <!-- Phone Number Input -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginBottom="20dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/phone_number"
+                    style="@style/TextStyle.Body1"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="8dp"
+                    android:textColor="@color/text_primary" />
+
+                <EditText
+                    android:id="@+id/et_phone"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/button_height"
+                    android:inputType="phone"
+                    android:hint="@string/phone_hint"
+                    android:background="@drawable/bg_input_field"
+                    android:paddingHorizontal="16dp"
+                    android:fontFamily="@font/poppins_regular"
+                    android:textSize="@dimen/text_size_body1"
+                    android:textColor="@color/text_primary"
+                    android:textColorHint="@color/text_hint" />
+
+                <TextView
+                    android:id="@+id/tv_phone_error"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/status_cancelled"
+                    android:textSize="@dimen/text_size_caption"
+                    android:layout_marginTop="4dp"
+                    android:visibility="gone" />
+
+            </LinearLayout>
+
+            <!-- Password Input -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginBottom="12dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/password"
+                    style="@style/TextStyle.Body1"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="8dp"
+                    android:textColor="@color/text_primary" />
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/button_height">
+
+                    <EditText
+                        android:id="@+id/et_password"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:inputType="textPassword"
+                        android:hint="@string/password_hint"
+                        android:background="@drawable/bg_input_field"
+                        android:paddingHorizontal="16dp"
+                        android:paddingEnd="48dp"
+                        android:fontFamily="@font/poppins_regular"
+                        android:textSize="@dimen/text_size_body1"
+                        android:textColor="@color/text_primary"
+                        android:textColorHint="@color/text_hint" />
+
+                    <ImageButton
+                        android:id="@+id/btn_toggle_password"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_gravity="end|center_vertical"
+                        android:background="@android:color/transparent"
+                        android:src="@drawable/ic_eye_hidden"
+                        android:contentDescription="@string/toggle_password"
+                        android:scaleType="centerInside"
+                        app:tint="@color/text_secondary" />
+
+                </FrameLayout>
+
+                <TextView
+                    android:id="@+id/tv_password_error"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/status_cancelled"
+                    android:textSize="@dimen/text_size_caption"
+                    android:layout_marginTop="4dp"
+                    android:visibility="gone" />
+
+            </LinearLayout>
+
+            <!-- Forgot Password Link -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="end"
+                android:layout_marginBottom="30dp">
+
+                <TextView
+                    android:id="@+id/tv_forgot_password"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/forgot_password"
+                    android:textColor="@color/primary_green"
+                    android:textSize="@dimen/text_size_caption"
+                    android:fontFamily="@font/poppins_semibold" />
+
+            </LinearLayout>
+
+            <!-- Login Button -->
+            <Button
+                android:id="@+id/btn_login"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/button_height"
+                android:text="@string/login_button"
+                android:background="@drawable/bg_button_green_ripple"
+                android:textColor="@color/white"
+                android:fontFamily="@font/poppins_semibold"
+                android:textSize="@dimen/text_size_body1"
+                android:textAllCaps="false"
+                android:elevation="4dp"
+                android:layout_marginBottom="16dp" />
+
+            <!-- Divider -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginVertical="20dp">
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/gray_light" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/or"
+                    android:textSize="@dimen/text_size_caption"
+                    android:textColor="@color/text_secondary"
+                    android:layout_marginHorizontal="12dp"
+                    android:fontFamily="@font/poppins_regular" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/gray_light" />
+
+            </LinearLayout>
+
+            <!-- Register Button -->
+            <Button
+                android:id="@+id/btn_register"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/button_height"
+                android:text="@string/register_button"
+                android:background="@drawable/bg_button_yellow"
+                android:textColor="@color/text_primary"
+                android:fontFamily="@font/poppins_semibold"
+                android:textSize="@dimen/text_size_body1"
+                android:textAllCaps="false"
+                android:elevation="4dp"
+                android:layout_marginBottom="20dp" />
+
+            <!-- Role Switch Container -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_marginTop="20dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/login_as"
+                    android:textSize="@dimen/text_size_body2"
+                    android:textColor="@color/text_secondary"
+                    android:fontFamily="@font/poppins_regular"
+                    android:layout_marginEnd="8dp" />
+
+                <TextView
+                    android:id="@+id/tv_switch_role"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/role_driver"
+                    android:textColor="@color/primary_green"
+                    android:textSize="@dimen/text_size_body2"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:background="?attr/selectableItemBackground"
+                    android:paddingHorizontal="4dp" />
+
+            </LinearLayout>
+
+            <!-- Error Message -->
+            <TextView
+                android:id="@+id/tv_error_message"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:textColor="@color/status_cancelled"
+                android:textSize="@dimen/text_size_body2"
+                android:gravity="center"
+                android:layout_marginTop="20dp"
+                android:padding="12dp"
+                android:background="@drawable/bg_error_message" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>
