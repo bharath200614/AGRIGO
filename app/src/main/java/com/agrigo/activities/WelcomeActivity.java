@@ -12,6 +12,15 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.agrigo.R;
+import com.agrigo.utils.PreferenceManager;
+import com.agrigo.utils.ToastUtils;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.DocumentSnapshot;
+
+import timber.log.Timber;
+import com.agrigo.utils.DatasetSeeder;
 
 public class WelcomeActivity extends AppCompatActivity {
 
@@ -19,7 +28,12 @@ public class WelcomeActivity extends AppCompatActivity {
     private TextView tvAppName;
     private TextView tvSubtitle;
     private ImageView ivFarmerTruck;
-    private Button btnGetStarted;
+    private Button btnLogin;
+    private View btnRegister;
+
+    private FirebaseAuth mAuth;
+    private FirebaseFirestore db;
+    private PreferenceManager preferenceManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +43,20 @@ public class WelcomeActivity extends AppCompatActivity {
         // Initialize views
         initializeViews();
 
+        // Initialize Firebase and Preferences securely
+        try {
+            mAuth = FirebaseAuth.getInstance();
+            db = FirebaseFirestore.getInstance();
+            preferenceManager = new PreferenceManager(this);
+        } catch (Exception e) {
+            Timber.e(e, "Error initializing Firebase or PreferenceManager");
+            ToastUtils.showShort(this, "Application initialization failed. Please restart.");
+            return;
+        }
+
+        // Check if user is already logged in
+        checkUserSession();
+
         // Apply animations
         applyAnimations();
 
@@ -37,14 +65,73 @@ public class WelcomeActivity extends AppCompatActivity {
     }
 
     private void initializeViews() {
-        ivAppLogo = findViewById(R.id.iv_app_logo);
-        tvAppName = findViewById(R.id.tv_app_name);
-        tvSubtitle = findViewById(R.id.tv_subtitle);
-        ivFarmerTruck = findViewById(R.id.iv_farmer_truck);
-        btnGetStarted = findViewById(R.id.btn_get_started);
+//        ivAppLogo = findViewById(R.id.iv_app_logo);
+//        tvAppName = findViewById(R.id.tv_app_name);
+//        tvSubtitle = findViewById(R.id.tv_subtitle);
+//        ivFarmerTruck = findViewById(R.id.iv_farmer_truck);
+        btnLogin = findViewById(R.id.btn_login);
+        btnRegister = findViewById(R.id.btn_register);
+    }
+
+    private void checkUserSession() {
+        if (mAuth == null) {
+            Timber.e("FirebaseAuth is null in WelcomeActivity");
+            return;
+        }
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser != null) {
+            String uid = currentUser.getUid();
+            Timber.d("User session found in WelcomeActivity. Fetching specific role for UID: %s", uid);
+
+            // Fetch role from Firestore directly per requirements
+            db.collection("users").document(uid).get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && task.getResult() != null) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document.exists()) {
+                            String role = document.getString("role");
+                            String name = document.getString("name");
+                            Timber.d("Welcome session recovered. Name: %s, Role: %s", name, role);
+
+                            // Restore session context
+                            preferenceManager.setUserId(uid);
+                            preferenceManager.setUserName(name);
+                            preferenceManager.setUserRole(role);
+                            preferenceManager.setIsLoggedIn(true);
+
+                            navigateToDashboard(role);
+                        } else {
+                            Timber.w("No user document found during Welcome session check for UID: %s", uid);
+                            mAuth.signOut();
+                        }
+                    } else {
+                        Timber.e(task.getException(), "Session error reading Firestore in Welcome session check.");
+                        ToastUtils.showShort(this, "Session error. Please login.");
+                    }
+                });
+        } else {
+            Timber.d("No active Firebase session in WelcomeActivity.");
+        }
+    }
+
+    private void navigateToDashboard(String role) {
+        Timber.d("Navigating to dashboard with role: %s", role);
+        Intent intent;
+        if ("farmer".equalsIgnoreCase(role)) {
+            intent = new Intent(this, FarmerDashboardActivity.class);
+        } else if ("driver".equalsIgnoreCase(role)) {
+            intent = new Intent(this, DriverHomeActivity.class);
+        } else if ("labor".equalsIgnoreCase(role)) {
+            intent = new Intent(this, LaborHomeActivity.class);
+        } else {
+            intent = new Intent(this, FarmerDashboardActivity.class);
+        }
+        startActivity(intent);
+        finish();
     }
 
     private void applyAnimations() {
+/*
         // Logo fade-in
         Animation fadeInLogo = AnimationUtils.loadAnimation(this, R.anim.fade_in);
         fadeInLogo.setDuration(600);
@@ -67,72 +154,36 @@ public class WelcomeActivity extends AppCompatActivity {
         slideUpIllustration.setDuration(800);
         slideUpIllustration.setStartOffset(600);
         ivFarmerTruck.startAnimation(slideUpIllustration);
+*/
 
         // Button slide-up fade-in
         Animation slideUpButton = AnimationUtils.loadAnimation(this, R.anim.slide_up_fade);
         slideUpButton.setDuration(800);
         slideUpButton.setStartOffset(1000);
-        btnGetStarted.startAnimation(slideUpButton);
+        btnLogin.startAnimation(slideUpButton);
+        btnRegister.startAnimation(slideUpButton);
     }
 
     private void setupButtonListeners() {
-        btnGetStarted.setOnClickListener(new View.OnClickListener() {
+        btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Navigate to Login Activity
-                navigateToLogin();
+                navigateToActivity(LoginActivity.class);
             }
         });
 
-        btnGetStarted.setOnLongClickListener(new View.OnLongClickListener() {
+        btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onLongClick(View v) {
-                // Button scale animation feedback
-                v.animate()
-                    .scaleX(0.95f)
-                    .scaleY(0.95f)
-                    .setDuration(100)
-                    .withEndAction(new Runnable() {
-                        @Override
-                        public void run() {
-                            v.animate()
-                                .scaleX(1.0f)
-                                .scaleY(1.0f)
-                                .setDuration(100)
-                                .start();
-                        }
-                    })
-                    .start();
-                return false;
+            public void onClick(View v) {
+                navigateToActivity(RegisterActivity.class);
             }
         });
     }
 
-    private void navigateToLogin() {
-        // Fade out animation before transition
-        Animation fadeOut = AnimationUtils.loadAnimation(this, android.R.anim.fade_out);
-        fadeOut.setDuration(300);
-        
-        fadeOut.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                // Navigate to LoginActivity
-                Intent intent = new Intent(WelcomeActivity.this, LoginActivity.class);
-                startActivity(intent);
-                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                finish();
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-            }
-        });
-
-        findViewById(R.id.welcome_root).startAnimation(fadeOut);
+    private void navigateToActivity(Class<?> targetActivity) {
+        Intent intent = new Intent(WelcomeActivity.this, targetActivity);
+        startActivity(intent);
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
 
     @Override

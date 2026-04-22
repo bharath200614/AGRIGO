@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 import com.agrigo.R;
 import com.agrigo.models.Booking;
+import com.agrigo.utils.CropUtils;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
@@ -29,13 +30,13 @@ public class BookingViewHolder extends RecyclerView.ViewHolder {
 
     public BookingViewHolder(View itemView) {
         super(itemView);
-        this.ivVehicleIcon = itemView.findViewById(R.id.ivVehicleIcon);
-        this.tvVehicleType = itemView.findViewById(R.id.tvVehicleType);
-        this.tvDate = itemView.findViewById(R.id.tvDate);
-        this.tvStatus = itemView.findViewById(R.id.tvStatus);
-        this.tvCropType = itemView.findViewById(R.id.tvCropType);
-        this.tvWeight = itemView.findViewById(R.id.tvWeight);
-        this.tvFare = itemView.findViewById(R.id.tvFare);
+        this.ivVehicleIcon = itemView.findViewById(R.id.iv_booking_icon);
+        this.tvVehicleType = itemView.findViewById(R.id.tv_booking_type);
+        this.tvDate = itemView.findViewById(R.id.tv_booking_date);
+        this.tvStatus = itemView.findViewById(R.id.tv_status_badge);
+        this.tvCropType = itemView.findViewById(R.id.tv_crop_type);
+        this.tvWeight = itemView.findViewById(R.id.tv_weight);
+        this.tvFare = itemView.findViewById(R.id.tv_booking_cost);
         this.expandedDetails = itemView.findViewById(R.id.expandedDetails);
     }
 
@@ -45,23 +46,25 @@ public class BookingViewHolder extends RecyclerView.ViewHolder {
         
         // Set date
         SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy", Locale.getDefault());
-        tvDate.setText(dateFormat.format(booking.getCreatedAt()));
+        tvDate.setText(dateFormat.format(booking.getTimestamp()));
         
         // Set status with color
         tvStatus.setText(getStatusLabel(booking.getStatus()));
-        tvStatus.setBackgroundResource(getStatusBackgroundResource(booking.getStatus()));
-        tvStatus.setTextColor(getStatusTextColor(booking.getStatus()));
+        // Note: New premium style uses bg_card_blue_tint and primary_blue text
+        tvStatus.setBackgroundResource(R.drawable.bg_card_blue_tint);
+        tvStatus.setTextColor(context.getResources().getColor(R.color.primary_blue));
         
         // Set crop type and weight
-        tvCropType.setText(booking.getCropType().substring(0, 1).toUpperCase() + 
-                           booking.getCropType().substring(1));
+        String cropName = booking.getCropType();
+        tvCropType.setText(cropName.substring(0, 1).toUpperCase() + cropName.substring(1));
         tvWeight.setText(booking.getWeight() + " kg");
         
-        // Set fare
-        tvFare.setText("₹" + booking.getFare());
+        // Set cost
+        tvFare.setText("₹" + (int)booking.getCost());
         
-        // Set vehicle icon
-        setVehicleIcon(booking.getVehicleType());
+        // Set crop icon using CropUtils
+        int cropIcon = CropUtils.getCropIcon(context, cropName);
+        ivVehicleIcon.setImageResource(cropIcon);
         
         // Setup expandable details
         itemView.setOnClickListener(v -> toggleExpanded());
@@ -112,6 +115,7 @@ public class BookingViewHolder extends RecyclerView.ViewHolder {
     }
 
     private String getStatusLabel(String status) {
+        if (status == null) return "Unknown";
         switch (status.toLowerCase()) {
             case "ongoing":
                 return "Ongoing";
@@ -119,20 +123,24 @@ public class BookingViewHolder extends RecyclerView.ViewHolder {
                 return "Completed";
             case "requested":
                 return "Requested";
+            case "accepted":
+                return "Accepted";
             case "cancelled":
                 return "Cancelled";
             default:
-                return status;
+                return status.substring(0, 1).toUpperCase() + status.substring(1).toLowerCase();
         }
     }
 
     private int getStatusBackgroundResource(String status) {
+        if (status == null) return R.drawable.bg_status_requested;
         switch (status.toLowerCase()) {
             case "ongoing":
                 return R.drawable.bg_status_ongoing;
             case "completed":
                 return R.drawable.bg_status_completed;
             case "requested":
+            case "accepted":
                 return R.drawable.bg_status_requested;
             case "cancelled":
                 return R.drawable.bg_status_cancelled;

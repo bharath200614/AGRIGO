@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/vehicle_item_root"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:paddingHorizontal="16dp"
+    android:paddingVertical="14dp"
+    android:background="?android:attr/selectableItemBackground">
+
+    <!-- Vehicle Icon -->
+    <ImageView
+        android:id="@+id/iv_vehicle_icon"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:scaleType="fitCenter" />
+
+    <!-- Vehicle Name -->
+    <TextView
+        android:id="@+id/tv_vehicle_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginStart="14dp"
+        android:textSize="15sp"
+        android:textColor="#333333"
+        android:fontFamily="sans-serif-medium" />
+
+    <!-- Selection Check -->
+    <ImageView
+        android:id="@+id/iv_check"
+        android:layout_width="22dp"
+        android:layout_height="22dp"
+        android:src="@drawable/ic_check_blue"
+        android:visibility="gone"
+        android:scaleType="fitCenter" />
+
+</LinearLayout>

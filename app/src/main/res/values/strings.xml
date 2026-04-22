@@ -16,8 +16,8 @@
     <!-- Login Screen -->
     <string name="login_title">Welcome Back</string>
     <string name="login_subtitle">Sign in to your account</string>
-    <string name="phone_number">Phone Number</string>
-    <string name="phone_hint">Enter 10-digit phone number</string>
+    <string name="email_address">Email Address</string>
+    <string name="email_hint">Enter your email address</string>
     <string name="password">Password</string>
     <string name="password_hint">Enter your password</string>
     <string name="forgot_password">Forgot Password?</string>
@@ -168,4 +168,59 @@
     <string name="tap_to_expand">Tap to expand details</string>
     <string name="total_bookings">Total Bookings</string>
     <string name="recent_activity">Recent Activity</string>
+
+    <!-- Map-Based Transport Booking -->
+    <string name="search_destination">Search destination…</string>
+    <string name="use_current_location">Use Current Location</string>
+    <string name="pickup_label">PICKUP</string>
+    <string name="drop_label">DROP</string>
+    <string name="detecting_location">Detecting your location…</string>
+    <string name="location_not_found">Location not found. Try a different search.</string>
+    <string name="set_destination_msg">Search or long-press on map to set drop location</string>
+    <string name="distance_label">Distance</string>
+    <string name="est_price_label">Estimated Price</string>
+    <string name="confirm_transport">Confirm Transport Booking</string>
+    <string name="map_long_press_hint">💡 Long-press on map to set destination</string>
+
+    <!-- Enhanced Transport Bottom Sheet -->
+    <string name="vehicle_type_label">RECOMMENDED VEHICLE</string>
+    <string name="estimated_time_label">Est. Time</string>
+    <string name="approx_route">Approximate route</string>
+    <string name="confirm_disabled_no_locations">Set pickup &amp; drop first</string>
+    <string name="confirm_disabled_no_weight">Enter crop weight</string>
+    <string name="confirm_ready">Confirm Transport Booking</string>
+
+    <!-- Dashboard Service Cards -->
+    <string name="service_transport">Transport</string>
+    <string name="service_transport_desc">Book vehicles to transport your crops safely</string>
+    <string name="service_machinery">Machinery</string>
+    <string name="service_machinery_desc">Rent tractors, harvesters &amp; farm equipment</string>
+    <string name="service_labor">Labour</string>
+    <string name="service_labor_desc">Hire skilled workers for your farm needs</string>
+    <string name="dashboard_services_title">Our Services</string>
+    <string name="dashboard_quick_actions">Quick Actions</string>
+
+    <!-- Transport Booking -->
+    <string name="transport_booking_title">Transport Booking</string>
+
+    <!-- Machinery Booking -->
+    <string name="machinery_booking_title">Machinery Booking</string>
+    <string name="select_machine_type">Select Machine Type</string>
+    <string name="enter_land_size">Land Size (Acres)</string>
+    <string name="enter_duration">Duration (Hours)</string>
+    <string name="calculate_price">Calculate Price</string>
+    <string name="confirm_machinery">Confirm Machinery Booking</string>
+
+    <!-- Labor Booking -->
+    <string name="labor_booking_title">Labour Booking</string>
+    <string name="select_work_type">Select Work Type</string>
+    <string name="enter_worker_count">Number of Workers</string>
+    <string name="enter_days">Number of Days</string>
+    <string name="enter_location">Work Location</string>
+    <string name="calculate_labor_cost">Calculate Cost</string>
+    <string name="confirm_labor">Confirm Labour Booking</string>
+
+    <!-- Empty States -->
+    <string name="no_bookings_empty">No bookings yet</string>
+    <string name="no_bookings_empty_desc">Your booking history will appear here</string>
 </resources>

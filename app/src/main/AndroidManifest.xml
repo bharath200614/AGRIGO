@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="com.agrigo">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Permissions -->
     <uses-permission android:name="android.permission.INTERNET" />
@@ -12,6 +11,10 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         tools:ignore="ScopedStorage" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
+    
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_LOCATION" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <!-- Feature requirements -->
     <uses-feature android:name="android.hardware.camera" android:required="false" />
@@ -21,12 +24,18 @@
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@drawable/ic_agrigo_logo"
+        android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@drawable/ic_agrigo_logo"
+        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="false"
         android:theme="@style/AppTheme"
         tools:targetApi="31">
+
+        <!-- Google Maps API Key -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyCC7n68iPH8HrHcSG9J1i7XyaRJ9nLUiyA" />
+
 
         <!-- Welcome Activity - Launcher -->
         <activity
@@ -66,6 +75,40 @@
             android:exported="false"
             android:screenOrientation="portrait" />
 
+        <!-- New Booking Modules -->
+        <activity
+            android:name=".activities.TransportBookingActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+
+        <activity android:name=".activities.MachineryJobDetailsActivity" />
+        <activity android:name=".activities.MapPickerActivity" />
+
+        <activity
+            android:name=".activities.MachineryBookingActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".activities.MachineryProviderActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".activities.MachineryProviderProfileActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".activities.MachineryTrackingActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".activities.LaborBookingActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+
         <!-- Tracking Activity (will be created) -->
         <activity
             android:name=".activities.TrackingActivity"
@@ -77,6 +120,55 @@
             android:name=".activities.DriverRequestActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
+
+        <!-- Driver Home Activity -->
+        <activity
+            android:name=".activities.DriverHomeActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+
+        <!-- Profile Activity -->
+        <activity
+            android:name=".activities.ProfileActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+
+        <!-- Labor Home Activity -->
+        <activity
+            android:name=".activities.LaborHomeActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".activities.LaborWorkerProfileActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+
+        <!-- Incoming Request Activity (Popup) -->
+        <activity
+            android:name=".activities.IncomingRequestActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:showOnLockScreen="true"
+            android:turnScreenOn="true"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+
+        <!-- Driver Dispatch Service -->
+        <service
+            android:name=".services.DriverDispatchService"
+            android:exported="false"
+            android:foregroundServiceType="location" />
+
+        <!-- Notification Service - DISABLED: Spark plan, no Cloud Functions for push delivery.
+             Re-enable when upgrading to Firebase Blaze plan.
+        <service
+            android:name=".services.MyFirebaseMessagingService"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        -->
 
     </application>
 

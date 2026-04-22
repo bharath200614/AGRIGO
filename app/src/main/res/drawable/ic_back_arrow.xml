@@ -4,7 +4,28 @@
     android:height="48dp"
     android:viewportWidth="48"
     android:viewportHeight="48">
+    <!-- Horizontal bar of the arrow -->
     <path
-        android:fillColor="#4CAF50"
-        android:pathData="M4,4 L44,4 L44,44 L4,44 Z" />
+        android:strokeColor="#1A2C6E"
+        android:strokeWidth="4"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:fillColor="@android:color/transparent"
+        android:pathData="M10,24 L38,24" />
+    <!-- Arrow head upper line -->
+    <path
+        android:strokeColor="#1A2C6E"
+        android:strokeWidth="4"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:fillColor="@android:color/transparent"
+        android:pathData="M10,24 L22,12" />
+    <!-- Arrow head lower line -->
+    <path
+        android:strokeColor="#1A2C6E"
+        android:strokeWidth="4"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:fillColor="@android:color/transparent"
+        android:pathData="M10,24 L22,36" />
 </vector>

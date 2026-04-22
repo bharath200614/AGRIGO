@@ -10,12 +10,23 @@ public class Booking {
     private String cropType;
     private double weight;
     private String vehicleType;
-    private String pickupLocation;
-    private String deliveryLocation;
-    private String status; // "requested", "accepted", "ongoing", "completed", "cancelled"
-    private long createdAt;
+    private String fromLocation;
+    private String toLocation;
+    private String status; // "requested", "accepted", "navigating_to_pickup", "at_pickup", "on_trip", "completed", "cancelled"
+    private long timestamp;
     private long updatedAt;
-    private double fare;
+    private double cost;
+
+    // Navigation fields
+    private String otp;
+    private double sourceLat;
+    private double sourceLng;
+    private double destLat;
+    private double destLng;
+    private String sourceAddress;
+    private String destAddress;
+    private String farmerName;
+    private String farmerPhone;
 
     public Booking() {
     }
@@ -76,20 +87,20 @@ public class Booking {
         this.vehicleType = vehicleType;
     }
 
-    public String getPickupLocation() {
-        return pickupLocation;
+    public String getFromLocation() {
+        return fromLocation;
     }
 
-    public void setPickupLocation(String pickupLocation) {
-        this.pickupLocation = pickupLocation;
+    public void setFromLocation(String fromLocation) {
+        this.fromLocation = fromLocation;
     }
 
-    public String getDeliveryLocation() {
-        return deliveryLocation;
+    public String getToLocation() {
+        return toLocation;
     }
 
-    public void setDeliveryLocation(String deliveryLocation) {
-        this.deliveryLocation = deliveryLocation;
+    public void setToLocation(String toLocation) {
+        this.toLocation = toLocation;
     }
 
     public String getStatus() {
@@ -100,12 +111,12 @@ public class Booking {
         this.status = status;
     }
 
-    public long getCreatedAt() {
-        return createdAt;
+    public long getTimestamp() {
+        return timestamp;
     }
 
-    public void setCreatedAt(long createdAt) {
-        this.createdAt = createdAt;
+    public void setTimestamp(long timestamp) {
+        this.timestamp = timestamp;
     }
 
     public long getUpdatedAt() {
@@ -116,16 +127,90 @@ public class Booking {
         this.updatedAt = updatedAt;
     }
 
-    public double getFare() {
-        return fare;
+    public double getCost() {
+        return cost;
     }
 
-    public void setFare(double fare) {
-        this.fare = fare;
+    public void setCost(double cost) {
+        this.cost = cost;
     }
 
+    // Navigation field getters and setters
+    public String getOtp() {
+        return otp;
+    }
+
+    public void setOtp(String otp) {
+        this.otp = otp;
+    }
+
+    public double getSourceLat() {
+        return sourceLat;
+    }
+
+    public void setSourceLat(double sourceLat) {
+        this.sourceLat = sourceLat;
+    }
+
+    public double getSourceLng() {
+        return sourceLng;
+    }
+
+    public void setSourceLng(double sourceLng) {
+        this.sourceLng = sourceLng;
+    }
+
+    public double getDestLat() {
+        return destLat;
+    }
+
+    public void setDestLat(double destLat) {
+        this.destLat = destLat;
+    }
+
+    public double getDestLng() {
+        return destLng;
+    }
+
+    public void setDestLng(double destLng) {
+        this.destLng = destLng;
+    }
+
+    public String getSourceAddress() {
+        return sourceAddress;
+    }
+
+    public void setSourceAddress(String sourceAddress) {
+        this.sourceAddress = sourceAddress;
+    }
+
+    public String getDestAddress() {
+        return destAddress;
+    }
+
+    public void setDestAddress(String destAddress) {
+        this.destAddress = destAddress;
+    }
+
+    public String getFarmerName() {
+        return farmerName;
+    }
+
+    public void setFarmerName(String farmerName) {
+        this.farmerName = farmerName;
+    }
+
+    public String getFarmerPhone() {
+        return farmerPhone;
+    }
+
+    public void setFarmerPhone(String farmerPhone) {
+        this.farmerPhone = farmerPhone;
+    }
+
+    // Status helpers
     public boolean isOngoing() {
-        return "ongoing".equalsIgnoreCase(status);
+        return "ongoing".equalsIgnoreCase(status) || "on_trip".equalsIgnoreCase(status);
     }
 
     public boolean isCompleted() {
@@ -134,5 +219,9 @@ public class Booking {
 
     public boolean isRequested() {
         return "requested".equalsIgnoreCase(status);
+    }
+
+    public boolean isNavigating() {
+        return "navigating_to_pickup".equalsIgnoreCase(status) || "on_trip".equalsIgnoreCase(status);
     }
 }

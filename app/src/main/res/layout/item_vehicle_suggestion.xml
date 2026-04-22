@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Vehicle suggestion card layout for RecyclerView -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="8dp"
-    android:layout_marginBottom="8dp"
-    android:background="@drawable/bg_card">
+    android:layout_marginBottom="12dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="2dp"
+    app:strokeWidth="1dp"
+    app:strokeColor="@color/card_border"
+    app:cardBackgroundColor="@color/white">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,77 +17,110 @@
         android:padding="16dp"
         android:gravity="center_vertical">
 
-        <!-- Vehicle icon -->
-        <ImageView
-            android:id="@+id/ivVehicleIcon"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
-            android:src="@drawable/ic_truck"
-            android:contentDescription="@string/vehicle" />
+        <!-- Vehicle Icon -->
+        <FrameLayout
+            android:layout_width="52dp"
+            android:layout_height="52dp"
+            android:layout_marginEnd="14dp">
 
-        <!-- Vehicle details -->
+            <View
+                android:layout_width="52dp"
+                android:layout_height="52dp"
+                android:background="@drawable/bg_icon_circle_blue" />
+
+            <ImageView
+                android:id="@+id/iv_vehicle_icon"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_truck"
+                app:tint="@color/primary_blue" />
+        </FrameLayout>
+
+        <!-- Vehicle Info -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:orientation="vertical"
-            android:layout_marginStart="12dp">
+            android:orientation="vertical">
 
-            <!-- Vehicle name -->
             <TextView
-                android:id="@+id/tvVehicleName"
+                android:id="@+id/tv_vehicle_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Standard Truck"
+                android:text="Tata Ace"
+                android:textSize="16sp"
                 android:textColor="@color/text_primary"
-                android:textSize="14sp"
-                android:fontFamily="@font/poppins_semibold" />
+                android:fontFamily="sans-serif" />
 
-            <!-- Vehicle type -->
             <TextView
-                android:id="@+id/tvVehicleType"
+                android:id="@+id/tv_vehicle_type"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Capacity: 2000 kg"
-                android:textColor="@color/text_secondary"
+                android:text="Medium Carrier"
                 android:textSize="12sp"
-                android:fontFamily="@font/poppins_regular"
-                android:layout_marginTop="4dp" />
+                android:textColor="@color/text_secondary"
+                android:fontFamily="sans-serif" />
 
+            <!-- ML Confidence badge -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:background="@drawable/bg_card_blue_tint"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="3dp"
+                android:layout_marginTop="6dp">
+
+                <ImageView
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
+                    android:src="@drawable/ic_accept"
+                    app:tint="@color/primary_blue"
+                    android:layout_marginEnd="4dp" />
+
+                <TextView
+                    android:id="@+id/tv_confidence"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="95% match"
+                    android:textSize="11sp"
+                    android:textColor="@color/primary_blue"
+                    android:fontFamily="sans-serif" />
+            </LinearLayout>
         </LinearLayout>
 
-        <!-- Estimated cost -->
+        <!-- Price + Book -->
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:gravity="end">
+            android:gravity="center_horizontal">
 
             <TextView
-                android:id="@+id/tvEstimatedCost"
+                android:id="@+id/tv_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="₹500"
-                android:textColor="@color/green_primary"
+                android:text="₹2,500"
                 android:textSize="16sp"
-                android:fontFamily="@font/poppins_bold" />
+                android:textColor="@color/primary_blue"
+                android:fontFamily="sans-serif"
+                android:layout_marginBottom="6dp" />
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnSelectVehicle"
                 android:layout_width="wrap_content"
-                android:layout_height="32dp"
-                android:text="@string/select"
+                android:layout_height="36dp"
+                android:text="Select"
+                app:icon="@drawable/ic_accept"
+                app:iconSize="14dp"
+                app:cornerRadius="10dp"
+                android:textAllCaps="false"
                 android:textSize="12sp"
-                android:background="@drawable/bg_button_green"
-                android:textColor="@color/white"
-                android:fontFamily="@font/poppins_semibold"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
-                android:layout_marginTop="4dp"
-                android:stateListAnimator="@null" />
-
+                android:fontFamily="sans-serif"
+                android:paddingHorizontal="16dp"
+                app:backgroundTint="@color/primary_blue" />
         </LinearLayout>
-
     </LinearLayout>
-
-</LinearLayout>
+</com.google.android.material.card.MaterialCardView>

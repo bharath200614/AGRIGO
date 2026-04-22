@@ -1,31 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Farmer dashboard main layout -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/white"
+    android:background="@color/background_screen"
     android:fitsSystemWindows="true">
 
-    <!-- Top greeting banner -->
-    <FrameLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="160dp"
-        android:background="@drawable/farm_background_farmer_dashboard">
+        android:layout_height="match_parent"
+        android:layout_above="@id/bottomNavigation"
+        android:scrollbars="none">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:padding="20dp"
-            android:gravity="center_vertical">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-            <!-- Greeting text -->
+            <!-- Clean Modern Header -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:gravity="center_vertical">
+                android:gravity="center_vertical"
+                android:paddingHorizontal="24dp"
+                android:paddingTop="32dp"
+                android:paddingBottom="24dp"
+                android:background="@color/white">
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -34,316 +36,400 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/tvGreeting"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/greeting_hello"
-                        android:textColor="@color/green_dark"
-                        android:textSize="16sp"
-                        android:fontFamily="@font/poppins_regular" />
+                        android:text="Welcome Back 👋"
+                        android:textSize="14sp"
+                        android:textColor="@color/text_secondary"
+                        android:fontFamily="sans-serif" />
 
                     <TextView
                         android:id="@+id/tvFarmerName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Farmer Name"
-                        android:textColor="@color/green_primary"
+                        android:text="Farmer"
                         android:textSize="24sp"
-                        android:fontFamily="@font/poppins_bold"
-                        android:layout_marginTop="4dp" />
-
+                        android:textStyle="bold"
+                        android:textColor="@color/text_primary"
+                        android:fontFamily="sans-serif"
+                        android:layout_marginTop="2dp" />
                 </LinearLayout>
 
-                <!-- Menu button -->
-                <ImageButton
-                    android:id="@+id/btnMenu"
+                <ImageView
+                    android:id="@+id/btnNotifications"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/ic_notifications"
+                    app:tint="@color/text_primary"
+                    android:padding="8dp"
+                    android:layout_marginEnd="12dp"
+                    android:background="?attr/selectableItemBackgroundBorderless" />
+                    
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/btnProfileAvatar"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
-                    android:background="@drawable/bg_button_white_stroke"
-                    android:src="@drawable/ic_menu"
-                    android:scaleType="centerInside"
-                    android:contentDescription="@string/menu" />
+                    android:src="@drawable/profile_avatar"
+                    android:scaleType="centerCrop"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    app:shapeAppearanceOverlay="@style/ShapeAppearance.AgriGo.Circle" />
+            </LinearLayout>
+
+            <!-- Main Booking Services Section -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingHorizontal="24dp"
+                android:paddingTop="24dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Book Services"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/text_primary"
+                    android:fontFamily="sans-serif"
+                    android:layout_marginBottom="16dp" />
+
+                <!-- Transport Card (Blue) -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardTransport"
+                    style="@style/CardViewStyle.Flat"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground"
+                    app:cardBackgroundColor="@color/white">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
+
+                        <FrameLayout
+                            android:layout_width="56dp"
+                            android:layout_height="56dp"
+                            android:layout_marginEnd="16dp">
+
+                            <View
+                                android:layout_width="56dp"
+                                android:layout_height="56dp"
+                                android:background="@drawable/bg_icon_circle_blue"
+                                android:backgroundTint="@color/primary_blue_soft" />
+
+                            <ImageView
+                                android:layout_width="28dp"
+                                android:layout_height="28dp"
+                                android:layout_gravity="center"
+                                android:src="@drawable/ic_truck"
+                                app:tint="@color/primary_blue" />
+                        </FrameLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Transport"
+                                android:textSize="18sp"
+                                android:textStyle="bold"
+                                android:textColor="@color/text_primary" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Book trucks for crops"
+                                android:textSize="13sp"
+                                android:textColor="@color/text_secondary"
+                                android:layout_marginTop="2dp" />
+                        </LinearLayout>
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/ic_back_arrow"
+                            android:rotation="180"
+                            app:tint="@color/text_hint" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Machinery Card (Orange) -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardMachinery"
+                    style="@style/CardViewStyle.Flat"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground"
+                    app:cardBackgroundColor="@color/white">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
+
+                        <FrameLayout
+                            android:layout_width="56dp"
+                            android:layout_height="56dp"
+                            android:layout_marginEnd="16dp">
+
+                            <View
+                                android:layout_width="56dp"
+                                android:layout_height="56dp"
+                                android:background="@drawable/bg_icon_circle_blue"
+                                android:backgroundTint="@color/primary_blue_soft" />
+
+                            <ImageView
+                                android:layout_width="28dp"
+                                android:layout_height="28dp"
+                                android:layout_gravity="center"
+                                android:src="@drawable/ic_tractor"
+                                app:tint="@color/primary_blue" />
+                        </FrameLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Machinery"
+                                android:textSize="18sp"
+                                android:textStyle="bold"
+                                android:textColor="@color/text_primary" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Rent tractors &amp; farm tools"
+                                android:textSize="13sp"
+                                android:textColor="@color/text_secondary"
+                                android:layout_marginTop="2dp" />
+                        </LinearLayout>
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/ic_back_arrow"
+                            android:rotation="180"
+                            app:tint="@color/text_hint" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Labor Card (Green) -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardLabor"
+                    style="@style/CardViewStyle.Flat"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="24dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground"
+                    app:cardBackgroundColor="@color/white">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
+
+                        <FrameLayout
+                            android:layout_width="56dp"
+                            android:layout_height="56dp"
+                            android:layout_marginEnd="16dp">
+
+                            <View
+                                android:layout_width="56dp"
+                                android:layout_height="56dp"
+                                android:background="@drawable/bg_icon_circle_green"
+                                android:backgroundTint="@color/primary_green_soft" />
+
+                            <ImageView
+                                android:layout_width="28dp"
+                                android:layout_height="28dp"
+                                android:layout_gravity="center"
+                                android:src="@drawable/ic_people"
+                                app:tint="@color/primary_green" />
+                        </FrameLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Farm Labor"
+                                android:textSize="18sp"
+                                android:textStyle="bold"
+                                android:textColor="@color/text_primary" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Hire skilled farm workers"
+                                android:textSize="13sp"
+                                android:textColor="@color/text_secondary"
+                                android:layout_marginTop="2dp" />
+                        </LinearLayout>
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/ic_back_arrow"
+                            android:rotation="180"
+                            app:tint="@color/text_hint" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
 
             </LinearLayout>
 
-        </LinearLayout>
-
-    </FrameLayout>
-
-    <!-- Main content -->
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:fillViewport="true">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp">
-
-            <!-- Crop selection section title -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/select_crop"
-                android:textColor="@color/text_primary"
-                android:textSize="16sp"
-                android:fontFamily="@font/poppins_semibold"
-                android:layout_marginBottom="12dp" />
-
-            <!-- Crop selection grid (2x2) -->
-            <GridLayout
-                android:id="@+id/cropGridLayout"
+            <!-- Quick Actions Grid -->
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:columnCount="2"
-                android:rowCount="2"
-                android:columnOrderPreserved="false">
+                android:orientation="vertical"
+                android:paddingHorizontal="24dp"
+                android:paddingBottom="48dp">
 
-                <!-- Paddy crop card -->
-                <FrameLayout
-                    android:id="@+id/cropPaddy"
-                    android:layout_width="0dp"
-                    android:layout_height="140dp"
-                    android:layout_columnWeight="1"
-                    android:layout_margin="8dp"
-                    android:background="@drawable/bg_crop_card"
-                    android:tag="paddy">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical"
-                        android:gravity="center"
-                        android:padding="12dp">
-
-                        <ImageView
-                            android:layout_width="56dp"
-                            android:layout_height="56dp"
-                            android:src="@drawable/ic_crop_paddy"
-                            android:contentDescription="@string/crop_paddy" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/crop_paddy"
-                            android:textColor="@color/green_primary"
-                            android:textSize="14sp"
-                            android:fontFamily="@font/poppins_semibold"
-                            android:layout_marginTop="8dp"
-                            android:gravity="center" />
-
-                    </LinearLayout>
-
-                </FrameLayout>
-
-                <!-- Tomato crop card -->
-                <FrameLayout
-                    android:id="@+id/cropTomato"
-                    android:layout_width="0dp"
-                    android:layout_height="140dp"
-                    android:layout_columnWeight="1"
-                    android:layout_margin="8dp"
-                    android:background="@drawable/bg_crop_card"
-                    android:tag="tomato">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical"
-                        android:gravity="center"
-                        android:padding="12dp">
-
-                        <ImageView
-                            android:layout_width="56dp"
-                            android:layout_height="56dp"
-                            android:src="@drawable/ic_crop_tomato"
-                            android:contentDescription="@string/crop_tomato" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/crop_tomato"
-                            android:textColor="@color/green_primary"
-                            android:textSize="14sp"
-                            android:fontFamily="@font/poppins_semibold"
-                            android:layout_marginTop="8dp"
-                            android:gravity="center" />
-
-                    </LinearLayout>
-
-                </FrameLayout>
-
-                <!-- Banana crop card -->
-                <FrameLayout
-                    android:id="@+id/cropBanana"
-                    android:layout_width="0dp"
-                    android:layout_height="140dp"
-                    android:layout_columnWeight="1"
-                    android:layout_margin="8dp"
-                    android:background="@drawable/bg_crop_card"
-                    android:tag="banana">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical"
-                        android:gravity="center"
-                        android:padding="12dp">
-
-                        <ImageView
-                            android:layout_width="56dp"
-                            android:layout_height="56dp"
-                            android:src="@drawable/ic_crop_banana"
-                            android:contentDescription="@string/crop_banana" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/crop_banana"
-                            android:textColor="@color/green_primary"
-                            android:textSize="14sp"
-                            android:fontFamily="@font/poppins_semibold"
-                            android:layout_marginTop="8dp"
-                            android:gravity="center" />
-
-                    </LinearLayout>
-
-                </FrameLayout>
-
-                <!-- Sugarcane crop card -->
-                <FrameLayout
-                    android:id="@+id/cropSugarcane"
-                    android:layout_width="0dp"
-                    android:layout_height="140dp"
-                    android:layout_columnWeight="1"
-                    android:layout_margin="8dp"
-                    android:background="@drawable/bg_crop_card"
-                    android:tag="sugarcane">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical"
-                        android:gravity="center"
-                        android:padding="12dp">
-
-                        <ImageView
-                            android:layout_width="56dp"
-                            android:layout_height="56dp"
-                            android:src="@drawable/ic_crop_sugarcane"
-                            android:contentDescription="@string/crop_sugarcane" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/crop_sugarcane"
-                            android:textColor="@color/green_primary"
-                            android:textSize="14sp"
-                            android:fontFamily="@font/poppins_semibold"
-                            android:layout_marginTop="8dp"
-                            android:gravity="center" />
-
-                    </LinearLayout>
-
-                </FrameLayout>
-
-            </GridLayout>
-
-            <!-- Weight input section -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/crop_weight"
-                android:textColor="@color/text_primary"
-                android:textSize="16sp"
-                android:fontFamily="@font/poppins_semibold"
-                android:layout_marginTop="24dp"
-                android:layout_marginBottom="12dp" />
-
-            <!-- Weight input field -->
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:background="@drawable/bg_input_field"
-                android:layout_marginBottom="8dp">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etWeight"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@null"
-                    android:hint="@string/weight_hint"
-                    android:inputType="numberDecimal"
-                    android:padding="16dp"
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Quick Actions"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
                     android:textColor="@color/text_primary"
-                    android:textColorHint="@color/text_hint"
-                    android:fontFamily="@font/poppins_regular"
-                    android:textSize="14sp" />
+                    android:fontFamily="sans-serif"
+                    android:layout_marginBottom="16dp" />
 
-            </FrameLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:baselineAligned="false">
 
-            <!-- Weight error message -->
-            <TextView
-                android:id="@+id/tvWeightError"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/red_error"
-                android:textSize="12sp"
-                android:fontFamily="@font/poppins_regular"
-                android:layout_marginBottom="16dp"
-                android:visibility="gone" />
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/btnQuickBookings"
+                        style="@style/CardViewStyle.Elevated"
+                        android:layout_width="0dp"
+                        android:layout_height="100dp"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="8dp"
+                        android:clickable="true"
+                        android:focusable="true">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:orientation="vertical">
+                            <ImageView
+                                android:layout_width="32dp"
+                                android:layout_height="32dp"
+                                android:src="@drawable/ic_bookings"
+                                app:tint="@color/primary_blue" />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:text="Bookings"
+                                android:textSize="14sp"
+                                android:textColor="@color/text_primary" />
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
 
-            <!-- Get vehicle suggestion button -->
-            <Button
-                android:id="@+id/btnGetSuggestion"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:text="@string/get_vehicle_suggestion"
-                android:textColor="@color/white"
-                android:textSize="16sp"
-                android:fontFamily="@font/poppins_semibold"
-                android:background="@drawable/bg_suggestion_button"
-                android:stateListAnimator="@null"
-                android:layout_marginTop="24dp"
-                android:layout_marginBottom="16dp" />
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/btnQuickTrack"
+                        style="@style/CardViewStyle.Elevated"
+                        android:layout_width="0dp"
+                        android:layout_height="100dp"
+                        android:layout_weight="1"
+                        android:layout_marginHorizontal="8dp"
+                        android:clickable="true"
+                        android:focusable="true">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:orientation="vertical">
+                            <ImageView
+                                android:layout_width="32dp"
+                                android:layout_height="32dp"
+                                android:src="@drawable/ic_track"
+                                app:tint="@color/primary_blue" />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:text="Track"
+                                android:textSize="14sp"
+                                android:textColor="@color/text_primary" />
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
 
-            <!-- Suggested vehicles section -->
-            <TextView
-                android:id="@+id/tvSuggestedVehicles"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/suggested_vehicles"
-                android:textColor="@color/text_primary"
-                android:textSize="16sp"
-                android:fontFamily="@font/poppins_semibold"
-                android:visibility="gone"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="12dp" />
-
-            <!-- Vehicle suggestions RecyclerView -->
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvVehicleSuggestions"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:nestedScrollingEnabled="false"
-                android:visibility="gone"
-                android:layout_marginBottom="16dp" />
-
-            <!-- Loading progress -->
-            <ProgressBar
-                android:id="@+id/progressLoading"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_gravity="center"
-                android:visibility="gone"
-                android:layout_marginTop="24dp"
-                android:layout_marginBottom="24dp" />
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/btnQuickProfile"
+                        style="@style/CardViewStyle.Elevated"
+                        android:layout_width="0dp"
+                        android:layout_height="100dp"
+                        android:layout_weight="1"
+                        android:layout_marginStart="8dp"
+                        android:clickable="true"
+                        android:focusable="true">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:orientation="vertical">
+                            <ImageView
+                                android:layout_width="32dp"
+                                android:layout_height="32dp"
+                                android:src="@drawable/ic_person"
+                                app:tint="@color/primary_blue" />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:text="Profile"
+                                android:textSize="14sp"
+                                android:textColor="@color/text_primary" />
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+                </LinearLayout>
+            </LinearLayout>
 
         </LinearLayout>
-
     </ScrollView>
 
-</LinearLayout>
+    <!-- Bottom Navigation -->
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/white"
+        app:itemIconTint="@color/primary_blue"
+        app:itemTextColor="@color/text_primary"
+        app:menu="@menu/bottom_nav_menu"
+        app:elevation="8dp" />
+
+</RelativeLayout>

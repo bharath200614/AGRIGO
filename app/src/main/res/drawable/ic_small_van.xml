@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <!-- Small compact van with rounded top -->
+    <!-- Body outline -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="@color/primary_blue"
+        android:strokeWidth="1.8"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M2,17 L2,9 C2,7.5 3,7 4,7 L13,7 L17,7 C18,7 19,8 19.5,9 L21,12 L21,17" />
+    <!-- Window divider -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="@color/primary_blue"
+        android:strokeWidth="1.8"
+        android:strokeLineCap="round"
+        android:pathData="M13,7 L13,12" />
+    <!-- Windshield line -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="@color/primary_blue"
+        android:strokeWidth="1.8"
+        android:strokeLineCap="round"
+        android:pathData="M2,12 L21,12" />
+    <!-- Sliding door -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="@color/primary_blue"
+        android:strokeWidth="1.8"
+        android:strokeLineCap="round"
+        android:pathData="M8,12 L8,17" />
+    <!-- Door handle -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="@color/primary_blue"
+        android:strokeWidth="1.8"
+        android:strokeLineCap="round"
+        android:pathData="M9.5,14.5 L11,14.5" />
+    <!-- Left wheel -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="@color/primary_blue"
+        android:strokeWidth="1.8"
+        android:pathData="M6,17 m-2,0 a2,2 0,1,1 4,0 a2,2 0,1,1 -4,0" />
+    <!-- Right wheel -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="@color/primary_blue"
+        android:strokeWidth="1.8"
+        android:pathData="M17,17 m-2,0 a2,2 0,1,1 4,0 a2,2 0,1,1 -4,0" />
+    <!-- Axle -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="@color/primary_blue"
+        android:strokeWidth="1.8"
+        android:strokeLineCap="round"
+        android:pathData="M8,17 L15,17" />
+</vector>

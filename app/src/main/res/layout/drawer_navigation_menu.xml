@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Navigation drawer menu layout -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="280dp"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -8,61 +9,44 @@
     android:fitsSystemWindows="true">
 
     <!-- Drawer header with user info -->
-    <FrameLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="160dp"
-        android:background="@drawable/farm_background_farmer_dashboard">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/farm_background_welcome"
+        android:padding="28dp">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:padding="16dp"
-            android:gravity="center_vertical">
+        <!-- User Avatar (New Generated Icon) -->
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/ivDrawerProfile"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:layout_marginBottom="16dp"
+            android:src="@drawable/profile_avatar"
+            android:scaleType="centerCrop"
+            app:shapeAppearanceOverlay="@style/ShapeAppearance.AgriGo.Circle" />
 
-            <!-- User avatar placeholder -->
-            <FrameLayout
-                android:layout_width="64dp"
-                android:layout_height="64dp"
-                android:background="@drawable/bg_button_white_stroke">
+        <!-- User name with shadow-like feel -->
+        <TextView
+            android:id="@+id/tvDrawerUserName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Farmer Name"
+            android:textColor="@color/text_primary"
+            android:textSize="20sp"
+            android:fontFamily="sans-serif" />
 
-                <TextView
-                    android:id="@+id/tvUserInitial"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:text="F"
-                    android:textColor="@color/green_primary"
-                    android:textSize="28sp"
-                    android:fontFamily="@font/poppins_bold"
-                    android:gravity="center" />
-
-            </FrameLayout>
-
-            <!-- User name -->
-            <TextView
-                android:id="@+id/tvDrawerUserName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Farmer Name"
-                android:textColor="@color/green_primary"
-                android:textSize="16sp"
-                android:fontFamily="@font/poppins_semibold"
-                android:layout_marginTop="12dp" />
-
-            <!-- User phone -->
-            <TextView
-                android:id="@+id/tvDrawerUserPhone"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="9876543210"
-                android:textColor="@color/text_secondary"
-                android:textSize="12sp"
-                android:fontFamily="@font/poppins_regular"
-                android:layout_marginTop="4dp" />
-
-        </LinearLayout>
-
-    </FrameLayout>
+        <!-- User phone with blue tint -->
+        <TextView
+            android:id="@+id/tvDrawerUserPhone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="+91 9876543210"
+            android:textColor="@color/primary_blue"
+            android:textSize="13sp"
+            android:fontFamily="sans-serif"
+            android:layout_marginTop="2dp" />
+    </LinearLayout>
 
     <!-- Menu items -->
     <ScrollView
@@ -74,22 +58,23 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="8dp">
+            android:paddingVertical="8dp">
 
-            <!-- Home menu item -->
+            <!-- Home -->
             <LinearLayout
                 android:id="@+id/menuHome"
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
+                android:layout_height="52dp"
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
-                android:padding="12dp"
+                android:paddingHorizontal="20dp"
                 android:background="?attr/selectableItemBackground">
 
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:src="@drawable/ic_home"
+                    app:tint="@color/primary_blue"
                     android:contentDescription="@string/home" />
 
                 <TextView
@@ -98,26 +83,26 @@
                     android:layout_weight="1"
                     android:text="@string/home"
                     android:textColor="@color/text_primary"
-                    android:textSize="14sp"
-                    android:fontFamily="@font/poppins_regular"
+                    android:textSize="15sp"
+                    android:fontFamily="sans-serif"
                     android:layout_marginStart="16dp" />
-
             </LinearLayout>
 
-            <!-- My Bookings menu item -->
+            <!-- My Bookings -->
             <LinearLayout
                 android:id="@+id/menuBookings"
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
+                android:layout_height="52dp"
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
-                android:padding="12dp"
+                android:paddingHorizontal="20dp"
                 android:background="?attr/selectableItemBackground">
 
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:src="@drawable/ic_bookings"
+                    app:tint="@color/primary_blue"
                     android:contentDescription="@string/my_bookings" />
 
                 <TextView
@@ -126,26 +111,26 @@
                     android:layout_weight="1"
                     android:text="@string/my_bookings"
                     android:textColor="@color/text_primary"
-                    android:textSize="14sp"
-                    android:fontFamily="@font/poppins_regular"
+                    android:textSize="15sp"
+                    android:fontFamily="sans-serif"
                     android:layout_marginStart="16dp" />
-
             </LinearLayout>
 
-            <!-- Track Vehicle menu item -->
+            <!-- Track Vehicle -->
             <LinearLayout
                 android:id="@+id/menuTrack"
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
+                android:layout_height="52dp"
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
-                android:padding="12dp"
+                android:paddingHorizontal="20dp"
                 android:background="?attr/selectableItemBackground">
 
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:src="@drawable/ic_track"
+                    app:tint="@color/primary_blue"
                     android:contentDescription="@string/track_vehicle" />
 
                 <TextView
@@ -154,33 +139,34 @@
                     android:layout_weight="1"
                     android:text="@string/track_vehicle"
                     android:textColor="@color/text_primary"
-                    android:textSize="14sp"
-                    android:fontFamily="@font/poppins_regular"
+                    android:textSize="15sp"
+                    android:fontFamily="sans-serif"
                     android:layout_marginStart="16dp" />
-
             </LinearLayout>
 
             <!-- Divider -->
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/divider_color"
-                android:layout_margin="8dp" />
+                android:background="@color/card_border"
+                android:layout_marginVertical="8dp"
+                android:layout_marginHorizontal="20dp" />
 
-            <!-- Help & Support menu item -->
+            <!-- Help & Support -->
             <LinearLayout
                 android:id="@+id/menuHelp"
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
+                android:layout_height="52dp"
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
-                android:padding="12dp"
+                android:paddingHorizontal="20dp"
                 android:background="?attr/selectableItemBackground">
 
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:src="@drawable/ic_help"
+                    app:tint="@color/text_secondary"
                     android:contentDescription="@string/help_support" />
 
                 <TextView
@@ -189,26 +175,26 @@
                     android:layout_weight="1"
                     android:text="@string/help_support"
                     android:textColor="@color/text_primary"
-                    android:textSize="14sp"
-                    android:fontFamily="@font/poppins_regular"
+                    android:textSize="15sp"
+                    android:fontFamily="sans-serif"
                     android:layout_marginStart="16dp" />
-
             </LinearLayout>
 
-            <!-- Settings menu item -->
+            <!-- Settings -->
             <LinearLayout
                 android:id="@+id/menuSettings"
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
+                android:layout_height="52dp"
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
-                android:padding="12dp"
+                android:paddingHorizontal="20dp"
                 android:background="?attr/selectableItemBackground">
 
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:src="@drawable/ic_settings"
+                    app:tint="@color/text_secondary"
                     android:contentDescription="@string/settings" />
 
                 <TextView
@@ -217,30 +203,33 @@
                     android:layout_weight="1"
                     android:text="@string/settings"
                     android:textColor="@color/text_primary"
-                    android:textSize="14sp"
-                    android:fontFamily="@font/poppins_regular"
+                    android:textSize="15sp"
+                    android:fontFamily="sans-serif"
                     android:layout_marginStart="16dp" />
-
             </LinearLayout>
-
         </LinearLayout>
-
     </ScrollView>
 
-    <!-- Logout button at bottom -->
+    <!-- Logout at bottom -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/card_border" />
+
     <LinearLayout
         android:id="@+id/menuLogout"
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:padding="12dp"
+        android:paddingHorizontal="20dp"
         android:background="?attr/selectableItemBackground">
 
         <ImageView
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:src="@drawable/ic_logout"
+            app:tint="@color/button_danger"
             android:contentDescription="@string/logout" />
 
         <TextView
@@ -248,11 +237,10 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/logout"
-            android:textColor="@color/red_error"
-            android:textSize="14sp"
-            android:fontFamily="@font/poppins_regular"
+            android:textColor="@color/button_danger"
+            android:textSize="15sp"
+            android:fontFamily="sans-serif"
             android:layout_marginStart="16dp" />
-
     </LinearLayout>
 
 </LinearLayout>

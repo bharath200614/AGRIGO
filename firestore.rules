@@ -1,0 +1,83 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ============================================================
+    // TEMPORARY: Open access for testing/development
+    // REMOVE this block before production deployment!
+    // ============================================================
+    match /{document=**} {
+      allow read, write: if true;
+    }
+
+    // ============================================================
+    // PRODUCTION RULES (uncomment when going to production)
+    // ============================================================
+    
+    // --- Users collection ---
+    // match /users/{userId} {
+    //   allow read: if request.auth != null;
+    //   allow write: if request.auth != null && request.auth.uid == userId;
+    // }
+
+    // --- Transport Requests ---
+    // match /transport_requests/{requestId} {
+    //   allow read: if request.auth != null;
+    //   allow create: if request.auth != null;
+    //   allow update: if request.auth != null;
+    //   allow delete: if request.auth != null;
+    // }
+
+    // --- Machinery Bookings ---
+    // match /machinery_bookings/{bookingId} {
+    //   allow read: if request.auth != null;
+    //   allow create: if request.auth != null;
+    //   allow update: if request.auth != null;
+    //   allow delete: if request.auth != null;
+    // }
+
+    // --- Labor Bookings ---
+    // match /labor_bookings/{bookingId} {
+    //   allow read: if request.auth != null;
+    //   allow create: if request.auth != null;
+    //   allow update: if request.auth != null;
+    //   allow delete: if request.auth != null;
+    // }
+
+    // --- Drivers ---
+    // match /drivers/{driverId} {
+    //   allow read: if request.auth != null;
+    //   allow write: if request.auth != null;
+    // }
+
+    // --- Machinery Providers ---
+    // match /machinery_providers/{providerId} {
+    //   allow read: if request.auth != null;
+    //   allow write: if request.auth != null;
+    // }
+
+    // --- Labor Workers ---
+    // match /labor_workers/{workerId} {
+    //   allow read: if request.auth != null;
+    //   allow write: if request.auth != null;
+    // }
+
+    // --- Bookings (legacy) ---
+    // match /bookings/{bookingId} {
+    //   allow read: if request.auth != null;
+    //   allow write: if request.auth != null;
+    // }
+
+    // --- Notifications ---
+    // match /notifications/{notificationId} {
+    //   allow read: if request.auth != null;
+    //   allow create: if request.auth != null;
+    // }
+
+    // --- Transport History (for ML model training data) ---
+    // match /transport_history/{historyId} {
+    //   allow read: if request.auth != null;
+    //   allow write: if request.auth != null;
+    // }
+  }
+}

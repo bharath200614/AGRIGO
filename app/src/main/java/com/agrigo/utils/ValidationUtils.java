@@ -110,14 +110,14 @@ public class ValidationUtils {
     /**
      * Validate all login fields
      */
-    public static boolean isValidLoginInput(String phone, String password) {
-        return isValidPhone(phone) && isValidPassword(password);
+    public static boolean isValidLoginInput(String email, String password) {
+        return isValidEmail(email) && isValidPassword(password);
     }
 
     /**
      * Validate all registration fields
      */
-    public static boolean isValidRegistrationInput(String name, String phone, String password) {
-        return isValidName(name) && isValidPhone(phone) && isValidPassword(password);
+    public static boolean isValidRegistrationInput(String name, String email, String password) {
+        return isValidName(name) && isValidEmail(email) && isValidPassword(password);
     }
 }

@@ -1,320 +1,346 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@drawable/farm_background_register"
-    android:paddingTop="16dp"
-    android:paddingBottom="16dp"
-    android:fitsSystemWindows="true">
-
-    <!-- Gradient Overlay -->
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/white"
-        android:alpha="0.94" />
+    android:background="@color/white">
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scrollbars="none">
+        android:scrollbars="none"
+        android:fitsSystemWindows="true">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:paddingHorizontal="24dp"
-            android:paddingTop="30dp"
-            android:paddingBottom="30dp"
-            android:gravity="center_horizontal">
+            android:paddingTop="20dp"
+            android:paddingBottom="32dp">
 
-            <!-- Back Button -->
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:layout_marginBottom="20dp">
+            <!-- Back Arrow -->
+            <ImageView
+                android:id="@+id/iv_register_logo"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:layout_marginBottom="28dp"
+                android:src="@drawable/ic_back_arrow"
+                android:scaleType="centerInside"
+                android:padding="8dp"
+                android:background="@drawable/bg_icon_circle_blue"
+                android:contentDescription="Back" />
 
-                <ImageButton
-                    android:id="@+id/btn_back"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_gravity="start|center_vertical"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:src="@drawable/ic_back_arrow"
-                    android:contentDescription="@string/back_button"
-                    android:scaleType="centerInside"
-                    app:tint="@color/primary_green" />
-
-            </FrameLayout>
-
-            <!-- Registration Header -->
+            <!-- Header -->
             <TextView
                 android:id="@+id/tv_register_title"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/register_title"
-                style="@style/TextStyle.Heading1"
-                android:gravity="start"
-                android:layout_marginBottom="8dp" />
+                android:text="Select Your Role"
+                android:textSize="28sp"
+                android:textColor="@color/text_primary"
+                android:fontFamily="sans-serif"
+                android:layout_marginBottom="6dp" />
 
             <TextView
                 android:id="@+id/tv_register_subtitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/register_subtitle"
-                style="@style/TextStyle.Body2"
-                android:gravity="start"
-                android:layout_marginBottom="40dp"
-                android:textColor="@color/text_secondary" />
+                android:text="Choose how you want to use AgriGo"
+                android:textSize="@dimen/text_size_body2"
+                android:textColor="@color/text_secondary"
+                android:fontFamily="sans-serif"
+                android:layout_marginBottom="32dp" />
 
-            <!-- Full Name Input -->
-            <LinearLayout
+            <!-- Role Cards (Reference Match) -->
+            <RadioGroup
+                android:id="@+id/rg_role"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_marginBottom="20dp">
+                android:layout_marginBottom="32dp">
 
-                <TextView
+                <!-- Farmer Role Card -->
+                <RadioButton
+                    android:id="@+id/rb_farmer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/full_name"
-                    style="@style/TextStyle.Body1"
-                    android:textStyle="bold"
-                    android:layout_marginBottom="8dp"
-                    android:textColor="@color/text_primary" />
+                    android:button="@null"
+                    android:checked="true"
+                    android:background="@drawable/bg_role_card_selector"
+                    android:padding="20dp"
+                    android:layout_marginBottom="12dp"
+                    android:text="🌾  Farmer\nManage your crops and transport"
+                    android:textSize="16sp"
+                    android:textColor="@color/text_primary"
+                    android:fontFamily="sans-serif"
+                    android:drawableEnd="@drawable/ic_check_circle"
+                    android:drawableTint="@color/primary_blue"
+                    android:elevation="0dp" />
 
-                <EditText
+                <!-- Driver Role Card -->
+                <RadioButton
+                    android:id="@+id/rb_driver"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:button="@null"
+                    android:background="@drawable/bg_role_card_selector"
+                    android:padding="20dp"
+                    android:layout_marginBottom="12dp"
+                    android:text="🚛  Vehicle Driver\nFind transport requests"
+                    android:textSize="16sp"
+                    android:textColor="@color/text_primary"
+                    android:fontFamily="sans-serif"
+                    android:drawableEnd="@drawable/ic_check_circle"
+                    android:drawableTint="@color/primary_blue"
+                    android:elevation="0dp" />
+
+                <!-- Labour Role Card -->
+                <RadioButton
+                    android:id="@+id/rb_labor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:button="@null"
+                    android:background="@drawable/bg_role_card_selector"
+                    android:padding="20dp"
+                    android:layout_marginBottom="12dp"
+                    android:text="👷  Labour\nFind daily farm work"
+                    android:textSize="16sp"
+                    android:textColor="@color/text_primary"
+                    android:fontFamily="sans-serif"
+                    android:drawableEnd="@drawable/ic_check_circle"
+                    android:drawableTint="@color/primary_blue"
+                    android:elevation="0dp" />
+
+                <!-- Machinery Provider Role Card -->
+                <RadioButton
+                    android:id="@+id/rb_machinery"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:button="@null"
+                    android:background="@drawable/bg_role_card_selector"
+                    android:padding="20dp"
+                    android:text="🚜  Machinery Provider\nRent out your heavy equipment"
+                    android:textSize="16sp"
+                    android:textColor="@color/text_primary"
+                    android:fontFamily="sans-serif"
+                    android:drawableEnd="@drawable/ic_check_circle"
+                    android:drawableTint="@color/primary_blue"
+                    android:elevation="0dp" />
+            </RadioGroup>
+
+            <!-- Machinery Provider Extras -->
+            <LinearLayout
+                android:id="@+id/layout_machinery_extras"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone"
+                android:layout_marginBottom="16dp">
+
+                <!-- Phone Input -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    android:hint="Phone Number"
+                    app:boxCornerRadiusTopStart="12dp"
+                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusBottomStart="12dp"
+                    app:boxCornerRadiusBottomEnd="12dp"
+                    app:boxStrokeColor="@color/primary_blue"
+                    app:boxStrokeWidth="1dp"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_phone"
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:paddingStart="16dp"
+                        android:inputType="phone"
+                        android:fontFamily="sans-serif"
+                        android:textSize="16sp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Machinery Type Spinner -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Machinery Type"
+                    android:textSize="13sp"
+                    android:textColor="@color/text_secondary"
+                    android:layout_marginBottom="4dp" />
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="0dp"
+                    app:cardBackgroundColor="@color/gray_very_light">
+
+                    <Spinner
+                        android:id="@+id/spinner_machinery_type"
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:paddingHorizontal="12dp"
+                        android:background="@android:color/transparent"
+                        android:spinnerMode="dropdown" />
+                </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
+
+            <!-- Driver Extras -->
+            <LinearLayout
+                android:id="@+id/layout_driver_extras"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone"
+                android:layout_marginBottom="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Vehicle Type"
+                    android:textSize="13sp"
+                    android:textColor="@color/text_secondary"
+                    android:layout_marginBottom="4dp" />
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="0dp"
+                    app:cardBackgroundColor="@color/gray_very_light">
+
+                    <Spinner
+                        android:id="@+id/spinner_vehicle_type"
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:paddingHorizontal="12dp"
+                        android:background="@android:color/transparent"
+                        android:spinnerMode="dropdown" />
+                </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
+
+            <!-- Labor Worker Extras -->
+            <LinearLayout
+                android:id="@+id/layout_labor_extras"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone"
+                android:layout_marginBottom="16dp">
+
+                <!-- Work Type Spinner -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Work Type"
+                    android:textSize="13sp"
+                    android:textColor="@color/text_secondary"
+                    android:layout_marginBottom="4dp" />
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="0dp"
+                    app:cardBackgroundColor="@color/gray_very_light">
+
+                    <Spinner
+                        android:id="@+id/spinner_work_type"
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:paddingHorizontal="12dp"
+                        android:background="@android:color/transparent"
+                        android:spinnerMode="dropdown" />
+                </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
+            <!-- Registration Inputs -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:hint="Full Name"
+                app:boxCornerRadiusTopStart="12dp"
+                app:boxCornerRadiusTopEnd="12dp"
+                app:boxCornerRadiusBottomStart="12dp"
+                app:boxCornerRadiusBottomEnd="12dp"
+                app:boxStrokeColor="@color/primary_blue"
+                app:boxStrokeWidth="1dp"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_full_name"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/button_height"
-                    android:inputType="text"
-                    android:hint="@string/name_hint"
-                    android:background="@drawable/bg_input_field"
-                    android:paddingHorizontal="16dp"
-                    android:fontFamily="@font/poppins_regular"
-                    android:textSize="@dimen/text_size_body1"
-                    android:textColor="@color/text_primary"
-                    android:textColorHint="@color/text_hint" />
+                    android:layout_height="60dp"
+                    android:paddingStart="16dp"
+                    android:inputType="textPersonName"
+                    android:fontFamily="sans-serif"
+                    android:textSize="16sp" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-                <TextView
-                    android:id="@+id/tv_name_error"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/status_cancelled"
-                    android:textSize="@dimen/text_size_caption"
-                    android:layout_marginTop="4dp"
-                    android:visibility="gone" />
-
-            </LinearLayout>
-
-            <!-- Phone Number Input -->
-            <LinearLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginBottom="20dp">
+                android:layout_marginBottom="16dp"
+                android:hint="@string/email_address"
+                app:boxCornerRadiusTopStart="12dp"
+                app:boxCornerRadiusTopEnd="12dp"
+                app:boxCornerRadiusBottomStart="12dp"
+                app:boxCornerRadiusBottomEnd="12dp"
+                app:boxStrokeColor="@color/primary_blue"
+                app:boxStrokeWidth="1dp"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
-                <TextView
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_email"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/phone_number"
-                    style="@style/TextStyle.Body1"
-                    android:textStyle="bold"
-                    android:layout_marginBottom="8dp"
-                    android:textColor="@color/text_primary" />
+                    android:layout_height="60dp"
+                    android:paddingStart="16dp"
+                    android:inputType="textEmailAddress"
+                    android:fontFamily="sans-serif"
+                    android:textSize="16sp" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-                <EditText
-                    android:id="@+id/et_phone"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/button_height"
-                    android:inputType="phone"
-                    android:hint="@string/phone_hint"
-                    android:background="@drawable/bg_input_field"
-                    android:paddingHorizontal="16dp"
-                    android:fontFamily="@font/poppins_regular"
-                    android:textSize="@dimen/text_size_body1"
-                    android:textColor="@color/text_primary"
-                    android:textColorHint="@color/text_hint" />
-
-                <TextView
-                    android:id="@+id/tv_phone_error"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/status_cancelled"
-                    android:textSize="@dimen/text_size_caption"
-                    android:layout_marginTop="4dp"
-                    android:visibility="gone" />
-
-            </LinearLayout>
-
-            <!-- Password Input -->
-            <LinearLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginBottom="20dp">
+                android:layout_marginBottom="32dp"
+                android:hint="Password"
+                app:boxCornerRadiusTopStart="12dp"
+                app:boxCornerRadiusTopEnd="12dp"
+                app:boxCornerRadiusBottomStart="12dp"
+                app:boxCornerRadiusBottomEnd="12dp"
+                app:boxStrokeColor="@color/primary_blue"
+                app:boxStrokeWidth="1dp"
+                app:passwordToggleEnabled="true"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
-                <TextView
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_password"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/password"
-                    style="@style/TextStyle.Body1"
-                    android:textStyle="bold"
-                    android:layout_marginBottom="8dp"
-                    android:textColor="@color/text_primary" />
-
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/button_height">
-
-                    <EditText
-                        android:id="@+id/et_password"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:inputType="textPassword"
-                        android:hint="@string/password_hint"
-                        android:background="@drawable/bg_input_field"
-                        android:paddingHorizontal="16dp"
-                        android:paddingEnd="48dp"
-                        android:fontFamily="@font/poppins_regular"
-                        android:textSize="@dimen/text_size_body1"
-                        android:textColor="@color/text_primary"
-                        android:textColorHint="@color/text_hint" />
-
-                    <ImageButton
-                        android:id="@+id/btn_toggle_password"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:layout_gravity="end|center_vertical"
-                        android:background="@android:color/transparent"
-                        android:src="@drawable/ic_eye_hidden"
-                        android:contentDescription="@string/toggle_password"
-                        android:scaleType="centerInside"
-                        app:tint="@color/text_secondary" />
-
-                </FrameLayout>
-
-                <TextView
-                    android:id="@+id/tv_password_error"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/status_cancelled"
-                    android:textSize="@dimen/text_size_caption"
-                    android:layout_marginTop="4dp"
-                    android:visibility="gone" />
-
-            </LinearLayout>
-
-            <!-- Role Selection -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginBottom="30dp">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/role_selection"
-                    style="@style/TextStyle.Body1"
-                    android:textStyle="bold"
-                    android:layout_marginBottom="12dp"
-                    android:textColor="@color/text_primary" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center"
-                    android:spacing="12dp">
-
-                    <!-- Farmer Role -->
-                    <FrameLayout
-                        android:layout_width="0dp"
-                        android:layout_height="120dp"
-                        android:layout_weight="1"
-                        android:id="@+id/role_farmer_container"
-                        android:background="@drawable/bg_role_card_selected">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="vertical"
-                            android:gravity="center"
-                            android:padding="12dp">
-
-                            <ImageView
-                                android:layout_width="48dp"
-                                android:layout_height="48dp"
-                                android:src="@drawable/ic_farmer_role"
-                                android:contentDescription="@string/role_farmer"
-                                android:layout_marginBottom="8dp"
-                                android:scaleType="centerInside" />
-
-                            <TextView
-                                android:id="@+id/tv_role_farmer"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/role_farmer"
-                                android:textSize="@dimen/text_size_body2"
-                                android:fontFamily="@font/poppins_semibold"
-                                android:textColor="@color/white" />
-
-                        </LinearLayout>
-
-                    </FrameLayout>
-
-                    <!-- Driver Role -->
-                    <FrameLayout
-                        android:layout_width="0dp"
-                        android:layout_height="120dp"
-                        android:layout_weight="1"
-                        android:id="@+id/role_driver_container"
-                        android:background="@drawable/bg_role_card_unselected">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="vertical"
-                            android:gravity="center"
-                            android:padding="12dp">
-
-                            <ImageView
-                                android:layout_width="48dp"
-                                android:layout_height="48dp"
-                                android:src="@drawable/ic_driver_role"
-                                android:contentDescription="@string/role_driver"
-                                android:layout_marginBottom="8dp"
-                                android:scaleType="centerInside" />
-
-                            <TextView
-                                android:id="@+id/tv_role_driver"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/role_driver"
-                                android:textSize="@dimen/text_size_body2"
-                                android:fontFamily="@font/poppins_semibold"
-                                android:textColor="@color/gray_medium" />
-
-                        </LinearLayout>
-
-                    </FrameLayout>
-
-                </LinearLayout>
-
-            </LinearLayout>
+                    android:layout_height="60dp"
+                    android:paddingStart="16dp"
+                    android:inputType="textPassword"
+                    android:fontFamily="sans-serif"
+                    android:textSize="16sp" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <!-- Register Button -->
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_register_account"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/button_height"
-                android:text="@string/register_account"
-                android:background="@drawable/bg_button_green_ripple"
+                android:text="Create Account"
+                app:icon="@drawable/ic_person"
+                app:iconGravity="textStart"
+                android:background="@drawable/bg_button_blue_ripple"
                 android:textColor="@color/white"
-                android:fontFamily="@font/poppins_semibold"
+                android:fontFamily="sans-serif"
                 android:textSize="@dimen/text_size_body1"
                 android:textAllCaps="false"
                 android:elevation="4dp"
@@ -325,7 +351,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:layout_marginTop="20dp">
+                android:layout_marginTop="8dp">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -333,7 +359,7 @@
                     android:text="@string/have_account"
                     android:textSize="@dimen/text_size_body2"
                     android:textColor="@color/text_secondary"
-                    android:fontFamily="@font/poppins_regular"
+                    android:fontFamily="sans-serif"
                     android:layout_marginEnd="4dp" />
 
                 <TextView
@@ -341,12 +367,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/login_here"
-                    android:textColor="@color/primary_green"
+                    android:textColor="@color/primary_blue"
                     android:textSize="@dimen/text_size_body2"
-                    android:fontFamily="@font/poppins_semibold"
+                    android:fontFamily="sans-serif"
                     android:background="?attr/selectableItemBackground"
                     android:paddingHorizontal="4dp" />
-
             </LinearLayout>
 
             <!-- Error Message -->
@@ -355,15 +380,23 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:visibility="gone"
-                android:textColor="@color/status_cancelled"
+                android:textColor="@color/button_danger"
                 android:textSize="@dimen/text_size_body2"
                 android:gravity="center"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="16dp"
                 android:padding="12dp"
                 android:background="@drawable/bg_error_message" />
 
         </LinearLayout>
-
     </ScrollView>
 
-</LinearLayout>
+    <!-- Progress Bar -->
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        android:indeterminateTint="@color/primary_blue" />
+
+</FrameLayout>

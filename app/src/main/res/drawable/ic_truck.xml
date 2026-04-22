@@ -1,11 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:width="48dp"
-    android:height="48dp"
-    android:viewportWidth="48"
-    android:viewportHeight="48">
-    <!-- Simple truck icon -->
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <!-- Medium transport truck with enclosed cargo -->
+    <!-- Enclosed cargo box -->
     <path
-        android:fillColor="#4CAF50"
-        android:pathData="M4,4 L44,4 L44,44 L4,44 Z" />
+        android:fillColor="#00000000"
+        android:strokeColor="@color/primary_blue"
+        android:strokeWidth="1.8"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M1,17 L1,6 L13,6 L13,17" />
+    <!-- Cargo box vertical ribs -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="@color/primary_blue"
+        android:strokeWidth="1.2"
+        android:strokeLineCap="round"
+        android:pathData="M5,6 L5,17" />
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="@color/primary_blue"
+        android:strokeWidth="1.2"
+        android:strokeLineCap="round"
+        android:pathData="M9,6 L9,17" />
+    <!-- Cabin -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="@color/primary_blue"
+        android:strokeWidth="1.8"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M13,17 L13,10 L17,10 L20,13 L20,17" />
+    <!-- Windshield -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="@color/primary_blue"
+        android:strokeWidth="1.8"
+        android:strokeLineCap="round"
+        android:pathData="M16,10 L18.5,10 L20,13" />
+    <!-- Left wheel -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="@color/primary_blue"
+        android:strokeWidth="1.8"
+        android:pathData="M5,17 m-2,0 a2,2 0,1,1 4,0 a2,2 0,1,1 -4,0" />
+    <!-- Right wheel -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="@color/primary_blue"
+        android:strokeWidth="1.8"
+        android:pathData="M17,17 m-2,0 a2,2 0,1,1 4,0 a2,2 0,1,1 -4,0" />
+    <!-- Axle -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="@color/primary_blue"
+        android:strokeWidth="1.8"
+        android:strokeLineCap="round"
+        android:pathData="M7,17 L15,17" />
+    <!-- Bumper -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="@color/primary_blue"
+        android:strokeWidth="1.8"
+        android:strokeLineCap="round"
+        android:pathData="M20,15 L22,15" />
 </vector>

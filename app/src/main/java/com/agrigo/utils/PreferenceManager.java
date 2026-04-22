@@ -15,6 +15,7 @@ public class PreferenceManager {
     private static final String KEY_USER_ROLE = "user_role";
     private static final String KEY_IS_LOGGED_IN = "is_logged_in";
     private static final String KEY_USER_TOKEN = "user_token";
+    private static final String KEY_VEHICLE_TYPE = "vehicle_type";
 
     private SharedPreferences sharedPreferences;
 
@@ -74,6 +75,15 @@ public class PreferenceManager {
 
     public String getUserToken() {
         return sharedPreferences.getString(KEY_USER_TOKEN, "");
+    }
+
+    // Vehicle Type
+    public void setVehicleType(String vehicleType) {
+        sharedPreferences.edit().putString(KEY_VEHICLE_TYPE, vehicleType).apply();
+    }
+
+    public String getVehicleType() {
+        return sharedPreferences.getString(KEY_VEHICLE_TYPE, "");
     }
 
     // Clear all preferences

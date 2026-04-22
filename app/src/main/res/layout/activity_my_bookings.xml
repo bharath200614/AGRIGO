@@ -1,106 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- My Bookings screen layout -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/white"
+    android:background="@color/background_screen"
     android:fitsSystemWindows="true">
 
-    <!-- Top header -->
-    <FrameLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="140dp"
-        android:background="@drawable/farm_background_farmer_dashboard">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_above="@id/bottomNavigation">
 
+        <!-- Top Header -->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:padding="20dp"
-            android:gravity="center_vertical">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="24dp"
+            android:paddingTop="32dp"
+            android:paddingBottom="24dp"
+            android:background="@color/white">
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
+                android:layout_weight="1"
+                android:orientation="vertical">
 
-                <!-- Back button -->
-                <ImageButton
-                    android:id="@+id/btnBack"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:background="@drawable/bg_button_white_stroke"
-                    android:src="@drawable/ic_back_arrow"
-                    android:scaleType="centerInside"
-                    android:contentDescription="@string/back_button" />
-
-                <LinearLayout
-                    android:layout_width="0dp"
+                <TextView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:layout_marginStart="16dp">
+                    android:text="My Bookings"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/text_primary"
+                    android:fontFamily="sans-serif" />
 
-                    <TextView
-                        android:id="@+id/tvGreeting"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/my_bookings"
-                        android:textColor="@color/green_dark"
-                        android:textSize="14sp"
-                        android:fontFamily="@font/poppins_regular" />
-
-                    <TextView
-                        android:id="@+id/tvFarmerName"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Your Bookings"
-                        android:textColor="@color/green_primary"
-                        android:textSize="20sp"
-                        android:fontFamily="@font/poppins_bold"
-                        android:layout_marginTop="4dp" />
-
-                </LinearLayout>
-
-                <!-- Menu button -->
-                <ImageButton
-                    android:id="@+id/btnMenu"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:background="@drawable/bg_button_white_stroke"
-                    android:src="@drawable/ic_menu"
-                    android:scaleType="centerInside"
-                    android:contentDescription="@string/menu" />
-
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Active Jobs &amp; History"
+                    android:textSize="14sp"
+                    android:textColor="@color/text_secondary"
+                    android:fontFamily="sans-serif"
+                    android:layout_marginTop="2dp" />
             </LinearLayout>
 
         </LinearLayout>
+        
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    </FrameLayout>
+            <!-- Bookings RecyclerView -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvBookings"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingTop="16dp"
+                android:clipToPadding="false"
+                android:visibility="gone" />
 
-    <!-- No bookings message -->
-    <TextView
-        android:id="@+id/tvNoBookings"
+            <!-- Included States -->
+            <include
+                android:id="@+id/layoutEmptyState"
+                layout="@layout/layout_empty"
+                android:visibility="gone" />
+
+            <include
+                android:id="@+id/layoutLoadingState"
+                layout="@layout/layout_loading"
+                android:visibility="visible" />
+                
+        </FrameLayout>
+    </LinearLayout>
+
+    <!-- Bottom Navigation -->
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigation"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:text="@string/no_bookings_yet"
-        android:textColor="@color/text_secondary"
-        android:textSize="16sp"
-        android:fontFamily="@font/poppins_regular"
-        android:gravity="center"
-        android:visibility="gone" />
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/white"
+        app:itemIconTint="@color/primary_blue"
+        app:itemTextColor="@color/text_primary"
+        app:menu="@menu/bottom_nav_menu"
+        app:elevation="8dp" />
 
-    <!-- Bookings RecyclerView -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvBookings"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:padding="16dp"
-        android:clipToPadding="false"
-        android:visibility="visible" />
-
-</LinearLayout>
+</RelativeLayout>

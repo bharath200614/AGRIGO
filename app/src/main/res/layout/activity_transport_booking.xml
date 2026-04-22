@@ -1,0 +1,654 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".activities.TransportBookingActivity">
+
+    <!-- Top Action Bar -->
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        app:elevation="4dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="20dp"
+            android:paddingVertical="16dp">
+
+            <ImageView
+                android:id="@+id/btnBack"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:background="@drawable/bg_icon_circle_green"
+                android:src="@drawable/ic_back_arrow"
+                app:tint="#16A34A"
+                android:scaleType="centerInside"
+                android:padding="12dp"
+                android:clickable="true"
+                android:focusable="true"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Transport Booking"
+                android:textColor="@color/text_primary"
+                android:textSize="20sp"
+                android:fontFamily="sans-serif"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:layout_marginEnd="44dp"/>
+        </LinearLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <!-- Map Background -->
+    <fragment
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="76dp"
+        android:layout_marginBottom="460dp" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabMyLocation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|end"
+        android:layout_marginTop="90dp"
+        android:layout_marginEnd="16dp"
+        android:src="@drawable/ic_location"
+        app:backgroundTint="@color/white"
+        app:tint="#16A34A"
+        app:fabSize="normal"
+        app:elevation="4dp"
+        android:visibility="visible" />
+
+    <!-- Bottom Sheet Container -->
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/bottomSheet"
+        android:layout_width="match_parent"
+        android:layout_height="480dp"
+        android:layout_gravity="bottom"
+        android:background="@drawable/bg_bottom_sheet"
+        android:elevation="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <!-- Drag Handle -->
+            <View
+                android:layout_width="40dp"
+                android:layout_height="4dp"
+                android:background="@color/card_border"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="12dp" />
+
+            <!-- FrameLayout to swap between Form, Dispatching, and Accepted states -->
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <!-- 1. Booking Form -->
+                <LinearLayout
+                    android:id="@+id/layoutBookingForm"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <!-- ===== Crop Type Spinner (VISIBLE) ===== -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Select Crop Type"
+                        android:textSize="13sp"
+                        android:textColor="@color/text_secondary"
+                        android:fontFamily="sans-serif"
+                        android:layout_marginBottom="4dp" />
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        app:cardCornerRadius="12dp"
+                        app:cardElevation="0dp"
+                        app:cardBackgroundColor="@color/gray_very_light"
+                        app:strokeWidth="0dp">
+
+                        <Spinner
+                            android:id="@+id/spinnerCropType"
+                            android:layout_width="match_parent"
+                            android:layout_height="48dp"
+                            android:paddingHorizontal="12dp"
+                            android:background="@android:color/transparent"
+                            android:spinnerMode="dropdown" />
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <!-- Location Label (Pickup Location) -->
+                    <TextView
+                        android:id="@+id/tvPickupAddress"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Pickup: My Current Location"
+                        android:textSize="14sp"
+                        android:textColor="#2E7D32"
+                        android:textStyle="bold"
+                        android:background="@drawable/bg_card_green_tint"
+                        android:backgroundTint="#E8F5E9"
+                        android:paddingHorizontal="16dp"
+                        android:paddingVertical="10dp"
+                        android:layout_marginBottom="10dp"
+                        app:drawableStartCompat="@drawable/ic_location"
+                        app:drawableTint="#2E7D32"
+                        android:drawablePadding="8dp" />
+
+                    <!-- ===== Weight Input ===== -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        app:boxCornerRadiusTopStart="12dp"
+                        app:boxCornerRadiusTopEnd="12dp"
+                        app:boxCornerRadiusBottomStart="12dp"
+                        app:boxCornerRadiusBottomEnd="12dp"
+                        app:boxBackgroundColor="@color/gray_very_light"
+                        app:boxStrokeWidth="0dp"
+                        app:suffixText="KG"
+                        app:hintEnabled="false">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etTransportWeight"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Crop Weight"
+                            android:inputType="numberDecimal"
+                            android:paddingTop="14dp"
+                            android:paddingBottom="14dp"
+                            android:textSize="15sp"
+                            android:textColor="@color/text_primary" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <!-- ===== Predict Vehicle Button ===== -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnPredictVehicle"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:text="🤖  Predict Vehicle (ML)"
+                        android:textSize="15sp"
+                        android:textAllCaps="false"
+                        app:cornerRadius="12dp"
+                        android:backgroundTint="#16A34A"
+                        android:textColor="@color/white"
+                        app:icon="@drawable/ic_search"
+                        app:iconTint="@color/white"
+                        app:iconGravity="textStart"
+                        android:layout_marginBottom="10dp" />
+
+                    <!-- ===== ML Prediction Result ===== -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/cardMLResult"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        app:cardCornerRadius="12dp"
+                        app:cardElevation="2dp"
+                        app:cardBackgroundColor="#F0FDF4"
+                        app:strokeColor="#16A34A"
+                        app:strokeWidth="1dp"
+                        android:visibility="gone">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:padding="14dp">
+
+                            <ImageView
+                                android:id="@+id/ivMLVehicleIcon"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:src="@drawable/ic_truck"
+                                app:tint="#16A34A"
+                                android:padding="4dp"/>
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical"
+                                android:layout_marginStart="12dp">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="ML Predicted Vehicle"
+                                    android:textSize="11sp"
+                                    android:textColor="@color/text_secondary"
+                                    android:fontFamily="sans-serif" />
+
+                                <TextView
+                                    android:id="@+id/tvMLPredictedVehicle"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="--"
+                                    android:textSize="17sp"
+                                    android:textColor="#16A34A"
+                                    android:textStyle="bold"
+                                    android:layout_marginTop="2dp" />
+
+                                <TextView
+                                    android:id="@+id/tvMLEstimatedFare"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Est. Fare: ₹--"
+                                    android:textSize="13sp"
+                                    android:textColor="#2E7D32"
+                                    android:textStyle="bold"
+                                    android:visibility="gone"
+                                    android:layout_marginTop="2dp" />
+                            </LinearLayout>
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <!-- ===== Destination Search ===== -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:background="@drawable/bg_search_bar"
+                        android:gravity="center_vertical"
+                        android:paddingHorizontal="16dp"
+                        android:paddingVertical="10dp"
+                        android:layout_marginBottom="4dp">
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/ic_search"
+                            app:tint="@color/text_secondary" />
+
+                        <EditText
+                            android:id="@+id/etDestSearch"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginStart="12dp"
+                            android:background="@null"
+                            android:hint="Search Market or Drop Location"
+                            android:textSize="15sp"
+                            android:textColor="@color/text_primary"
+                            android:textColorHint="@color/text_hint"
+                            android:imeOptions="actionSearch"
+                            android:inputType="text" />
+
+                        <ImageView
+                            android:id="@+id/btnLocateMeInsideSearch"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/ic_location"
+                            app:tint="#16A34A"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:clickable="true"
+                            android:focusable="true"/>
+                    </LinearLayout>
+
+                    <!-- Suggested Markets RecyclerView -->
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvSuggestedMarkets"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:overScrollMode="never"
+                        android:visibility="gone"
+                        android:nestedScrollingEnabled="false" />
+
+                    <!-- Distance and Price Info -->
+                    <LinearLayout
+                        android:id="@+id/layoutDistancePrice"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:background="@drawable/bg_card_green_tint"
+                        android:padding="14dp"
+                        android:layout_marginBottom="10dp"
+                        android:visibility="gone">
+
+                        <!-- Distance block -->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical">
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:src="@drawable/ic_track"
+                                app:tint="#16A34A"
+                                android:layout_marginEnd="8dp"/>
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Distance"
+                                    android:textSize="12sp"
+                                    android:textColor="@color/text_secondary"/>
+                                <TextView
+                                    android:id="@+id/tvDistance"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="0 km"
+                                    android:textSize="16sp"
+                                    android:textColor="@color/primary_blue"
+                                    android:textStyle="bold"/>
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <!-- Divider -->
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:background="@color/primary_blue_light"
+                            android:layout_marginHorizontal="16dp"
+                            android:alpha="0.5"/>
+
+                        <!-- Price block -->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical">
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:src="@drawable/ic_machine"
+                                app:tint="#4CAF50"
+                                android:layout_marginEnd="8dp"/>
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Est. Price"
+                                    android:textSize="12sp"
+                                    android:textColor="@color/text_secondary"/>
+                                <TextView
+                                    android:id="@+id/tvEstimatedPrice"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="₹0"
+                                    android:textSize="16sp"
+                                    android:textColor="#4CAF50"
+                                    android:textStyle="bold"/>
+                            </LinearLayout>
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <!-- Vehicle Type Suggestion Row -->
+                    <LinearLayout
+                        android:id="@+id/layoutVehicleType"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:background="@drawable/bg_vehicle_type_row"
+                        android:padding="12dp"
+                        android:layout_marginBottom="14dp"
+                        android:gravity="center_vertical"
+                        android:visibility="gone">
+
+                        <ImageView
+                            android:id="@+id/ivVehicleIcon"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:src="@drawable/ic_truck"
+                            app:tint="#16A34A"
+                            android:padding="4dp"/>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:layout_marginStart="12dp">
+
+                            <TextView
+                                android:id="@+id/tvVehicleType"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Mini Truck"
+                                android:textColor="@color/text_primary"
+                                android:textSize="16sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/tvVehicleCapacity"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Up to 1000 kg"
+                                android:textColor="@color/text_secondary"
+                                android:textSize="13sp"
+                                android:layout_marginTop="2dp"/>
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/tvEstimatedTime"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="15 min away"
+                            android:textColor="@color/text_secondary"
+                            android:textSize="12sp" />
+
+                    </LinearLayout>
+
+                    <!-- Confirm Button -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnConfirmTransport"
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:text="@string/confirm_ready"
+                        android:textSize="16sp"
+                        app:cornerRadius="14dp"
+                        android:backgroundTint="#16A34A"
+                        android:enabled="false" />
+                </LinearLayout>
+
+                <!-- 2. Dispatching Mode (Requesting Drivers) -->
+                <LinearLayout
+                    android:id="@+id/layoutDispatching"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:paddingTop="32dp"
+                    android:paddingBottom="16dp"
+                    android:visibility="gone">
+                    
+                    <ProgressBar
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:indeterminateTint="#16A34A" />
+                        
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Requesting nearby drivers..."
+                        android:textSize="16sp"
+                        android:textColor="#1A1D26"
+                        android:textStyle="bold"
+                        android:layout_marginTop="16dp" />
+                        
+                    <TextView
+                        android:id="@+id/tvDispatchPayload"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Vehicle: Auto | Payload: 500KG"
+                        android:textSize="13sp"
+                        android:textColor="#6B7280"
+                        android:layout_marginTop="6dp" />
+                        
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnCancelDispatch"
+                        style="@style/Widget.MaterialComponents.Button.TextButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Cancel Request"
+                        android:textColor="#E53935"
+                        android:layout_marginTop="24dp" />
+                </LinearLayout>
+
+                <!-- 3. Driver Accepted Status -->
+                <LinearLayout
+                    android:id="@+id/layoutDriverAccepted"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+                    
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Driver Confirmed"
+                        android:textSize="18sp"
+                        android:textColor="#2E7D32"
+                        android:textStyle="bold"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginBottom="16dp" />
+                        
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:cardCornerRadius="12dp"
+                        app:cardElevation="2dp"
+                        app:cardBackgroundColor="#F0FDF4"
+                        app:strokeColor="#16A34A"
+                        app:strokeWidth="1dp">
+                        
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="16dp"
+                            android:gravity="center_vertical">
+                            
+                            <!-- Fake Driver Avatar -->
+                            <ImageView
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
+                                android:background="@drawable/bg_icon_circle_green"
+                                android:backgroundTint="#16A34A"
+                                android:src="@drawable/ic_person"
+                                app:tint="#FFFFFF"
+                                android:padding="12dp" />
+                                
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical"
+                                android:layout_marginStart="14dp">
+                                <TextView
+                                    android:id="@+id/tvDriverName"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Assigning Driver..."
+                                    android:textSize="16sp"
+                                    android:textColor="#1A1D26"
+                                    android:textStyle="bold" />
+                                <TextView
+                                    android:id="@+id/tvDriverEta"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Arriving in 4 mins"
+                                    android:textSize="14sp"
+                                    android:textColor="#16A34A"
+                                    android:textStyle="bold"
+                                    android:layout_marginTop="2dp" />
+                            </LinearLayout>
+                            
+                            <!-- Call Icon -->
+                            <ImageView
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:src="@drawable/ic_phone"
+                                app:tint="#2E7D32"
+                                android:background="?attr/selectableItemBackgroundBorderless"
+                                android:padding="8dp"/>
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <!-- OTP Display Card -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        app:cardCornerRadius="12dp"
+                        app:cardElevation="2dp"
+                        app:cardBackgroundColor="#FFF8E1"
+                        app:strokeColor="#FFC107"
+                        app:strokeWidth="1dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:padding="16dp"
+                            android:gravity="center">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Share this OTP with driver"
+                                android:textSize="13sp"
+                                android:textColor="#6B7280" />
+
+                            <TextView
+                                android:id="@+id/tvOtpDisplay"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="----"
+                                android:textSize="32sp"
+                                android:textColor="#E65100"
+                                android:textStyle="bold"
+                                android:letterSpacing="0.3"
+                                android:layout_marginTop="4dp" />
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <!-- Track Driver Button -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnTrackDriver"
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:text="🗺️  Track Driver"
+                        android:textSize="16sp"
+                        android:textAllCaps="false"
+                        app:cornerRadius="14dp"
+                        android:backgroundTint="#2E7D32"
+                        android:textColor="@color/white"
+                        android:layout_marginTop="16dp" />
+                </LinearLayout>
+
+            </FrameLayout>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

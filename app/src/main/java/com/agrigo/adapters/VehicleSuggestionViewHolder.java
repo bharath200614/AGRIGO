@@ -23,10 +23,10 @@ public class VehicleSuggestionViewHolder extends RecyclerView.ViewHolder {
 
     public VehicleSuggestionViewHolder(View itemView) {
         super(itemView);
-        this.ivVehicleIcon = itemView.findViewById(R.id.ivVehicleIcon);
-        this.tvVehicleName = itemView.findViewById(R.id.tvVehicleName);
-        this.tvVehicleType = itemView.findViewById(R.id.tvVehicleType);
-        this.tvEstimatedCost = itemView.findViewById(R.id.tvEstimatedCost);
+        this.ivVehicleIcon = itemView.findViewById(R.id.iv_vehicle_icon);
+        this.tvVehicleName = itemView.findViewById(R.id.tv_vehicle_name);
+        this.tvVehicleType = itemView.findViewById(R.id.tv_vehicle_type);
+        this.tvEstimatedCost = itemView.findViewById(R.id.tv_price);
         this.btnSelectVehicle = itemView.findViewById(R.id.btnSelectVehicle);
     }
 

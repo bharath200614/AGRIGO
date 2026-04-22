@@ -6,11 +6,11 @@
     android:viewportHeight="128">
     <!-- Outer circle background -->
     <path
-        android:fillColor="#4CAF50"
+        android:fillColor="#A5D6A7"
         android:pathData="M 64,4 A 60,60 0 1,1 64,124 A 60,60 0 1,1 64,4 Z" />
     <!-- Inner circle -->
     <path
-        android:fillColor="#2E7D32"
+        android:fillColor="#81C784"
         android:pathData="M 64,9 A 55,55 0 1,1 64,119 A 55,55 0 1,1 64,9 Z" />
     <!-- Leaf symbol -->
     <path

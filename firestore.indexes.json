@@ -1,0 +1,77 @@
+{
+  "indexes": [
+    {
+      "collectionGroup": "transport_requests",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "farmerId", "order": "ASCENDING" },
+        { "fieldPath": "status", "order": "ASCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "transport_requests",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "assignedDriverId", "order": "ASCENDING" },
+        { "fieldPath": "status", "order": "ASCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "drivers",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "geoHash", "order": "ASCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "machinery_bookings",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "farmerId", "order": "ASCENDING" },
+        { "fieldPath": "status", "order": "ASCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "machinery_bookings",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "assignedProviderId", "order": "ASCENDING" },
+        { "fieldPath": "status", "order": "ASCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "machinery_bookings",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "status", "order": "ASCENDING" },
+        { "fieldPath": "machineryType", "order": "ASCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "machinery_providers",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "machineryType", "order": "ASCENDING" },
+        { "fieldPath": "status", "order": "ASCENDING" },
+        { "fieldPath": "geoHash", "order": "ASCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "labor_bookings",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "farmerId", "order": "ASCENDING" },
+        { "fieldPath": "status", "order": "ASCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "labor_bookings",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "status", "order": "ASCENDING" },
+        { "fieldPath": "workersRequired", "order": "ASCENDING" }
+      ]
+    }
+  ],
+  "fieldOverrides": []
+}

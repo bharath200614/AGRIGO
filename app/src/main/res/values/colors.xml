@@ -1,50 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- AgriGo Primary Colors -->
+    <!-- AgriGo Primary Colors (Fresh Green Accent) -->
+    <color name="primary_blue">#16A34A</color>
+    <color name="primary_blue_light">#4ADE80</color>
+    <color name="primary_blue_dark">#15803D</color>
+    <color name="primary_blue_soft">#F0FDF4</color>
+    <color name="primary_blue_very_light">#F7FEE7</color>
+    <color name="primary_blue_transparent">#2616A34A</color>
+
+    <!-- Real Green Colors for Labor -->
     <color name="primary_green">#2E7D32</color>
     <color name="primary_green_light">#4CAF50</color>
     <color name="primary_green_dark">#1B5E20</color>
-    
+    <color name="primary_green_soft">#E8F5E9</color>
+    <color name="primary_green_transparent">#262E7D32</color>
+
+    <!-- Legacy alias updated to Green -->
+    <color name="green_primary">#16A34A</color>
+    <color name="green_dark">#15803D</color>
+    <color name="green_light_bg">#F0FDF4</color>
+
+    <!-- Accent Green (very light, only for nature icons) -->
+    <color name="accent_green_soft">#E8F5E9</color>
+    <color name="accent_green_icon">#81C784</color>
+
     <!-- Secondary Colors -->
     <color name="secondary_yellow">#FFC107</color>
     <color name="secondary_yellow_light">#FFD54F</color>
     <color name="secondary_orange">#FF9800</color>
-    
+
     <!-- Status Colors -->
-    <color name="status_ongoing">#2196F3</color>
-    <color name="status_completed">#4CAF50</color>
+    <color name="status_ongoing">#16A34A</color>
+    <color name="status_completed">#66BB6A</color>
     <color name="status_requested">#FF9800</color>
-    <color name="status_cancelled">#F44336</color>
-    
+    <color name="status_cancelled">#EF5350</color>
+
     <!-- Neutral Colors -->
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
-    <color name="gray_dark">#333333</color>
-    <color name="gray_medium">#666666</color>
-    <color name="gray_light">#EEEEEE</color>
-    <color name="gray_very_light">#F5F5F5</color>
-    
+    <color name="gray_dark">#2D3436</color>
+    <color name="gray_medium">#636E72</color>
+    <color name="gray_light">#F0F0F0</color>
+    <color name="gray_very_light">#F8F9FA</color>
+
     <!-- Transparent -->
     <color name="transparent">#00000000</color>
-    
+
     <!-- Gradient Colors -->
-    <color name="gradient_green_start">#4CAF50</color>
-    <color name="gradient_green_end">#2E7D32</color>
-    
+    <color name="gradient_blue_start">#F0FDF4</color>
+    <color name="gradient_blue_end">#DCFCE7</color>
+    <color name="gradient_green_start">#E8F5E9</color>
+    <color name="gradient_green_end">#C8E6C9</color>
+    <color name="gradient_green_overlay">#1A2E7D32</color>
+
     <!-- Card Background -->
     <color name="card_background">#FFFFFF</color>
-    <color name="card_shadow">#1A000000</color>
-    
+    <color name="card_shadow">#0A000000</color>
+    <color name="card_border">#E8ECF0</color>
+
     <!-- Text Colors -->
-    <color name="text_primary">#212121</color>
-    <color name="text_secondary">#666666</color>
-    <color name="text_hint">#BDBDBD</color>
+    <color name="text_primary">#1A1D26</color>
+    <color name="text_secondary">#6B7280</color>
+    <color name="text_hint">#9CA3AF</color>
     <color name="text_white">#FFFFFF</color>
-    
-    <!-- Additional colors for dashboard -->
-    <color name="green_primary">#2E7D32</color>
-    <color name="green_dark">#1B5E20</color>
-    <color name="green_light_bg">#E8F5E9</color>
-    <color name="red_error">#F44336</color>
-    <color name="divider_color">#BDBDBD</color>
+
+    <!-- Button Colors -->
+    <color name="button_primary">#16A34A</color>
+    <color name="button_primary_pressed">#15803D</color>
+    <color name="button_danger">#EF5350</color>
+    <color name="button_danger_light">#FFEBEE</color>
+    <color name="button_danger_soft">#FFEBEE</color>
+
+    <!-- Additional -->
+    <color name="red_error">#EF5350</color>
+    <color name="divider_color">#E8ECF0</color>
+    <color name="background_screen">#F6F8FA</color>
+    <color name="background_section">#F0F2F5</color>
+
+    <!-- Map Marker Colors -->
+    <color name="map_source_green">#4CAF50</color>
+    <color name="map_dest_red">#F44336</color>
+    <color name="map_route_blue">#16A34A</color>
+
+    <!-- Accent Orange -->
+    <color name="accent_orange">#FF9800</color>
+    <color name="accent_orange_soft">#FFF3E0</color>
 </resources>
