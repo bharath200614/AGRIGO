@@ -81,7 +81,6 @@
             android:exported="false"
             android:screenOrientation="portrait" />
 
-        <activity android:name=".activities.MachineryJobDetailsActivity" />
         <activity android:name=".activities.MapPickerActivity" />
 
         <activity

@@ -198,12 +198,14 @@ public class LaborTrackingActivity extends AppCompatActivity implements OnMapRea
                 .title("Farmer's Field")
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
         
-        fusedLocationClient.getLastLocation().addOnSuccessListener(location -> {
-            if (location != null) {
-                LatLng current = new LatLng(location.getLatitude(), location.getLongitude());
-                fetchAndDrawRoute(current, farmerLatLng);
-            }
-        });
+        if (androidx.core.app.ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == android.content.pm.PackageManager.PERMISSION_GRANTED) {
+            fusedLocationClient.getLastLocation().addOnSuccessListener(location -> {
+                if (location != null) {
+                    LatLng current = new LatLng(location.getLatitude(), location.getLongitude());
+                    fetchAndDrawRoute(current, farmerLatLng);
+                }
+            });
+        }
     }
 
     private void fetchAndDrawRoute(LatLng origin, LatLng dest) {
