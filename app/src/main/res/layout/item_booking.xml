@@ -36,11 +36,11 @@
 
                 <ImageView
                     android:id="@+id/iv_booking_icon"
-                    android:layout_width="22dp"
-                    android:layout_height="22dp"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
                     android:layout_gravity="center"
                     android:src="@drawable/ic_truck"
-                    app:tint="@color/primary_blue" />
+                    android:scaleType="fitCenter" />
             </FrameLayout>
 
             <LinearLayout

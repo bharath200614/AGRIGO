@@ -49,9 +49,9 @@ public class WelcomeActivity extends AppCompatActivity {
             db = FirebaseFirestore.getInstance();
             preferenceManager = new PreferenceManager(this);
         } catch (Exception e) {
-            Timber.e(e, "Error initializing Firebase or PreferenceManager");
+            android.util.Log.e("WelcomeActivity", "Error initializing Firebase or PreferenceManager", e);
             ToastUtils.showShort(this, "Application initialization failed. Please restart.");
-            return;
+            // Do not return here so buttons still work
         }
 
         // Check if user is already logged in
@@ -157,11 +157,11 @@ public class WelcomeActivity extends AppCompatActivity {
 */
 
         // Button slide-up fade-in
-        Animation slideUpButton = AnimationUtils.loadAnimation(this, R.anim.slide_up_fade);
-        slideUpButton.setDuration(800);
-        slideUpButton.setStartOffset(1000);
-        btnLogin.startAnimation(slideUpButton);
-        btnRegister.startAnimation(slideUpButton);
+        // Animation slideUpButton = AnimationUtils.loadAnimation(this, R.anim.slide_up_fade);
+        // slideUpButton.setDuration(800);
+        // slideUpButton.setStartOffset(1000);
+        // btnLogin.startAnimation(slideUpButton);
+        // btnRegister.startAnimation(slideUpButton);
     }
 
     private void setupButtonListeners() {

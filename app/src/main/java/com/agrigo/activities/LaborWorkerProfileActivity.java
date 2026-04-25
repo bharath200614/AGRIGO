@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.Spinner;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,22 +17,28 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class LaborWorkerProfileActivity extends AppCompatActivity {
 
     private ImageView btnBack;
     private TextInputEditText editName, editPhone, editDailyWage;
-    private Spinner spinnerWorkType;
     private MaterialButton btnSaveProfile, btnLogout;
+    
+    private LinearLayout[] categoryViews;
+    private ImageView[] categoryIcons;
+    private TextView[] categoryTexts;
 
     private FirebaseFirestore db;
     private FirebaseAuth mAuth;
     private PreferenceManager preferenceManager;
     private String laborId;
 
-    private final String[] workTypes = {"Harvesting", "Planting", "Cleaning", "Weeding"};
+    private final String[] workTypes = {"land preparation", "sowing/planting", "weeding", "irrigation", "harvesting"};
+    private List<String> selectedWorkTypes = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,17 +61,62 @@ public class LaborWorkerProfileActivity extends AppCompatActivity {
         editName = findViewById(R.id.editName);
         editPhone = findViewById(R.id.editPhone);
         editDailyWage = findViewById(R.id.editDailyWage);
-        spinnerWorkType = findViewById(R.id.spinnerWorkType);
         btnSaveProfile = findViewById(R.id.btnSaveProfile);
         btnLogout = findViewById(R.id.btnLogout);
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_spinner_dropdown_item, workTypes);
-        spinnerWorkType.setAdapter(adapter);
+        categoryViews = new LinearLayout[]{
+                findViewById(R.id.catLandPrep),
+                findViewById(R.id.catSowing),
+                findViewById(R.id.catWeeding),
+                findViewById(R.id.catIrrigation),
+                findViewById(R.id.catHarvesting)
+        };
+
+        categoryIcons = new ImageView[]{
+                findViewById(R.id.iconLandPrep),
+                findViewById(R.id.iconSowing),
+                findViewById(R.id.iconWeeding),
+                findViewById(R.id.iconIrrigation),
+                findViewById(R.id.iconHarvesting)
+        };
+
+        categoryTexts = new TextView[]{
+                findViewById(R.id.tvLandPrep),
+                findViewById(R.id.tvSowing),
+                findViewById(R.id.tvWeeding),
+                findViewById(R.id.tvIrrigation),
+                findViewById(R.id.tvHarvesting)
+        };
+
+        for (int i = 0; i < categoryViews.length; i++) {
+            final int index = i;
+            categoryViews[i].setOnClickListener(v -> toggleCategory(index));
+        }
 
         btnBack.setOnClickListener(v -> onBackPressed());
         btnSaveProfile.setOnClickListener(v -> saveProfile());
         btnLogout.setOnClickListener(v -> logout());
+    }
+
+    private void toggleCategory(int index) {
+        String type = workTypes[index];
+        if (selectedWorkTypes.contains(type)) {
+            selectedWorkTypes.remove(type);
+            setCategorySelected(index, false);
+        } else {
+            selectedWorkTypes.add(type);
+            setCategorySelected(index, true);
+        }
+    }
+
+    private void setCategorySelected(int index, boolean selected) {
+        if (selected) {
+            categoryViews[index].setBackgroundResource(R.drawable.bg_category_selected);
+            categoryTexts[index].setTextColor(0xFF16A34A);
+        } else {
+            categoryViews[index].setBackgroundResource(R.drawable.bg_category_unselected);
+            categoryTexts[index].setTextColor(0xFF64748B);
+        }
     }
 
     private void loadProfile() {
@@ -74,18 +125,25 @@ public class LaborWorkerProfileActivity extends AppCompatActivity {
                     if (doc.exists()) {
                         String name = doc.getString("name");
                         String phone = doc.getString("phone");
-                        String workType = doc.getString("workType");
-                        Double wage = doc.getDouble("dailyWage");
+                        List<String> loadedWorkTypes = (List<String>) doc.get("workTypes");
+                        
+                        // Fallback for old single string data
+                        if (loadedWorkTypes == null || loadedWorkTypes.isEmpty()) {
+                            String oldWorkType = doc.getString("workType");
+                            if (oldWorkType != null && !oldWorkType.isEmpty()) {
+                                loadedWorkTypes = new ArrayList<>();
+                                loadedWorkTypes.add(oldWorkType.toLowerCase());
+                            }
+                        }
 
-                        if (name != null) editName.setText(name);
-                        if (phone != null) editPhone.setText(phone);
-                        if (wage != null) editDailyWage.setText(String.valueOf(wage.intValue()));
-
-                        if (workType != null) {
-                            for (int i = 0; i < workTypes.length; i++) {
-                                if (workTypes[i].toLowerCase().equals(workType.toLowerCase())) {
-                                    spinnerWorkType.setSelection(i);
-                                    break;
+                        if (loadedWorkTypes != null) {
+                            for (String type : loadedWorkTypes) {
+                                for (int i = 0; i < workTypes.length; i++) {
+                                    if (workTypes[i].equals(type.toLowerCase())) {
+                                        selectedWorkTypes.add(workTypes[i]);
+                                        setCategorySelected(i, true);
+                                        break;
+                                    }
                                 }
                             }
                         }
@@ -97,12 +155,14 @@ public class LaborWorkerProfileActivity extends AppCompatActivity {
     private void saveProfile() {
         String name = editName.getText() != null ? editName.getText().toString().trim() : "";
         String phone = editPhone.getText() != null ? editPhone.getText().toString().trim() : "";
-        String workType = spinnerWorkType.getSelectedItem() != null
-                ? spinnerWorkType.getSelectedItem().toString().toLowerCase().trim()
-                : "";
 
         if (name.isEmpty()) {
             editName.setError("Name is required");
+            return;
+        }
+        
+        if (selectedWorkTypes.isEmpty()) {
+            ToastUtils.showShort(this, "Please select at least one work skill");
             return;
         }
 
@@ -112,7 +172,9 @@ public class LaborWorkerProfileActivity extends AppCompatActivity {
         Map<String, Object> updates = new HashMap<>();
         updates.put("name", name);
         updates.put("phone", phone);
-        updates.put("workType", workType);
+        updates.put("workTypes", selectedWorkTypes);
+        // Save first selected as old workType for legacy compatibility if needed
+        updates.put("workType", selectedWorkTypes.get(0));
         
         String wageStr = editDailyWage.getText() != null ? editDailyWage.getText().toString().trim() : "";
         if (!wageStr.isEmpty()) {

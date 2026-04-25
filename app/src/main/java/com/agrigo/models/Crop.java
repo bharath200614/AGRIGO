@@ -8,6 +8,7 @@ public class Crop {
     private String name;
     private String imageUrl;
     private int iconResId; // For drawable resources
+    private String emoji; // Emoji icon for visual display
     private double minWeight; // kg
     private double maxWeight; // kg
     private String season;
@@ -25,6 +26,15 @@ public class Crop {
     public Crop(String id, String name, int iconResId, double minWeight, double maxWeight) {
         this.id = id;
         this.name = name;
+        this.iconResId = iconResId;
+        this.minWeight = minWeight;
+        this.maxWeight = maxWeight;
+    }
+
+    public Crop(String id, String name, String emoji, int iconResId, double minWeight, double maxWeight) {
+        this.id = id;
+        this.name = name;
+        this.emoji = emoji;
         this.iconResId = iconResId;
         this.minWeight = minWeight;
         this.maxWeight = maxWeight;
@@ -61,6 +71,14 @@ public class Crop {
 
     public void setIconResId(int iconResId) {
         this.iconResId = iconResId;
+    }
+
+    public String getEmoji() {
+        return emoji;
+    }
+
+    public void setEmoji(String emoji) {
+        this.emoji = emoji;
     }
 
     public double getMinWeight() {

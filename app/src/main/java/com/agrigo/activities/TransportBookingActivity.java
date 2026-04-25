@@ -81,6 +81,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.agrigo.adapters.MarketAdapter;
+import com.agrigo.adapters.CropGridAdapter;
 import com.agrigo.models.Market;
 import com.agrigo.utils.MarketDataProvider;
 
@@ -98,7 +99,8 @@ public class TransportBookingActivity extends AppCompatActivity implements OnMap
     private FloatingActionButton fabMyLocation;
     private Button btnConfirmTransport;
     private ImageView btnLocateMeInsideSearch;
-    private Spinner spinnerCropType;
+    private RecyclerView rvCropSelection;
+    private CropGridAdapter cropGridAdapter;
 
     // ML Predict UI
     private MaterialButton btnPredictVehicle;
@@ -178,7 +180,22 @@ public class TransportBookingActivity extends AppCompatActivity implements OnMap
         fabMyLocation = findViewById(R.id.fabMyLocation);
         btnConfirmTransport = findViewById(R.id.btnConfirmTransport);
         btnLocateMeInsideSearch = findViewById(R.id.btnLocateMeInsideSearch);
-        spinnerCropType = findViewById(R.id.spinnerCropType);
+        rvCropSelection = findViewById(R.id.rvCropSelection);
+        if (rvCropSelection != null) {
+            List<Crop> cropList = com.agrigo.utils.CropUtils.getAllCrops(this);
+            rvCropSelection.setLayoutManager(new androidx.recyclerview.widget.GridLayoutManager(this, 3));
+            cropGridAdapter = new CropGridAdapter(this, cropList, crop -> {
+                // Trigger updates when crop changes
+                updateMarketSuggestions(etDestSearch.getText().toString());
+                if (!etTransportWeight.getText().toString().isEmpty()) {
+                    updateVehicleSuggestionDisplay();
+                }
+            });
+            rvCropSelection.setAdapter(cropGridAdapter);
+            
+            // Set default selection (Rice)
+            cropGridAdapter.setSelectedCrop("rice");
+        }
 
         layoutBookingForm = findViewById(R.id.layoutBookingForm);
         layoutDispatching = findViewById(R.id.layoutDispatching);
@@ -217,20 +234,13 @@ public class TransportBookingActivity extends AppCompatActivity implements OnMap
             destAddress = market.getName() + ", " + market.getDistrict();
         });
         rvSuggestedMarkets.setAdapter(marketAdapter);
-
-        // Populate crop spinner with all 51 crops
-        if (spinnerCropType != null) {
-            List<Crop> cropList = com.agrigo.utils.CropUtils.getAllCrops(this);
-            com.agrigo.adapters.CropSpinnerAdapter cropAdapter = new com.agrigo.adapters.CropSpinnerAdapter(this, cropList);
-            spinnerCropType.setAdapter(cropAdapter);
-        }
     }
 
     private void updateMarketSuggestions(String query) {
         if (sourceLatLng == null) return;
         String cropName = "Wheat";
-        if (spinnerCropType != null && spinnerCropType.getSelectedItem() != null) {
-            cropName = ((Crop) spinnerCropType.getSelectedItem()).getName();
+        if (cropGridAdapter != null && cropGridAdapter.getSelectedCrop() != null) {
+            cropName = cropGridAdapter.getSelectedCrop().getName();
         }
         currentMarkets = MarketDataProvider.searchMarkets(query, cropName, sourceLatLng.latitude, sourceLatLng.longitude);
         marketAdapter.updateMarkets(currentMarkets);
@@ -321,7 +331,7 @@ public class TransportBookingActivity extends AppCompatActivity implements OnMap
 
     private void performMLPrediction() {
         // 1. Validate crop is selected
-        if (spinnerCropType == null || spinnerCropType.getSelectedItem() == null) {
+        if (cropGridAdapter == null || cropGridAdapter.getSelectedCrop() == null) {
             ToastUtils.showShort(this, "Please select a crop type");
             return;
         }
@@ -345,7 +355,7 @@ public class TransportBookingActivity extends AppCompatActivity implements OnMap
             return;
         }
 
-        String cropName = ((Crop) spinnerCropType.getSelectedItem()).getName();
+        String cropName = cropGridAdapter.getSelectedCrop().getName();
 
         // 3. Show loading state
         btnPredictVehicle.setEnabled(false);
@@ -452,10 +462,14 @@ public class TransportBookingActivity extends AppCompatActivity implements OnMap
         String vt = vehicleType.toLowerCase();
         if (vt.contains("auto")) {
             ivMLVehicleIcon.setImageResource(R.drawable.ic_auto_vehicle);
+        } else if (vt.contains("small van") || vt.contains("small_van")) {
+            ivMLVehicleIcon.setImageResource(R.drawable.ic_small_van);
         } else if (vt.contains("mini")) {
             ivMLVehicleIcon.setImageResource(R.drawable.ic_mini_truck);
-        } else if (vt.contains("lorry") || vt.contains("heavy")) {
-            ivMLVehicleIcon.setImageResource(R.drawable.ic_lorry);
+        } else if (vt.contains("pickup")) {
+            ivMLVehicleIcon.setImageResource(R.drawable.ic_pickup_truck);
+        } else if (vt.contains("large") || vt.contains("lorry") || vt.contains("heavy")) {
+            ivMLVehicleIcon.setImageResource(R.drawable.ic_large_truck);
         } else if (vt.contains("truck")) {
             ivMLVehicleIcon.setImageResource(R.drawable.ic_truck);
         } else {
@@ -865,8 +879,8 @@ public class TransportBookingActivity extends AppCompatActivity implements OnMap
         try {
             double weight = Double.parseDouble(weightStr);
             String cropName = "Wheat";
-            if (spinnerCropType != null && spinnerCropType.getSelectedItem() != null) {
-                cropName = ((Crop) spinnerCropType.getSelectedItem()).getName();
+            if (cropGridAdapter != null && cropGridAdapter.getSelectedCrop() != null) {
+                cropName = cropGridAdapter.getSelectedCrop().getName();
             }
             List<VehicleSuggestion> recommendations = BookingRecommendationEngine.getTransportRecommendations(
                     cropName, weight);
@@ -879,12 +893,16 @@ public class TransportBookingActivity extends AppCompatActivity implements OnMap
                 String vehicleType = vehicle.getVehicleType();
                 if ("auto".equals(vehicleType)) {
                     ivVehicleIcon.setImageResource(R.drawable.ic_auto_vehicle);
+                } else if ("small_van".equals(vehicleType) || "small van".equalsIgnoreCase(vehicleType)) {
+                    ivVehicleIcon.setImageResource(R.drawable.ic_small_van);
                 } else if ("mini_truck".equals(vehicleType)) {
                     ivVehicleIcon.setImageResource(R.drawable.ic_mini_truck);
+                } else if ("pickup_truck".equals(vehicleType) || "pickup truck".equalsIgnoreCase(vehicleType)) {
+                    ivVehicleIcon.setImageResource(R.drawable.ic_pickup_truck);
                 } else if ("truck".equals(vehicleType)) {
                     ivVehicleIcon.setImageResource(R.drawable.ic_truck);
-                } else if ("lorry".equals(vehicleType)) {
-                    ivVehicleIcon.setImageResource(R.drawable.ic_lorry);
+                } else if ("lorry".equals(vehicleType) || "large_truck".equals(vehicleType) || "large truck".equalsIgnoreCase(vehicleType)) {
+                    ivVehicleIcon.setImageResource(R.drawable.ic_large_truck);
                 } else {
                     ivVehicleIcon.setImageResource(R.drawable.ic_truck);
                 }
@@ -941,8 +959,8 @@ public class TransportBookingActivity extends AppCompatActivity implements OnMap
         double weight = Double.parseDouble(weightStr);
 
         String cropName = "Wheat";
-        if (spinnerCropType != null && spinnerCropType.getSelectedItem() != null) {
-            cropName = ((Crop) spinnerCropType.getSelectedItem()).getName();
+        if (cropGridAdapter != null && cropGridAdapter.getSelectedCrop() != null) {
+            cropName = cropGridAdapter.getSelectedCrop().getName();
         }
         
         // Use ML prediction if available, otherwise fallback to local

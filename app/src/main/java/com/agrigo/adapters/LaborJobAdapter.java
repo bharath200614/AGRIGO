@@ -26,6 +26,7 @@ public class LaborJobAdapter extends RecyclerView.Adapter<LaborJobAdapter.JobVie
 
     public interface OnJobAcceptListener {
         void onAcceptClicked(DocumentSnapshot document);
+        void onRejectClicked(DocumentSnapshot document);
     }
 
     public LaborJobAdapter(List<DocumentSnapshot> jobList, OnJobAcceptListener listener, Location initialLocation) {
@@ -87,9 +88,9 @@ public class LaborJobAdapter extends RecyclerView.Adapter<LaborJobAdapter.JobVie
 
         // Distance Calculation
         if (currentLocation != null && fLat != null && fLng != null) {
-            double distMeters = GeoFireUtils.getDistanceBetween(
-                    new GeoLocation(fLat, fLng),
-                    new GeoLocation(currentLocation.getLatitude(), currentLocation.getLongitude())
+            double distMeters = com.firebase.geofire.GeoFireUtils.getDistanceBetween(
+                    new com.firebase.geofire.GeoLocation(fLat, fLng),
+                    new com.firebase.geofire.GeoLocation(currentLocation.getLatitude(), currentLocation.getLongitude())
             );
             holder.tvDistance.setText(String.format(Locale.getDefault(), "%.1f km", distMeters / 1000.0));
         } else {
@@ -122,6 +123,12 @@ public class LaborJobAdapter extends RecyclerView.Adapter<LaborJobAdapter.JobVie
                 listener.onAcceptClicked(doc);
             }
         });
+
+        holder.btnRejectJob.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.onRejectClicked(doc);
+            }
+        });
     }
 
     @Override
@@ -132,7 +139,7 @@ public class LaborJobAdapter extends RecyclerView.Adapter<LaborJobAdapter.JobVie
     static class JobViewHolder extends RecyclerView.ViewHolder {
         TextView tvWorkType, tvDuration, tvFarmerName, tvWorkersCount, tvEstimatedPrice;
         TextView tvDistance, tvLocation;
-        MaterialButton btnAcceptJob;
+        MaterialButton btnAcceptJob, btnRejectJob;
 
         public JobViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -144,6 +151,7 @@ public class LaborJobAdapter extends RecyclerView.Adapter<LaborJobAdapter.JobVie
             tvDistance = itemView.findViewById(R.id.tvDistance);
             tvLocation = itemView.findViewById(R.id.tvLocation);
             btnAcceptJob = itemView.findViewById(R.id.btnAcceptJob);
+            btnRejectJob = itemView.findViewById(R.id.btnRejectJob);
         }
     }
 }

@@ -1,9 +1,23 @@
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:width="24dp"
-    android:height="24dp"
-    android:viewportWidth="24"
-    android:viewportHeight="24">
-    <path
-        android:fillColor="#FF000000"
-        android:pathData="M17,8c0.05,0 0.11,0.01 0.16,0.01C15.84,4.59 12.38,2 8,2c-4.42,0 -8,3.58 -8,8c0,4.38 2.59,7.84 6.01,7.16C6.01,17.11 6,17.05 6,17c0,-4.97 4.03,-9 9,-9c0.67,0 1.32,0.08 1.94,0.22A1,1 0,0 0,17 8zM17,10c-3.87,0 -7,3.13 -7,7c0,3.87 3.13,7 7,7c0.05,0 0.11,-0.01 0.16,-0.01C20.16,23.41 24,19.38 24,15c0,-4.42 -3.58,-8 -8,-8c-0.67,0 -1.32,0.08 -1.94,0.22A5.968,5.968 0,0 1,17 10z" />
+    android:width="48dp"
+    android:height="48dp"
+    android:viewportWidth="48"
+    android:viewportHeight="48">
+    
+    <!-- Trowel handle -->
+    <path android:fillColor="#8D6E63" android:pathData="M38,10c-2.2,-2.2 -5.8,-2.2 -8,0l-6,6l8,8l6,-6C40.2,15.8 40.2,12.2 38,10z" />
+    <!-- Trowel metal connector -->
+    <path android:fillColor="#9E9E9E" android:pathData="M24,16l-4,4l8,8l4,-4z" />
+    <!-- Trowel blade -->
+    <path android:fillColor="#BDBDBD" android:pathData="M20,20l-16,16c0,0 -2,4 4,10c6,-6 10,-4 10,-4l16,-16L20,20z" />
+    <path android:fillColor="#E0E0E0" android:pathData="M20,20l-16,16c3,3 8,6 10,4l14,-14L20,20z" />
+    
+    <!-- Weed plant (green) -->
+    <path android:fillColor="#4CAF50" android:pathData="M16,36c0,0 -4,-8 -10,-10c4,2 6,6 8,10z" />
+    <path android:fillColor="#388E3C" android:pathData="M16,36c0,0 -2,-10 -6,-14c4,4 5,8 6,14z" />
+    <path android:fillColor="#4CAF50" android:pathData="M16,36c0,0 2,-10 6,-14c-4,4 -5,8 -6,14z" />
+    <path android:fillColor="#2E7D32" android:pathData="M16,36c0,0 6,-6 12,-6c-4,2 -6,4 -8,6z" />
+    
+    <!-- Roots (brown) -->
+    <path android:fillColor="#5D4037" android:pathData="M14,38l-4,6l2,-2l-2,4l4,-4l4,6l-2,-4l4,-2l-4,2z" />
 </vector>

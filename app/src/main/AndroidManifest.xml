@@ -144,6 +144,27 @@
             android:exported="false"
             android:screenOrientation="portrait" />
 
+        <activity
+            android:name=".activities.LaborSettingsActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
+
+        <activity
+            android:name=".activities.LaborTrackingActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".activities.LaborMyBookingsActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".activities.LaborEarningsActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+
         <!-- Incoming Request Activity (Popup) -->
         <activity
             android:name=".activities.IncomingRequestActivity"

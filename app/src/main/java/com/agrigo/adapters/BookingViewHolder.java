@@ -85,14 +85,25 @@ public class BookingViewHolder extends RecyclerView.ViewHolder {
             case "auto":
                 ivVehicleIcon.setImageResource(R.drawable.ic_auto_vehicle);
                 break;
+            case "small van":
+            case "small_van":
+                ivVehicleIcon.setImageResource(R.drawable.ic_small_van);
+                break;
+            case "mini truck":
             case "mini_truck":
                 ivVehicleIcon.setImageResource(R.drawable.ic_mini_truck);
+                break;
+            case "pickup truck":
+            case "pickup_truck":
+                ivVehicleIcon.setImageResource(R.drawable.ic_pickup_truck);
                 break;
             case "truck":
                 ivVehicleIcon.setImageResource(R.drawable.ic_truck);
                 break;
+            case "large truck":
+            case "large_truck":
             case "lorry":
-                ivVehicleIcon.setImageResource(R.drawable.ic_lorry);
+                ivVehicleIcon.setImageResource(R.drawable.ic_large_truck);
                 break;
             default:
                 ivVehicleIcon.setImageResource(R.drawable.ic_truck);

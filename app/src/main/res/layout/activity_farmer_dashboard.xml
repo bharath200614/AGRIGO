@@ -125,11 +125,11 @@
                                 android:backgroundTint="@color/primary_blue_soft" />
 
                             <ImageView
-                                android:layout_width="28dp"
-                                android:layout_height="28dp"
+                                android:layout_width="48dp"
+                                android:layout_height="48dp"
                                 android:layout_gravity="center"
                                 android:src="@drawable/ic_truck"
-                                app:tint="@color/primary_blue" />
+                                android:scaleType="fitCenter" />
                         </FrameLayout>
 
                         <LinearLayout
@@ -194,11 +194,11 @@
                                 android:backgroundTint="@color/primary_blue_soft" />
 
                             <ImageView
-                                android:layout_width="28dp"
-                                android:layout_height="28dp"
+                                android:layout_width="48dp"
+                                android:layout_height="48dp"
                                 android:layout_gravity="center"
                                 android:src="@drawable/ic_tractor"
-                                app:tint="@color/primary_blue" />
+                                android:scaleType="fitCenter" />
                         </FrameLayout>
 
                         <LinearLayout

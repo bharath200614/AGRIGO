@@ -1,0 +1,34 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="48dp"
+    android:height="48dp"
+    android:viewportWidth="48"
+    android:viewportHeight="48">
+    
+    <!-- Soil/Ground -->
+    <path android:fillColor="#795548" android:pathData="M4,40h40v4H4z" />
+    <path android:fillColor="#8D6E63" android:pathData="M6,38h36v2H6z" />
+    
+    <!-- Sprinkler Base -->
+    <path android:fillColor="#424242" android:pathData="M22,38h4v2h-4z" />
+    <!-- Sprinkler Head -->
+    <path android:fillColor="#9E9E9E" android:pathData="M20,34h8v4h-8z" />
+    <!-- Sprinkler Nozzle -->
+    <path android:fillColor="#E0E0E0" android:pathData="M21,30h6c1,0 2,1 2,2v2h-10v-2c0,-1 1,-2 2,-2z" />
+    
+    <!-- Water Streams (Blue) -->
+    <path android:strokeColor="#29B6F6" android:strokeWidth="2" android:fillColor="#00000000" android:pathData="M24,30 C24,10 8,10 8,24" />
+    <path android:strokeColor="#03A9F4" android:strokeWidth="2" android:fillColor="#00000000" android:pathData="M24,30 C24,14 14,14 14,26" />
+    
+    <path android:strokeColor="#29B6F6" android:strokeWidth="2" android:fillColor="#00000000" android:pathData="M24,30 C24,10 40,10 40,24" />
+    <path android:strokeColor="#03A9F4" android:strokeWidth="2" android:fillColor="#00000000" android:pathData="M24,30 C24,14 34,14 34,26" />
+    
+    <!-- Water Drops -->
+    <path android:fillColor="#81D4FA" android:pathData="M8,26c-1,0 -2,1 -2,2c0,1 2,3 2,3c0,0 2,-2 2,-3c0,-1 -1,-2 -2,-2z" />
+    <path android:fillColor="#81D4FA" android:pathData="M14,28c-1,0 -2,1 -2,2c0,1 2,3 2,3c0,0 2,-2 2,-3c0,-1 -1,-2 -2,-2z" />
+    <path android:fillColor="#81D4FA" android:pathData="M40,26c-1,0 -2,1 -2,2c0,1 2,3 2,3c0,0 2,-2 2,-3c0,-1 -1,-2 -2,-2z" />
+    <path android:fillColor="#81D4FA" android:pathData="M34,28c-1,0 -2,1 -2,2c0,1 2,3 2,3c0,0 2,-2 2,-3c0,-1 -1,-2 -2,-2z" />
+    
+    <!-- Grass (Green) -->
+    <path android:fillColor="#4CAF50" android:pathData="M10,38L8,30L12,38Z M38,38L40,30L36,38Z" />
+    <path android:fillColor="#81C784" android:pathData="M14,38L12,32L16,38Z M34,38L36,32L32,38Z" />
+</vector>

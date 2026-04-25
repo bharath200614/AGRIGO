@@ -147,6 +147,7 @@ public class ProfileActivity extends AppCompatActivity {
     private void updateFieldIcon(int position) {
         if (position >= 0 && position < VEHICLE_ICONS.length) {
             layoutVehicleType.setStartIconDrawable(VEHICLE_ICONS[position]);
+            layoutVehicleType.setStartIconTintList(null); // Preserve PNG colors
         }
     }
 

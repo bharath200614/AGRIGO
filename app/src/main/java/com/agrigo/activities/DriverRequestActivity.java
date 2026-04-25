@@ -153,6 +153,17 @@ public class DriverRequestActivity extends AppCompatActivity implements DriverRe
                                     continue; // Skip jobs explicitly assigned to someone else
                                 }
 
+                                // For open market requests, filter by vehicleType
+                                if (isOpenMarket) {
+                                    String driverVehicleType = new com.agrigo.utils.PreferenceManager(DriverRequestActivity.this).getVehicleType();
+                                    String myVehicleType = (driverVehicleType != null) ? driverVehicleType.toLowerCase().trim() : "";
+                                    String reqVehicleType = request.getVehicleType();
+                                    
+                                    if (reqVehicleType == null || !reqVehicleType.toLowerCase().trim().equals(myVehicleType)) {
+                                        continue; // Skip jobs that don't match the driver's vehicle type
+                                    }
+                                }
+
                                 // Calculate distance locally for proximity sorting
                                 if (currentDriverLocation != null && request.getSourceLat() != 0) {
                                     float[] results = new float[1];

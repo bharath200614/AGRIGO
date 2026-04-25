@@ -58,6 +58,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import timber.log.Timber;
+
 public class LaborHomeActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private static final String TAG = "LaborHomeAct";
@@ -69,6 +71,7 @@ public class LaborHomeActivity extends AppCompatActivity implements OnMapReadyCa
     private TextView textWelcome;
     private View layoutEmptyJobs;
     private View btnProfile;
+    private View cardBookings, cardTracking, cardEarnings;
 
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
@@ -77,7 +80,7 @@ public class LaborHomeActivity extends AppCompatActivity implements OnMapReadyCa
     private LaborJobAdapter jobAdapter;
     private ListenerRegistration jobsListener;
     private String laborId;
-    private String workerWorkType = "";
+    private List<String> workerWorkTypesList = new ArrayList<>();
 
     // Location Tracking
     private FusedLocationProviderClient fusedLocationClient;
@@ -88,6 +91,7 @@ public class LaborHomeActivity extends AppCompatActivity implements OnMapReadyCa
     private GoogleMap mMap;
     private List<Marker> jobMarkers = new ArrayList<>();
     private Polyline routePolyline;
+    private boolean isShowingRoute = false;
 
 
     
@@ -156,7 +160,30 @@ public class LaborHomeActivity extends AppCompatActivity implements OnMapReadyCa
         btnProfile = findViewById(R.id.btnProfile);
         if (btnProfile != null) {
             btnProfile.setOnClickListener(v -> {
-                startActivity(new Intent(this, LaborWorkerProfileActivity.class));
+                startActivity(new Intent(this, LaborSettingsActivity.class));
+            });
+        }
+
+        // Navigation Cards
+        cardBookings = findViewById(R.id.cardBookings);
+        cardTracking = findViewById(R.id.cardTracking);
+        cardEarnings = findViewById(R.id.cardEarnings);
+
+        if (cardBookings != null) {
+            cardBookings.setOnClickListener(v -> {
+                startActivity(new Intent(this, LaborMyBookingsActivity.class));
+            });
+        }
+
+        if (cardTracking != null) {
+            cardTracking.setOnClickListener(v -> {
+                startActivity(new Intent(this, LaborTrackingActivity.class));
+            });
+        }
+
+        if (cardEarnings != null) {
+            cardEarnings.setOnClickListener(v -> {
+                startActivity(new Intent(this, LaborEarningsActivity.class));
             });
         }
         
@@ -180,21 +207,39 @@ public class LaborHomeActivity extends AppCompatActivity implements OnMapReadyCa
 
     private void fetchWorkerDetails() {
         db.collection("labor_workers").document(laborId).get().addOnSuccessListener(doc -> {
-            if (doc.exists() && doc.getString("workType") != null && !doc.getString("workType").isEmpty()) {
-                workerWorkType = doc.getString("workType").toLowerCase().trim();
+            if (doc.exists()) {
+                List<String> types = (List<String>) doc.get("workTypes");
                 
-                String mode = doc.getString("locationMode");
-                if (mode != null && !mode.isEmpty()) {
-                    locationMode = mode;
+                // Fallback for older profiles
+                if (types == null || types.isEmpty()) {
+                    String oldWorkType = doc.getString("workType");
+                    if (oldWorkType != null && !oldWorkType.isEmpty()) {
+                        types = new ArrayList<>();
+                        types.add(oldWorkType.toLowerCase().trim());
+                    }
                 }
                 
-                Log.d(TAG, "Worker type fetched: " + workerWorkType + " | Mode: " + locationMode);
-                if (switchOnline.isChecked()) {
-                    listenForJobs(); 
+                if (types != null && !types.isEmpty()) {
+                    workerWorkTypesList = new ArrayList<>();
+                    for (String t : types) {
+                        workerWorkTypesList.add(t.toLowerCase().trim());
+                    }
+                    
+                    String mode = doc.getString("locationMode");
+                    if (mode != null && !mode.isEmpty()) {
+                        locationMode = mode;
+                    }
+                    
+                    Log.d(TAG, "Worker types fetched: " + workerWorkTypesList + " | Mode: " + locationMode);
+                    if (switchOnline.isChecked()) {
+                        listenForJobs(); 
+                    }
+                } else {
+                    Log.e(TAG, "Worker types missing! Cannot fetch jobs.");
+                    ToastUtils.showLong(this, "Please update your Work Skills in Profile first.");
                 }
             } else {
-                Log.e(TAG, "Worker type missing! Cannot fetch jobs.");
-                ToastUtils.showLong(this, "Please update your Work Type in Profile first.");
+                Log.e(TAG, "Worker profile not found!");
             }
         }).addOnFailureListener(e -> Log.e(TAG, "Failed to fetch worker details", e));
     }
@@ -329,7 +374,19 @@ public class LaborHomeActivity extends AppCompatActivity implements OnMapReadyCa
 
     private void setupRecyclerView() {
         recyclerViewJobs.setLayoutManager(new LinearLayoutManager(this));
-        jobAdapter = new LaborJobAdapter(new ArrayList<>(), this::acceptJobConcurrent, lastKnownLocation);
+        jobAdapter = new LaborJobAdapter(new ArrayList<>(), new LaborJobAdapter.OnJobAcceptListener() {
+            @Override
+            public void onAcceptClicked(DocumentSnapshot doc) {
+                acceptJobConcurrent(doc);
+            }
+
+            @Override
+            public void onRejectClicked(DocumentSnapshot doc) {
+                db.collection("labor_bookings").document(doc.getId())
+                        .update("rejectedBy", com.google.firebase.firestore.FieldValue.arrayUnion(laborId))
+                        .addOnSuccessListener(aVoid -> ToastUtils.showShort(LaborHomeActivity.this, "Job Hidden"));
+            }
+        }, lastKnownLocation);
         recyclerViewJobs.setAdapter(jobAdapter);
         recyclerViewJobs.setVisibility(View.GONE);
     }
@@ -352,13 +409,44 @@ public class LaborHomeActivity extends AppCompatActivity implements OnMapReadyCa
         }
     }
 
+    private void checkForActiveBookings() {
+        Log.d(TAG, "checkForActiveBookings: checking for active jobs...");
+        db.collection("labor_bookings")
+            .whereArrayContains("assignedWorkers", laborId)
+            .get()
+            .addOnSuccessListener(snapshots -> {
+                Log.d(TAG, "checkForActiveBookings: found " + snapshots.size() + " bookings with this worker");
+                for (DocumentSnapshot jobDoc : snapshots.getDocuments()) {
+                    String status = jobDoc.getString("status");
+                    Log.d(TAG, "Booking " + jobDoc.getId() + " status=" + status);
+                    if ("ACCEPTED".equals(status) || "ONGOING".equals(status) || "ARRIVED".equals(status)) {
+                        Double fLat = jobDoc.getDouble("farmerLat");
+                        Double fLng = jobDoc.getDouble("farmerLng");
+                        if (fLat != null && fLng != null) {
+                            Log.d(TAG, "Active booking found! Drawing route to " + fLat + ", " + fLng);
+                            showRouteToFarmer(new LatLng(fLat, fLng));
+                            return;
+                        }
+                    }
+                }
+            })
+            .addOnFailureListener(e -> Log.e(TAG, "Failed to check active bookings", e));
+    }
+
     private void listenForJobs() {
-        if (!switchOnline.isChecked() || workerWorkType.isEmpty()) return;
+        if (!switchOnline.isChecked() || workerWorkTypesList.isEmpty()) return;
 
         stopListeningForJobs();
+        checkForActiveBookings(); // Show route for existing jobs
+
+        // Ensure we don't query with more than 10 items in whereIn (Firebase limitation)
+        List<String> queryList = workerWorkTypesList;
+        if (queryList.size() > 10) {
+            queryList = queryList.subList(0, 10);
+        }
 
         jobsListener = db.collection("labor_bookings")
-            .whereEqualTo("workType", workerWorkType)
+            .whereIn("workType", queryList)
             .whereEqualTo("status", "REQUESTED")
             .addSnapshotListener((snapshots, e) -> {
                 if (e != null) {
@@ -412,6 +500,9 @@ public class LaborHomeActivity extends AppCompatActivity implements OnMapReadyCa
 
     private void updateJobMarkers(List<DocumentSnapshot> jobs) {
         if (mMap == null) return;
+        
+        // Don't overwrite the active route display
+        if (isShowingRoute) return;
         
         // Clear old markers
         for (Marker m : jobMarkers) m.remove();
@@ -517,10 +608,19 @@ public class LaborHomeActivity extends AppCompatActivity implements OnMapReadyCa
         }).addOnSuccessListener(result -> {
             Toast.makeText(this, "Job successfully accepted!", Toast.LENGTH_SHORT).show();
             
+            // Navigate to Tracking
+            Intent intent = new Intent(this, LaborTrackingActivity.class);
+            intent.putExtra("BOOKING_ID", bookingId);
+            startActivity(intent);
+            
             Double fLat = jobDoc.getDouble("farmerLat");
             Double fLng = jobDoc.getDouble("farmerLng");
+            Log.d(TAG, "Job accepted. Farmer location: " + fLat + ", " + fLng);
+            
             if (fLat != null && fLng != null) {
                 showRouteToFarmer(new LatLng(fLat, fLng));
+            } else {
+                Log.e(TAG, "Farmer location is null in jobDoc!");
             }
         }).addOnFailureListener(e -> {
             if (e instanceof FirebaseFirestoreException && ((FirebaseFirestoreException) e).getCode() == FirebaseFirestoreException.Code.ABORTED) {
@@ -544,45 +644,137 @@ public class LaborHomeActivity extends AppCompatActivity implements OnMapReadyCa
     }
     
     private void showRouteToFarmer(LatLng farmerPos) {
-        if (mMap == null || lastKnownLocation == null) return;
+        Log.d(TAG, "showRouteToFarmer called. farmerPos=" + farmerPos);
+        
+        if (mMap == null) {
+            Log.e(TAG, "showRouteToFarmer: mMap is null, aborting.");
+            return;
+        }
 
-        // Clear other markers
+        // ALWAYS make map card visible
+        View cardMap = findViewById(R.id.cardMap);
+        if (cardMap != null) {
+            cardMap.setVisibility(View.VISIBLE);
+            Log.d(TAG, "Map card set to VISIBLE");
+        }
+
+        // Set flag so snapshot listener doesn't overwrite our route
+        isShowingRoute = true;
+
+        // Try to get the laborer's current location from multiple sources
+        if (lastKnownLocation == null) {
+            Log.w(TAG, "lastKnownLocation is null. Trying GPS...");
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                fusedLocationClient.getLastLocation().addOnSuccessListener(location -> {
+                    if (location != null) {
+                        Log.d(TAG, "GPS fallback success: " + location.getLatitude() + ", " + location.getLongitude());
+                        lastKnownLocation = location;
+                        drawRouteOnMap(farmerPos);
+                    } else {
+                        // GPS failed, try Firestore stored location
+                        Log.w(TAG, "GPS returned null. Trying Firestore fallback...");
+                        db.collection("labor_workers").document(laborId).get().addOnSuccessListener(doc -> {
+                            if (doc.exists() && doc.contains("currentLat") && doc.contains("currentLng")) {
+                                double lat = doc.getDouble("currentLat");
+                                double lng = doc.getDouble("currentLng");
+                                Log.d(TAG, "Firestore fallback success: " + lat + ", " + lng);
+                                lastKnownLocation = new Location("");
+                                lastKnownLocation.setLatitude(lat);
+                                lastKnownLocation.setLongitude(lng);
+                                drawRouteOnMap(farmerPos);
+                            } else {
+                                // Last resort: use farmer location with small offset as laborer
+                                Log.e(TAG, "All location sources failed. Using farmer location as fallback.");
+                                lastKnownLocation = new Location("");
+                                lastKnownLocation.setLatitude(farmerPos.latitude + 0.01);
+                                lastKnownLocation.setLongitude(farmerPos.longitude + 0.01);
+                                drawRouteOnMap(farmerPos);
+                            }
+                        });
+                    }
+                });
+            }
+            return;
+        }
+
+        Log.d(TAG, "lastKnownLocation available: " + lastKnownLocation.getLatitude() + ", " + lastKnownLocation.getLongitude());
+        drawRouteOnMap(farmerPos);
+    }
+
+    private void drawRouteOnMap(LatLng farmerPos) {
+        Log.d(TAG, "drawRouteOnMap called");
+        
+        // Clear old markers and polylines
         for (Marker m : jobMarkers) m.remove();
         jobMarkers.clear();
+        if (routePolyline != null) routePolyline.remove();
 
-        // Add Farmer marker
-        mMap.addMarker(new MarkerOptions()
-            .position(farmerPos)
-            .title("Farmer Location")
-            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+        LatLng laborerPos = new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
+        Log.d(TAG, "Drawing route: Laborer=" + laborerPos + " -> Farmer=" + farmerPos);
 
-        LatLng currentPos = new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
+        // Add Laborer Marker (Start)
+        Marker laborerMarker = mMap.addMarker(new MarkerOptions()
+                .position(laborerPos)
+                .title("Your Location")
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
+        jobMarkers.add(laborerMarker);
 
-        MapUtils.fetchRoute(this, currentPos, farmerPos, new MapUtils.RouteCallback() {
+        // Add Field Marker (Destination)
+        Marker fieldMarker = mMap.addMarker(new MarkerOptions()
+                .position(farmerPos)
+                .title("Farmer's Field")
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+        jobMarkers.add(fieldMarker);
+
+        // Immediately zoom to show both markers while route loads
+        LatLngBounds quickBounds = new LatLngBounds.Builder()
+                .include(laborerPos)
+                .include(farmerPos)
+                .build();
+        try {
+            mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(quickBounds, 150));
+        } catch (Exception e) {
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(farmerPos, 12f));
+        }
+
+        // Fetch road-based route
+        MapUtils.fetchRoute(this, laborerPos, farmerPos, new MapUtils.RouteCallback() {
             @Override
             public void onRouteFetched(List<LatLng> path, String distance, String duration) {
+                Log.d(TAG, "Route fetched: " + distance + ", " + duration + ", points=" + path.size());
                 if (routePolyline != null) routePolyline.remove();
                 routePolyline = MapUtils.drawRoute(mMap, path, false);
-                
-                // Focus on the route
+
+                // Fit route in view
                 LatLngBounds.Builder builder = new LatLngBounds.Builder();
+                builder.include(laborerPos);
+                builder.include(farmerPos);
                 for (LatLng point : path) builder.include(point);
-                mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 200));
                 
-                ToastUtils.showLong(LaborHomeActivity.this, "Route found: " + distance + " away (" + duration + ")");
+                try {
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 150));
+                } catch (Exception e) {
+                    Log.e(TAG, "Camera animation error", e);
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(laborerPos, 12f));
+                }
+                
+                ToastUtils.showLong(LaborHomeActivity.this, "Route to Field: " + distance + " (" + duration + ")");
             }
 
             @Override
             public void onError(String message) {
-                Toast.makeText(LaborHomeActivity.this, "Routing error: " + message, Toast.LENGTH_SHORT).show();
-                // Simple straight line fallback if API fails
-                if (routePolyline != null) routePolyline.remove();
+                Log.e(TAG, "Route fetch error: " + message);
+                // Fallback to straight line
                 routePolyline = mMap.addPolyline(new com.google.android.gms.maps.model.PolylineOptions()
-                    .add(currentPos, farmerPos)
-                    .width(12).color(android.graphics.Color.parseColor("#16A34A")));
+                        .add(laborerPos, farmerPos)
+                        .width(14).color(android.graphics.Color.parseColor("#16A34A")));
                 
-                mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(
-                    new LatLngBounds.Builder().include(currentPos).include(farmerPos).build(), 200));
+                LatLngBounds bounds = new LatLngBounds.Builder()
+                        .include(laborerPos)
+                        .include(farmerPos)
+                        .build();
+                mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 150));
+                Toast.makeText(LaborHomeActivity.this, "Showing direct path to field", Toast.LENGTH_SHORT).show();
             }
         });
     }

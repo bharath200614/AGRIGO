@@ -118,11 +118,18 @@ public class DriverDispatchService extends Service {
         double lng = location.getLongitude();
         String hash = GeoFireUtils.getGeoHashForLocation(new GeoLocation(lat, lng));
 
+        // Write BOTH flat fields AND nested location map for compatibility
+        Map<String, Object> locationMap = new HashMap<>();
+        locationMap.put("latitude", lat);
+        locationMap.put("longitude", lng);
+        locationMap.put("timestamp", System.currentTimeMillis());
+
         Map<String, Object> updates = new HashMap<>();
         updates.put("currentLat", lat);
         updates.put("currentLng", lng);
         updates.put("geoHash", hash);
         updates.put("lastUpdated", System.currentTimeMillis());
+        updates.put("location", locationMap); // Nested map for TrackingActivity
 
         String collection = "drivers";
         if ("machinery_provider".equalsIgnoreCase(role)) {
@@ -135,6 +142,7 @@ public class DriverDispatchService extends Service {
     }
 
     private String providerMachineryType = "";
+    private String providerVehicleType = "";
 
     private void startListeningForRequests() {
         if (uid == null || uid.isEmpty()) return;
@@ -159,6 +167,15 @@ public class DriverDispatchService extends Service {
                             Log.d(TAG, "Provider machineryType = " + providerMachineryType);
                         }
                     });
+        } else {
+            // Fetch driver's vehicleType for open request filtering
+            providerVehicleType = preferenceManager.getVehicleType();
+            if (providerVehicleType != null) {
+                providerVehicleType = providerVehicleType.toLowerCase().trim();
+            } else {
+                providerVehicleType = "";
+            }
+            Log.d(TAG, "Provider vehicleType = " + providerVehicleType);
         }
 
         requestListener = db.collection(collectionName)
@@ -203,7 +220,16 @@ public class DriverDispatchService extends Service {
                                 if ("MACHINERY".equals(typeExtra) && !providerMachineryType.isEmpty()) {
                                     String reqType = doc.getString("machineryType");
                                     if (reqType == null || !reqType.toLowerCase().trim().equals(providerMachineryType)) {
-                                        Log.d(TAG, "Skipping open request " + doc.getId() + " — type mismatch: " + reqType + " vs " + providerMachineryType);
+                                        Log.d(TAG, "Skipping open request " + doc.getId() + " — machinery type mismatch: " + reqType + " vs " + providerMachineryType);
+                                        continue;
+                                    }
+                                }
+                                
+                                // For transport drivers, filter by vehicleType match
+                                if ("TRANSPORT".equals(typeExtra) && !providerVehicleType.isEmpty()) {
+                                    String reqType = doc.getString("vehicleType");
+                                    if (reqType == null || !reqType.toLowerCase().trim().equals(providerVehicleType)) {
+                                        Log.d(TAG, "Skipping open request " + doc.getId() + " — vehicle type mismatch: " + reqType + " vs " + providerVehicleType);
                                         continue;
                                     }
                                 }

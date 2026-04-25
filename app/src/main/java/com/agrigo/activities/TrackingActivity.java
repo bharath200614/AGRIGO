@@ -426,6 +426,27 @@ public class TrackingActivity extends AppCompatActivity implements OnMapReadyCal
         checkLocationPermissionAndStart();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (mMap != null && isDriver && fusedLocationClient != null && locationCallback != null) {
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                LocationRequest locationRequest = new LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 3000)
+                    .setMinUpdateDistanceMeters(5f)
+                    .build();
+                fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper());
+            }
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (fusedLocationClient != null && locationCallback != null) {
+            fusedLocationClient.removeLocationUpdates(locationCallback);
+        }
+    }
+
     private void checkLocationPermissionAndStart() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
@@ -507,14 +528,25 @@ public class TrackingActivity extends AppCompatActivity implements OnMapReadyCal
                     if (error != null) return;
                     if (snapshot != null && snapshot.exists()) {
                         try {
-                            Map<String, Object> loc = (Map<String, Object>) snapshot.get("location");
-                            if (loc != null) {
-                                Double lat = (Double) loc.get("latitude");
-                                Double lng = (Double) loc.get("longitude");
-                                if (lat != null && lng != null) {
-                                    android.util.Log.d("LiveTracking", "Farmer received location update: " + lat + ", " + lng);
-                                    handleLocationUpdate(lat, lng);
+                            Double lat = null;
+                            Double lng = null;
+
+                            // First check for flat fields (from newer dispatch service)
+                            lat = snapshot.getDouble("currentLat");
+                            lng = snapshot.getDouble("currentLng");
+
+                            // Fallback to nested map
+                            if (lat == null || lng == null) {
+                                Map<String, Object> loc = (Map<String, Object>) snapshot.get("location");
+                                if (loc != null) {
+                                    lat = (Double) loc.get("latitude");
+                                    lng = (Double) loc.get("longitude");
                                 }
+                            }
+
+                            if (lat != null && lng != null) {
+                                android.util.Log.d("LiveTracking", "Farmer received location update: " + lat + ", " + lng);
+                                handleLocationUpdate(lat, lng);
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -530,8 +562,10 @@ public class TrackingActivity extends AppCompatActivity implements OnMapReadyCal
     private void handleLocationUpdate(double lat, double lng) {
         // If emulator gives us 0,0, mock a location in Hyderabad to demonstrate
         if (Math.abs(lat) < 1.0 && Math.abs(lng) < 1.0) {
-            lat = 17.4350;
-            lng = 78.4410;
+            // Add a tiny random offset to simulate movement so marker animates
+            double offset = (Math.random() - 0.5) * 0.001; 
+            lat = 17.4350 + offset;
+            lng = 78.4410 + offset;
         }
 
         LatLng currentLocation = new LatLng(lat, lng);
@@ -610,7 +644,7 @@ public class TrackingActivity extends AppCompatActivity implements OnMapReadyCal
                 });
             } else if (currentDecodedPath != null && !currentDecodedPath.isEmpty()) {
                 boolean isOnPath = PolyUtil.isLocationOnPath(currentLocation, currentDecodedPath, true, 50);
-                if (!isOnPath && (System.currentTimeMillis() - lastRouteFetchTime > 15000)) {
+                if (!isOnPath && (System.currentTimeMillis() - lastRouteFetchTime > 10000)) { // 10s throttle
                     final boolean dotted2 = useDottedRoute;
                     MapUtils.fetchRoute(this, currentLocation, destinationLatLng, new MapUtils.RouteCallback() {
                         @Override
@@ -685,25 +719,38 @@ public class TrackingActivity extends AppCompatActivity implements OnMapReadyCal
                 case "small van": drawableRes = R.drawable.ic_small_van; break;
                 case "mini truck": drawableRes = R.drawable.ic_mini_truck; break;
                 case "pickup truck": drawableRes = R.drawable.ic_pickup_truck; break;
-                case "large truck": drawableRes = R.drawable.ic_large_truck; break;
+                case "large truck":
+                case "lorry": drawableRes = R.drawable.ic_large_truck; break;
                 default: drawableRes = R.drawable.ic_truck; break;
             }
         }
 
-        // Vector to Bitmap conversion so Google Maps can render it
-        Drawable vectorDrawable = ContextCompat.getDrawable(this, drawableRes);
-        if (vectorDrawable != null) {
-            vectorDrawable.setTint(Color.parseColor("#16A34A")); // Solid Premium Agriculture Green
-            int h = vectorDrawable.getIntrinsicHeight();
-            int w = vectorDrawable.getIntrinsicWidth();
-            // Scale up icon for map marker
-            w = (int) (w * 1.6);
-            h = (int) (h * 1.6);
-            vectorDrawable.setBounds(0, 0, w, h);
-            Bitmap bm = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
-            Canvas canvas = new Canvas(bm);
-            vectorDrawable.draw(canvas);
-            return BitmapDescriptorFactory.fromBitmap(bm);
+        // PNG Bitmap conversion for Google Maps markers
+        try {
+            Bitmap original = android.graphics.BitmapFactory.decodeResource(getResources(), drawableRes);
+            if (original != null) {
+                // Scale to appropriate map marker size (80x80 dp)
+                int targetSize = (int) (80 * getResources().getDisplayMetrics().density);
+                float aspectRatio = (float) original.getWidth() / original.getHeight();
+                int targetWidth = aspectRatio >= 1 ? targetSize : (int) (targetSize * aspectRatio);
+                int targetHeight = aspectRatio >= 1 ? (int) (targetSize / aspectRatio) : targetSize;
+                Bitmap scaled = Bitmap.createScaledBitmap(original, targetWidth, targetHeight, true);
+                return BitmapDescriptorFactory.fromBitmap(scaled);
+            }
+        } catch (Exception e) {
+            // Fallback: try as vector drawable
+            Drawable vectorDrawable = ContextCompat.getDrawable(this, drawableRes);
+            if (vectorDrawable != null) {
+                int h = vectorDrawable.getIntrinsicHeight();
+                int w = vectorDrawable.getIntrinsicWidth();
+                w = (int) (w * 1.6);
+                h = (int) (h * 1.6);
+                vectorDrawable.setBounds(0, 0, w, h);
+                Bitmap bm = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
+                Canvas canvas = new Canvas(bm);
+                vectorDrawable.draw(canvas);
+                return BitmapDescriptorFactory.fromBitmap(bm);
+            }
         }
         return BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN);
     }

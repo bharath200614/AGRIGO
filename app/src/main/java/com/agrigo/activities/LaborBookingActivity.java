@@ -11,7 +11,6 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -41,7 +40,12 @@ import java.util.Map;
 public class LaborBookingActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private ImageView btnBack;
-    private Spinner spinnerWorkType;
+    private LinearLayout[] categoryViews;
+    private ImageView[] categoryIcons;
+    private TextView[] categoryTexts;
+    private int selectedCategoryIndex = 0; // Default to first item
+    private final String[] workTypes = {"land preparation", "sowing/planting", "weeding", "irrigation", "harvesting"};
+
     private EditText etWorkers, etDuration;
     private TextView tvEstimatedPrice;
     private MaterialButton btnSubmitRequest;
@@ -75,7 +79,6 @@ public class LaborBookingActivity extends AppCompatActivity implements OnMapRead
 
     private void initViews() {
         btnBack = findViewById(R.id.btnBack);
-        spinnerWorkType = findViewById(R.id.spinnerWorkType);
         etWorkers = findViewById(R.id.etWorkers);
         etDuration = findViewById(R.id.etDuration);
         tvEstimatedPrice = findViewById(R.id.tvEstimatedPrice);
@@ -87,10 +90,35 @@ public class LaborBookingActivity extends AppCompatActivity implements OnMapRead
         tvLocationAddress = findViewById(R.id.tvLocationAddress);
         pbLocationProgress = findViewById(R.id.pbLocationProgress);
 
-        // Populate Spinner
-        String[] jobs = {"Harvesting", "Planting", "Cleaning", "Weeding"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, jobs);
-        spinnerWorkType.setAdapter(adapter);
+        // Setup Category Cards
+        categoryViews = new LinearLayout[]{
+                findViewById(R.id.catLandPrep),
+                findViewById(R.id.catSowing),
+                findViewById(R.id.catWeeding),
+                findViewById(R.id.catIrrigation),
+                findViewById(R.id.catHarvesting)
+        };
+
+        categoryIcons = new ImageView[]{
+                findViewById(R.id.iconLandPrep),
+                findViewById(R.id.iconSowing),
+                findViewById(R.id.iconWeeding),
+                findViewById(R.id.iconIrrigation),
+                findViewById(R.id.iconHarvesting)
+        };
+
+        categoryTexts = new TextView[]{
+                findViewById(R.id.tvLandPrep),
+                findViewById(R.id.tvSowing),
+                findViewById(R.id.tvWeeding),
+                findViewById(R.id.tvIrrigation),
+                findViewById(R.id.tvHarvesting)
+        };
+
+        for (int i = 0; i < categoryViews.length; i++) {
+            final int index = i;
+            categoryViews[i].setOnClickListener(v -> selectCategory(index));
+        }
 
         TextWatcher priceCalculator = new TextWatcher() {
             @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
@@ -102,15 +130,22 @@ public class LaborBookingActivity extends AppCompatActivity implements OnMapRead
         etWorkers.addTextChangedListener(priceCalculator);
         etDuration.addTextChangedListener(priceCalculator);
         
-        // Fetch wage when work type changes
-        spinnerWorkType.setOnItemSelectedListener(new android.widget.AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(android.widget.AdapterView<?> parent, View view, int position, long id) {
-                fetchAvgWageForWorkType(jobs[position]);
+        // Select first item by default
+        selectCategory(0);
+    }
+
+    private void selectCategory(int index) {
+        selectedCategoryIndex = index;
+        for (int i = 0; i < categoryViews.length; i++) {
+            if (i == index) {
+                categoryViews[i].setBackgroundResource(R.drawable.bg_category_selected);
+                categoryTexts[i].setTextColor(0xFF16A34A);
+            } else {
+                categoryViews[i].setBackgroundResource(R.drawable.bg_category_unselected);
+                categoryTexts[i].setTextColor(0xFF64748B);
             }
-            @Override
-            public void onNothingSelected(android.widget.AdapterView<?> parent) {}
-        });
+        }
+        fetchAvgWageForWorkType(workTypes[index]);
     }
 
     private double fetchedAvgWage = 500.0; // Default ₹500/day
@@ -139,7 +174,7 @@ public class LaborBookingActivity extends AppCompatActivity implements OnMapRead
     
     private void fetchAvgWageForWorkType(String workType) {
         db.collection("labor_workers")
-                .whereEqualTo("workType", workType.toLowerCase().trim())
+                .whereArrayContains("workTypes", workType.toLowerCase().trim())
                 .get()
                 .addOnSuccessListener(querySnapshot -> {
                     double totalWage = 0;
@@ -224,8 +259,7 @@ public class LaborBookingActivity extends AppCompatActivity implements OnMapRead
     }
 
     private void submitLaborRequest() {
-        String rawWorkType = spinnerWorkType.getSelectedItem().toString();
-        String workType = rawWorkType.toLowerCase().trim();
+        String workType = workTypes[selectedCategoryIndex];
         String workersStr = etWorkers.getText().toString().trim();
         String durationStr = etDuration.getText().toString().trim();
         String estimatedPrice = tvEstimatedPrice.getText().toString();
