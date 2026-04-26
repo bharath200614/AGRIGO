@@ -11,7 +11,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/bottomNavigation"
-        android:scrollbars="none">
+        android:scrollbars="none"
+        android:clipChildren="false"
+        android:clipToPadding="false">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -28,6 +30,18 @@
                 android:paddingTop="32dp"
                 android:paddingBottom="24dp"
                 android:background="@color/white">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/btnProfileAvatar"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:src="@drawable/profile_avatar"
+                    android:scaleType="centerCrop"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:layout_marginEnd="16dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    app:shapeAppearanceOverlay="@style/ShapeAppearance.AgriGo.Circle" />
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -64,17 +78,6 @@
                     android:padding="8dp"
                     android:layout_marginEnd="12dp"
                     android:background="?attr/selectableItemBackgroundBorderless" />
-                    
-                <com.google.android.material.imageview.ShapeableImageView
-                    android:id="@+id/btnProfileAvatar"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:src="@drawable/profile_avatar"
-                    android:scaleType="centerCrop"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    app:shapeAppearanceOverlay="@style/ShapeAppearance.AgriGo.Circle" />
             </LinearLayout>
 
             <!-- Main Booking Services Section -->
@@ -262,12 +265,13 @@
                                 android:background="@drawable/bg_icon_circle_green"
                                 android:backgroundTint="@color/primary_green_soft" />
 
-                            <ImageView
-                                android:layout_width="28dp"
-                                android:layout_height="28dp"
+                            <com.google.android.material.imageview.ShapeableImageView
+                                android:layout_width="48dp"
+                                android:layout_height="48dp"
                                 android:layout_gravity="center"
-                                android:src="@drawable/ic_people"
-                                app:tint="@color/primary_green" />
+                                android:src="@drawable/ic_farm_labor_generated"
+                                android:scaleType="centerCrop"
+                                app:shapeAppearanceOverlay="@style/ShapeAppearance.AgriGo.Circle" />
                         </FrameLayout>
 
                         <LinearLayout
@@ -309,8 +313,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingHorizontal="24dp"
-                android:paddingBottom="48dp">
+                android:paddingHorizontal="20dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="32dp"
+                android:clipToPadding="false"
+                android:clipChildren="false">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -320,100 +327,163 @@
                     android:textStyle="bold"
                     android:textColor="@color/text_primary"
                     android:fontFamily="sans-serif"
-                    android:layout_marginBottom="16dp" />
+                    android:layout_marginBottom="14dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:baselineAligned="false">
+                    android:baselineAligned="false"
+                    android:weightSum="3"
+                    android:clipToPadding="false"
+                    android:clipChildren="false"
+                    android:paddingTop="4dp"
+                    android:paddingBottom="6dp">
 
+                    <!-- Bookings Quick Action -->
                     <com.google.android.material.card.MaterialCardView
                         android:id="@+id/btnQuickBookings"
-                        style="@style/CardViewStyle.Elevated"
                         android:layout_width="0dp"
-                        android:layout_height="100dp"
+                        android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:layout_marginEnd="8dp"
+                        android:layout_marginEnd="6dp"
                         android:clickable="true"
-                        android:focusable="true">
+                        android:focusable="true"
+                        app:cardBackgroundColor="@color/white"
+                        app:cardCornerRadius="16dp"
+                        app:cardElevation="2dp"
+                        app:strokeWidth="0dp">
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:orientation="vertical">
-                            <ImageView
-                                android:layout_width="32dp"
-                                android:layout_height="32dp"
-                                android:src="@drawable/ic_bookings"
-                                app:tint="@color/primary_blue" />
+                            android:orientation="vertical"
+                            android:paddingTop="20dp"
+                            android:paddingBottom="16dp"
+                            android:paddingHorizontal="8dp">
+                            <FrameLayout
+                                android:layout_width="48dp"
+                                android:layout_height="48dp">
+                                <View
+                                    android:layout_width="48dp"
+                                    android:layout_height="48dp"
+                                    android:background="@drawable/bg_icon_circle_green"
+                                    android:backgroundTint="@color/primary_green_soft" />
+                                <ImageView
+                                    android:layout_width="24dp"
+                                    android:layout_height="24dp"
+                                    android:layout_gravity="center"
+                                    android:src="@drawable/ic_bookings"
+                                    app:tint="@color/primary_green" />
+                            </FrameLayout>
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="8dp"
+                                android:layout_marginTop="10dp"
                                 android:text="Bookings"
-                                android:textSize="14sp"
-                                android:textColor="@color/text_primary" />
+                                android:textSize="13sp"
+                                android:textStyle="bold"
+                                android:textColor="@color/text_primary"
+                                android:gravity="center" />
                         </LinearLayout>
                     </com.google.android.material.card.MaterialCardView>
 
+                    <!-- Track Quick Action -->
                     <com.google.android.material.card.MaterialCardView
                         android:id="@+id/btnQuickTrack"
-                        style="@style/CardViewStyle.Elevated"
                         android:layout_width="0dp"
-                        android:layout_height="100dp"
+                        android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:layout_marginHorizontal="8dp"
+                        android:layout_marginHorizontal="6dp"
                         android:clickable="true"
-                        android:focusable="true">
+                        android:focusable="true"
+                        app:cardBackgroundColor="@color/white"
+                        app:cardCornerRadius="16dp"
+                        app:cardElevation="2dp"
+                        app:strokeWidth="0dp">
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:orientation="vertical">
-                            <ImageView
-                                android:layout_width="32dp"
-                                android:layout_height="32dp"
-                                android:src="@drawable/ic_track"
-                                app:tint="@color/primary_blue" />
+                            android:orientation="vertical"
+                            android:paddingTop="20dp"
+                            android:paddingBottom="16dp"
+                            android:paddingHorizontal="8dp">
+                            <FrameLayout
+                                android:layout_width="48dp"
+                                android:layout_height="48dp">
+                                <View
+                                    android:layout_width="48dp"
+                                    android:layout_height="48dp"
+                                    android:background="@drawable/bg_icon_circle_green"
+                                    android:backgroundTint="@color/primary_green_soft" />
+                                <ImageView
+                                    android:layout_width="24dp"
+                                    android:layout_height="24dp"
+                                    android:layout_gravity="center"
+                                    android:src="@drawable/ic_track"
+                                    app:tint="@color/primary_green" />
+                            </FrameLayout>
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="8dp"
+                                android:layout_marginTop="10dp"
                                 android:text="Track"
-                                android:textSize="14sp"
-                                android:textColor="@color/text_primary" />
+                                android:textSize="13sp"
+                                android:textStyle="bold"
+                                android:textColor="@color/text_primary"
+                                android:gravity="center" />
                         </LinearLayout>
                     </com.google.android.material.card.MaterialCardView>
 
+                    <!-- Profile Quick Action -->
                     <com.google.android.material.card.MaterialCardView
                         android:id="@+id/btnQuickProfile"
-                        style="@style/CardViewStyle.Elevated"
                         android:layout_width="0dp"
-                        android:layout_height="100dp"
+                        android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:layout_marginStart="8dp"
+                        android:layout_marginStart="6dp"
                         android:clickable="true"
-                        android:focusable="true">
+                        android:focusable="true"
+                        app:cardBackgroundColor="@color/white"
+                        app:cardCornerRadius="16dp"
+                        app:cardElevation="2dp"
+                        app:strokeWidth="0dp">
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:orientation="vertical">
-                            <ImageView
-                                android:layout_width="32dp"
-                                android:layout_height="32dp"
-                                android:src="@drawable/ic_person"
-                                app:tint="@color/primary_blue" />
+                            android:orientation="vertical"
+                            android:paddingTop="20dp"
+                            android:paddingBottom="16dp"
+                            android:paddingHorizontal="8dp">
+                            <FrameLayout
+                                android:layout_width="48dp"
+                                android:layout_height="48dp">
+                                <View
+                                    android:layout_width="48dp"
+                                    android:layout_height="48dp"
+                                    android:background="@drawable/bg_icon_circle_green"
+                                    android:backgroundTint="@color/primary_green_soft" />
+                                <ImageView
+                                    android:layout_width="24dp"
+                                    android:layout_height="24dp"
+                                    android:layout_gravity="center"
+                                    android:src="@drawable/ic_person"
+                                    app:tint="@color/primary_green" />
+                            </FrameLayout>
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="8dp"
+                                android:layout_marginTop="10dp"
                                 android:text="Profile"
-                                android:textSize="14sp"
-                                android:textColor="@color/text_primary" />
+                                android:textSize="13sp"
+                                android:textStyle="bold"
+                                android:textColor="@color/text_primary"
+                                android:gravity="center" />
                         </LinearLayout>
                     </com.google.android.material.card.MaterialCardView>
+
                 </LinearLayout>
             </LinearLayout>
 

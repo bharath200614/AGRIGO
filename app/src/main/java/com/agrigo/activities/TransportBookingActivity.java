@@ -512,7 +512,8 @@ public class TransportBookingActivity extends AppCompatActivity implements OnMap
         transportMap = googleMap;
         mapReady = true;
 
-        // Apply Green Map Style
+        // Apply Green Map Style (Commented out to prevent Emulator GPU ANR)
+        /*
         try {
             boolean success = googleMap.setMapStyle(
                     MapStyleOptions.loadRawResourceStyle(this, R.raw.map_style_green));
@@ -522,6 +523,7 @@ public class TransportBookingActivity extends AppCompatActivity implements OnMap
         } catch (android.content.res.Resources.NotFoundException e) {
             android.util.Log.e("MapStyle", "Can't find style. Error: ", e);
         }
+        */
 
         LatLng india = new LatLng(20.5937, 78.9629);
         transportMap.moveCamera(CameraUpdateFactory.newLatLngZoom(india, 5f));

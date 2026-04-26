@@ -18,6 +18,7 @@ public class FarmerDashboardActivity extends AppCompatActivity {
     private ImageView btnNotifications;
     private com.google.android.material.imageview.ShapeableImageView btnProfileAvatar;
 
+
     private com.google.android.material.card.MaterialCardView cardTransport, cardMachinery, cardLabor;
     private com.google.android.material.card.MaterialCardView btnQuickBookings, btnQuickTrack, btnQuickProfile;
     
@@ -41,6 +42,7 @@ public class FarmerDashboardActivity extends AppCompatActivity {
         tvFarmerName = findViewById(R.id.tvFarmerName);
         btnNotifications = findViewById(R.id.btnNotifications);
         btnProfileAvatar = findViewById(R.id.btnProfileAvatar);
+
 
         cardTransport = findViewById(R.id.cardTransport);
         cardMachinery = findViewById(R.id.cardMachinery);
@@ -66,10 +68,6 @@ public class FarmerDashboardActivity extends AppCompatActivity {
             startActivity(new Intent(this, MyBookingsActivity.class));
         });
         btnQuickProfile.setOnClickListener(v -> startActivity(new Intent(this, ProfileActivity.class)));
-
-        // Profile Avatar
-        btnProfileAvatar.setOnClickListener(v -> startActivity(new Intent(this, ProfileActivity.class)));
-
         // Bottom Navigation
         bottomNavigationView.setSelectedItemId(R.id.nav_home);
         bottomNavigationView.setOnItemSelectedListener(item -> {
