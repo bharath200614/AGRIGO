@@ -69,9 +69,9 @@ public class LaborJobAdapter extends RecyclerView.Adapter<LaborJobAdapter.JobVie
         holder.tvWorkType.setText(typeDisplay);
         
         String duration = doc.getString("duration");
-        holder.tvDuration.setText(duration + (duration != null && duration.equals("1") ? " Day" : " Days"));
+        holder.tvDuration.setText(duration + " " + (duration != null && duration.equals("1") ? holder.itemView.getContext().getString(R.string.day) : holder.itemView.getContext().getString(R.string.days)));
         
-        holder.tvFarmerName.setText("Posted by: " + doc.getString("farmerName"));
+        holder.tvFarmerName.setText(holder.itemView.getContext().getString(R.string.posted_by) + doc.getString("farmerName"));
         
         // Location address
         String address = doc.getString("address");
@@ -83,7 +83,7 @@ public class LaborJobAdapter extends RecyclerView.Adapter<LaborJobAdapter.JobVie
         } else if (fLat != null && fLng != null) {
             holder.tvLocation.setText(String.format(Locale.getDefault(), "📍 %.4f, %.4f", fLat, fLng));
         } else {
-            holder.tvLocation.setText("📍 Location not available");
+            holder.tvLocation.setText("📍 " + holder.itemView.getContext().getString(R.string.location_not_available));
         }
 
         // Distance Calculation
@@ -102,7 +102,7 @@ public class LaborJobAdapter extends RecyclerView.Adapter<LaborJobAdapter.JobVie
         long required = req != null ? req : 1;
         long accepted = acc != null ? acc : 0;
         
-        holder.tvWorkersCount.setText(accepted + "/" + required + " Workers");
+        holder.tvWorkersCount.setText(accepted + "/" + required + " " + holder.itemView.getContext().getString(R.string.workers_label));
         
         String price = doc.getString("estimatedPrice");
         holder.tvEstimatedPrice.setText(price != null ? price : "₹0.00");
@@ -110,11 +110,11 @@ public class LaborJobAdapter extends RecyclerView.Adapter<LaborJobAdapter.JobVie
         // Disable accept button if full
         if (accepted >= required) {
             holder.btnAcceptJob.setEnabled(false);
-            holder.btnAcceptJob.setText("Job Full");
+            holder.btnAcceptJob.setText(holder.itemView.getContext().getString(R.string.job_full));
             holder.tvWorkersCount.setTextColor(0xFFD32F2F); // Red
         } else {
             holder.btnAcceptJob.setEnabled(true);
-            holder.btnAcceptJob.setText("Accept Job");
+            holder.btnAcceptJob.setText(holder.itemView.getContext().getString(R.string.accept_job));
             holder.tvWorkersCount.setTextColor(0xFF2E7D32); // Green
         }
 

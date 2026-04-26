@@ -29,7 +29,7 @@ import com.google.firebase.FirebaseNetworkException;
 /**
  * Login Activity - User authentication screen
  */
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends BaseActivity {
 
     private EditText etEmail;
     private EditText etPassword;
@@ -233,9 +233,6 @@ public class LoginActivity extends AppCompatActivity {
         } else if ("labor".equalsIgnoreCase(role)) {
             ToastUtils.showShort(this, "Welcome Labour: " + (preferenceManager.getUserName() != null ? preferenceManager.getUserName() : ""));
             intent = new Intent(this, LaborHomeActivity.class);
-        } else if ("machinery_provider".equalsIgnoreCase(role)) {
-            ToastUtils.showShort(this, "Welcome Machinery Provider");
-            intent = new Intent(this, MachineryProviderActivity.class);
         } else {
             // Fallback
             ToastUtils.showShort(this, "Role: " + role + " - Defaulting to Farmer");

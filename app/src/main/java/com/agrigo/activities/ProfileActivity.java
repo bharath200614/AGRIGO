@@ -18,7 +18,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class ProfileActivity extends AppCompatActivity {
+public class ProfileActivity extends BaseActivity {
 
     private ImageView btnBack;
     private TextInputEditText editName;
@@ -39,7 +39,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     // Vehicle type data — strings match the Crop/Weight/Vehicle mapping exactly
     private static final String[] VEHICLE_NAMES = {
-            "Auto", "Small Van", "Mini Truck", "Pickup Truck", "Truck", "Large Truck"
+            "Auto", "Small Van", "Mini Truck", "Pickup Truck", "Truck", "Large Truck", "Harvester", "Sprayer", "Tractor", "Cultivator"
     };
 
     private static final int[] VEHICLE_ICONS = {
@@ -48,7 +48,11 @@ public class ProfileActivity extends AppCompatActivity {
             R.drawable.ic_mini_truck,
             R.drawable.ic_pickup_truck,
             R.drawable.ic_truck,
-            R.drawable.ic_large_truck
+            R.drawable.ic_large_truck,
+            R.drawable.ic_harvester,
+            R.drawable.ic_sprayer,
+            R.drawable.ic_tractor,
+            R.drawable.ic_cultivator
     };
 
     @Override
@@ -143,10 +147,30 @@ public class ProfileActivity extends AppCompatActivity {
         }
     }
 
-    /** Updates the leading icon on the Vehicle Type TextInputLayout. */
+
+    /** Updates the leading icon on the Vehicle Type TextInputLayout with a scaled down image. */
     private void updateFieldIcon(int position) {
         if (position >= 0 && position < VEHICLE_ICONS.length) {
-            layoutVehicleType.setStartIconDrawable(VEHICLE_ICONS[position]);
+            int drawableId = VEHICLE_ICONS[position];
+            int targetSizePx = (int) (28 * getResources().getDisplayMetrics().density);
+            
+            android.graphics.Bitmap bitmap = android.graphics.BitmapFactory.decodeResource(getResources(), drawableId);
+            if (bitmap != null) {
+                float ratio = Math.min(
+                    (float) targetSizePx / bitmap.getWidth(),
+                    (float) targetSizePx / bitmap.getHeight()
+                );
+                int width = Math.round(ratio * bitmap.getWidth());
+                int height = Math.round(ratio * bitmap.getHeight());
+                if (width <= 0) width = 1;
+                if (height <= 0) height = 1;
+                
+                android.graphics.Bitmap scaledBitmap = android.graphics.Bitmap.createScaledBitmap(bitmap, width, height, true);
+                android.graphics.drawable.BitmapDrawable d = new android.graphics.drawable.BitmapDrawable(getResources(), scaledBitmap);
+                layoutVehicleType.setStartIconDrawable(d);
+            } else {
+                layoutVehicleType.setStartIconDrawable(drawableId);
+            }
             layoutVehicleType.setStartIconTintList(null); // Preserve PNG colors
         }
     }
@@ -192,7 +216,7 @@ public class ProfileActivity extends AppCompatActivity {
         btnBack.setOnClickListener(v -> finish());
 
         btnLanguage.setOnClickListener(v -> {
-            Toast.makeText(this, "Language selection coming soon (English/Hindi)", Toast.LENGTH_SHORT).show();
+            showLanguageDialog();
         });
 
         btnLogout.setOnClickListener(v -> logout());
@@ -246,6 +270,23 @@ public class ProfileActivity extends AppCompatActivity {
         } else {
             layoutVehicleType.setVisibility(View.GONE);
         }
+    }
+
+    private void showLanguageDialog() {
+        String[] languages = {"English", "తెలుగు (Telugu)"};
+        int checkedItem = com.agrigo.utils.LocaleHelper.getLanguage(this).equals("te") ? 1 : 0;
+
+        new androidx.appcompat.app.AlertDialog.Builder(this)
+                .setTitle(getString(R.string.language_label))
+                .setSingleChoiceItems(languages, checkedItem, (dialog, which) -> {
+                    String langCode = (which == 1) ? "te" : "en";
+                    com.agrigo.utils.LocaleHelper.setLocale(this, langCode);
+                    dialog.dismiss();
+                    
+                    recreate();
+                })
+                .setNegativeButton(getString(R.string.cancel), null)
+                .show();
     }
 
     @Override

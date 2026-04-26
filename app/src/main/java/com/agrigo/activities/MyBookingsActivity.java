@@ -28,7 +28,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MyBookingsActivity extends AppCompatActivity {
+public class MyBookingsActivity extends BaseActivity {
 
     private static final String TAG = "MyBookingsActivity";
 

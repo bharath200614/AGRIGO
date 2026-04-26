@@ -38,7 +38,7 @@ import java.util.Map;
 /**
  * Registration Activity - User account creation screen
  */
-public class RegisterActivity extends AppCompatActivity {
+public class RegisterActivity extends BaseActivity {
 
     private EditText etFullName;
     private EditText etEmail;
@@ -50,10 +50,6 @@ public class RegisterActivity extends AppCompatActivity {
     private TextView tvErrorMessage;
     private ProgressBar progressBar;
     
-    // Machinery Extras
-    private LinearLayout layoutMachineryExtras;
-    private EditText etPhone;
-    private Spinner spinnerMachineryType;
 
     // Labor Extras
     private LinearLayout layoutLaborExtras;
@@ -105,24 +101,9 @@ public class RegisterActivity extends AppCompatActivity {
         tvErrorMessage = findViewById(R.id.tv_error_message);
         progressBar = findViewById(R.id.progress_bar);
         
-        layoutMachineryExtras = findViewById(R.id.layout_machinery_extras);
-        etPhone = findViewById(R.id.et_phone);
-        spinnerMachineryType = findViewById(R.id.spinner_machinery_type);
-        
         // Labor extras
         layoutLaborExtras = findViewById(R.id.layout_labor_extras);
         spinnerWorkType = findViewById(R.id.spinner_work_type);
-        
-        String[] machines = {"Select Machinery Type...", "Harvester", "Sprayer", "Tractor", "Cultivator"};
-        int[] icons = {
-                0, // No icon for default selection
-                R.drawable.ic_harvester,
-                R.drawable.ic_sprayer,
-                R.drawable.ic_tractor,
-                R.drawable.ic_cultivator
-        };
-        com.agrigo.adapters.MachinerySpinnerAdapter adapter = new com.agrigo.adapters.MachinerySpinnerAdapter(this, machines, icons);
-        spinnerMachineryType.setAdapter(adapter);
 
         String[] workTypes = {"Select Work Type...", "Harvesting", "Planting", "Weeding", "Cleaning"};
         ArrayAdapter<String> laborAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, workTypes);
@@ -132,7 +113,7 @@ public class RegisterActivity extends AppCompatActivity {
         layoutDriverExtras = findViewById(R.id.layout_driver_extras);
         spinnerVehicleType = findViewById(R.id.spinner_vehicle_type);
         
-        String[] vehicles = {"Select Vehicle Type...", "Auto", "Mini Truck", "Truck", "Lorry"};
+        String[] vehicles = {"Select Vehicle Type...", "Auto", "Mini Truck", "Truck", "Lorry", "Harvester", "Sprayer", "Tractor", "Cultivator"};
         ArrayAdapter<String> driverAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, vehicles);
         spinnerVehicleType.setAdapter(driverAdapter);
     }
@@ -148,7 +129,6 @@ public class RegisterActivity extends AppCompatActivity {
         });
         
         rgRole.setOnCheckedChangeListener((group, checkedId) -> {
-            layoutMachineryExtras.setVisibility(checkedId == R.id.rb_machinery ? View.VISIBLE : View.GONE);
             layoutLaborExtras.setVisibility(checkedId == R.id.rb_labor ? View.VISIBLE : View.GONE);
             layoutDriverExtras.setVisibility(checkedId == R.id.rb_driver ? View.VISIBLE : View.GONE);
         });
@@ -190,8 +170,6 @@ public class RegisterActivity extends AppCompatActivity {
             role = "driver";
         } else if (selectedRoleId == R.id.rb_labor) {
             role = "labor";
-        } else if (selectedRoleId == R.id.rb_machinery) {
-            role = "machinery_provider";
         }
         
         String phone = "";
@@ -213,24 +191,6 @@ public class RegisterActivity extends AppCompatActivity {
             }
         }
 
-        // Machinery provider validation
-        if ("machinery_provider".equals(role)) {
-            phone = etPhone.getText().toString().trim();
-            if (phone.isEmpty() || phone.length() < 10) {
-                etPhone.setError("Enter a valid phone number");
-                return;
-            }
-            if (spinnerMachineryType.getSelectedItem() != null) {
-                machineryType = spinnerMachineryType.getSelectedItem().toString();
-                if ("Select Machinery Type...".equals(machineryType)) {
-                    ToastUtils.showShort(this, "Please select a machinery type");
-                    return;
-                }
-            } else {
-                ToastUtils.showShort(this, "Please select a machinery type");
-                return;
-            }
-        }
 
         // Labor worker validation
         if ("labor".equals(role)) {
@@ -302,23 +262,6 @@ public class RegisterActivity extends AppCompatActivity {
         db.collection("users").document(userId)
             .set(userMap)
             .addOnSuccessListener(aVoid -> {
-                
-                // If it is a machinery provider, save into machinery_providers collection
-                if ("machinery_provider".equals(role)) {
-                    Map<String, Object> providerMap = new HashMap<>();
-                    providerMap.put("providerId", userId);
-                    providerMap.put("name", name);
-                    providerMap.put("phone", phone);
-                    providerMap.put("machineryType", machineryType.toLowerCase().trim());
-                    providerMap.put("currentLat", 0.0);
-                    providerMap.put("currentLng", 0.0);
-                    providerMap.put("geoHash", "");
-                    providerMap.put("status", "FREE");
-                    providerMap.put("isAvailable", true);
-                    providerMap.put("isOnline", false);
-                    
-                    db.collection("machinery_providers").document(userId).set(providerMap);
-                }
 
                 // If it is a driver, save into drivers collection
                 if ("driver".equals(role)) {
@@ -388,8 +331,6 @@ public class RegisterActivity extends AppCompatActivity {
             intent = new Intent(this, DriverHomeActivity.class);
         } else if ("labor".equalsIgnoreCase(role)) {
             intent = new Intent(this, LaborHomeActivity.class);
-        } else if ("machinery_provider".equalsIgnoreCase(role)) {
-            intent = new Intent(this, MachineryProviderActivity.class);
         } else {
             intent = new Intent(this, FarmerDashboardActivity.class);
         }

@@ -7,12 +7,14 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 import java.util.concurrent.TimeUnit;
 
+import com.agrigo.BuildConfig;
+
 /**
  * Singleton Retrofit client for the Render ML API
  */
 public class RetrofitClient {
 
-    private static final String BASE_URL = "https://machine-learning-b5hm.onrender.com/";
+    private static final String BASE_URL = BuildConfig.ML_API_BASE_URL;
     private static Retrofit retrofit = null;
 
     public static Retrofit getClient() {

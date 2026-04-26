@@ -29,7 +29,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Welcome Back 👋"
+                android:text="@string/welcome_back"
                 android:textSize="14sp"
                 android:textColor="#64748B"
                 android:fontFamily="sans-serif-medium" />
@@ -117,7 +117,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Driver Status"
+                            android:text="@string/driver_status"
                             android:textColor="#1E293B"
                             android:textSize="17sp"
                             android:textStyle="bold"
@@ -127,15 +127,17 @@
                             android:id="@+id/tv_driver_status"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Online — Accepting Loads"
+                            android:text="@string/online_accepting"
                             android:textColor="#64748B"
                             android:textSize="13sp" />
                     </LinearLayout>
 
-                    <View
-                        android:layout_width="12dp"
-                        android:layout_height="12dp"
-                        android:background="@drawable/bg_icon_circle_green" />
+                    <androidx.appcompat.widget.SwitchCompat
+                        android:id="@+id/switch_availability"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:trackTint="#DBEAFE"
+                        app:thumbTint="#3B82F6" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
@@ -167,7 +169,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="TODAY'S EARNINGS"
+                            android:text="@string/earnings_today"
                             android:textColor="#3B82F6"
                             android:textSize="11sp"
                             android:fontFamily="sans-serif-medium"
@@ -256,7 +258,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Requests"
+                            android:text="@string/load_requests"
                             android:textSize="13sp"
                             android:textColor="#1E293B"
                             android:textStyle="bold"
@@ -297,7 +299,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Tracking"
+                            android:text="@string/tracking"
                             android:textSize="13sp"
                             android:textColor="#1E293B"
                             android:textStyle="bold"
@@ -338,7 +340,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Profile"
+                            android:text="@string/profile"
                             android:textSize="13sp"
                             android:textColor="#1E293B"
                             android:textStyle="bold"
@@ -351,7 +353,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Available Load Requests"
+                android:text="@string/available_load_requests"
                 android:textSize="18sp"
                 android:textColor="#1E293B"
                 android:textStyle="bold"
@@ -389,7 +391,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="No load requests right now"
+                        android:text="@string/no_load_requests"
                         android:textSize="16sp"
                         android:textColor="#64748B"
                         android:layout_marginTop="12dp" />
@@ -397,7 +399,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="New requests will appear here"
+                        android:text="@string/new_requests_appear"
                         android:textSize="13sp"
                         android:textColor="#94A3B8"
                         android:layout_marginTop="4dp" />
@@ -411,7 +413,7 @@
                 android:layout_height="56dp"
                 android:layout_marginTop="32dp"
                 android:layout_marginBottom="40dp"
-                android:text="Sign Out Safely"
+                android:text="@string/logout_safely"
                 android:textSize="16sp"
                 android:textAllCaps="false"
                 android:textColor="#EF4444"

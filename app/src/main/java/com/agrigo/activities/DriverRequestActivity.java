@@ -32,7 +32,7 @@ import com.google.firebase.firestore.Query;
 import java.util.Collections;
 import java.util.Comparator;
 
-public class DriverRequestActivity extends AppCompatActivity implements DriverRequestAdapter.OnRequestClickListener {
+public class DriverRequestActivity extends BaseActivity implements DriverRequestAdapter.OnRequestClickListener {
 
     private RecyclerView recyclerView;
     private DriverRequestAdapter adapter;
@@ -185,8 +185,12 @@ public class DriverRequestActivity extends AppCompatActivity implements DriverRe
                             }
                         }
                         
-                        // Sort by distance (nearest first)
-                        Collections.sort(requestList, (a, b) -> Double.compare(a.getDistance(), b.getDistance()));
+                        // Sort by timestamp descending (newest first)
+                        Collections.sort(requestList, (a, b) -> {
+                            long t1 = a.getTimestamp();
+                            long t2 = b.getTimestamp();
+                            return Long.compare(t2, t1);
+                        });
                         
                         adapter.notifyDataSetChanged();
                         

@@ -33,7 +33,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="My Profile"
+            android:text="@string/profile"
             android:textColor="@color/text_primary"
             android:textSize="20sp"
             android:fontFamily="sans-serif"
@@ -87,7 +87,7 @@
                 app:boxCornerRadiusTopEnd="16dp"
                 app:boxCornerRadiusBottomStart="16dp"
                 app:boxCornerRadiusBottomEnd="16dp"
-                android:hint="Full Name">
+                android:hint="@string/full_name">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/edit_name"
@@ -111,7 +111,7 @@
                 app:boxCornerRadiusTopEnd="16dp"
                 app:boxCornerRadiusBottomStart="16dp"
                 app:boxCornerRadiusBottomEnd="16dp"
-                android:hint="Phone Number">
+                android:hint="@string/phone_label">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/edit_phone"
@@ -135,7 +135,7 @@
                 app:boxCornerRadiusTopEnd="16dp"
                 app:boxCornerRadiusBottomStart="16dp"
                 app:boxCornerRadiusBottomEnd="16dp"
-                android:hint="Role">
+                android:hint="@string/role_label">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/edit_role"
@@ -157,7 +157,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="4dp"
                 android:visibility="gone"
-                app:startIconDrawable="@drawable/ic_truck"
+                app:startIconDrawable="@drawable/ic_machine"
                 app:startIconTint="@color/primary_blue"
                 app:endIconMode="custom"
                 app:endIconDrawable="@drawable/ic_dropdown_arrow"
@@ -167,7 +167,7 @@
                 app:boxCornerRadiusTopEnd="16dp"
                 app:boxCornerRadiusBottomStart="16dp"
                 app:boxCornerRadiusBottomEnd="16dp"
-                android:hint="Vehicle Type">
+                android:hint="@string/vehicle_type">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/edit_vehicle_type"
@@ -208,7 +208,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
                 android:layout_marginBottom="16dp"
-                android:text="Language Option"
+                android:text="@string/language_label"
                 app:icon="@drawable/ic_language"
                 app:iconGravity="textStart"
                 app:iconTint="@color/primary_blue"
@@ -225,7 +225,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
                 android:layout_marginBottom="24dp"
-                android:text="Save Profile"
+                android:text="@string/save"
                 app:icon="@drawable/ic_accept"
                 app:iconGravity="textStart"
                 app:cornerRadius="16dp"
@@ -240,7 +240,7 @@
                 style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
-                android:text="Logout"
+                android:text="@string/logout"
                 app:icon="@drawable/ic_logout"
                 app:iconGravity="textStart"
                 app:iconTint="@color/button_danger"

@@ -3,6 +3,55 @@
     <!-- App Information -->
     <string name="app_name">AgriGo</string>
     <string name="app_version">Version 1.0.0</string>
+    <string name="profile">My Profile</string>
+    <string name="full_name_label">Full Name</string>
+    <string name="phone_label">Phone Number</string>
+    <string name="role_label">Role</string>
+    <string name="language_label">Language</string>
+    <string name="welcome_back">Welcome Back 👋</string>
+    <string name="work_availability">Work Availability</string>
+    <string name="currently_offline">Currently Offline</string>
+    <string name="currently_online">Currently Online</string>
+    <string name="nearby_field_map">Nearby Field Map</string>
+    <string name="bookings">Bookings</string>
+    <string name="tracking">Tracking</string>
+    <string name="earnings">Earnings</string>
+    <string name="nearby_jobs">Nearby Job Opportunities</string>
+    <string name="no_nearby_jobs">No active requests nearby</string>
+    <string name="logout_safely">Sign Out Safely</string>
+    <string name="earnings_today">TODAY\'S EARNINGS</string>
+    <string name="driver_status">Driver Status</string>
+    <string name="online_accepting">Online — Accepting Loads</string>
+    <string name="offline_not_accepting">Offline — Not Accepting Loads</string>
+    <string name="load_requests">Requests</string>
+    <string name="available_load_requests">Available Load Requests</string>
+    <string name="no_load_requests">No load requests right now</string>
+    <string name="new_requests_appear">New requests will appear here</string>
+    <string name="reject">Reject</string>
+    <string name="accept">Accept</string>
+    <string name="status_pending">Pending</string>
+    <string name="status_accepted">Accepted</string>
+    <string name="status_online_label">Working Status: ONLINE</string>
+    <string name="status_offline_label">Working Status: OFFLINE</string>
+    <string name="day">Day</string>
+    <string name="days">Days</string>
+    <string name="posted_by">Posted by: </string>
+    <string name="location_not_available">Location not available</string>
+    <string name="workers_label">Workers</string>
+    <string name="job_full">Job Full</string>
+    <string name="accept_job">Accept Job</string>
+    <string name="max_availability">Max Availability (Days)</string>
+    <string name="distance_preference">Work Distance Preference</string>
+    <string name="vehicle_type">Vehicle Type</string>
+    <string name="service_transport">Transport</string>
+    <string name="service_machinery">Machinery</string>
+    <string name="service_labor">Labor</string>
+    <string name="book_services">Book Services</string>
+    <string name="transport_desc">Book trucks for crops</string>
+    <string name="machinery_desc">Rent tractors &amp; farm tools</string>
+    <string name="labor_desc">Hire skilled farm workers</string>
+    <string name="track_label">Track</string>
+    <string name="quick_actions">Quick Actions</string>
 
     <!-- Welcome Screen -->
     <string name="welcome_subtitle">Smart Transport for Smart Farmers</string>
@@ -81,8 +130,6 @@
     <string name="crop_type">Crop Type</string>
     <string name="weight">Weight</string>
     <string name="pickup_location">Pickup Location</string>
-    <string name="accept">Accept</string>
-    <string name="reject">Reject</string>
 
     <!-- Navigation Drawer -->
     <string name="nav_home">Home</string>
@@ -191,12 +238,6 @@
     <string name="confirm_ready">Confirm Transport Booking</string>
 
     <!-- Dashboard Service Cards -->
-    <string name="service_transport">Transport</string>
-    <string name="service_transport_desc">Book vehicles to transport your crops safely</string>
-    <string name="service_machinery">Machinery</string>
-    <string name="service_machinery_desc">Rent tractors, harvesters &amp; farm equipment</string>
-    <string name="service_labor">Labour</string>
-    <string name="service_labor_desc">Hire skilled workers for your farm needs</string>
     <string name="dashboard_services_title">Our Services</string>
     <string name="dashboard_quick_actions">Quick Actions</string>
 

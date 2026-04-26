@@ -47,15 +47,16 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 
-public class MachineryBookingActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class MachineryBookingActivity extends BaseActivity implements OnMapReadyCallback {
 
     private ImageView btnBack;
     private Spinner spinnerMachineryType;
     private EditText etDuration, etLandSize;
-    private TextView tvEstimatedPrice, tvDispatchPayload;
-    private MaterialButton btnFindMachines, btnCancelDispatch;
+    private TextView tvEstimatedPrice, tvDispatchPayload, tvConfirmBtnText;
+    private View btnFindMachines;
+    private MaterialButton btnCancelDispatch;
     private LinearLayout layoutBookingForm, layoutDispatching;
-    private View bottomSheet;
+    private View bottomSheet, bottomButtonContainer;
     private BottomSheetBehavior<View> bottomSheetBehavior;
     private TextView tvLocationAddress;
     private android.widget.ProgressBar pbLocationProgress;
@@ -94,6 +95,7 @@ public class MachineryBookingActivity extends AppCompatActivity implements OnMap
         etLandSize = findViewById(R.id.etLandSize);
         tvEstimatedPrice = findViewById(R.id.tvEstimatedPrice);
         btnFindMachines = findViewById(R.id.btnFindMachines);
+        tvConfirmBtnText = findViewById(R.id.tvConfirmBtnText);
         
         layoutBookingForm = findViewById(R.id.layoutBookingForm);
         layoutDispatching = findViewById(R.id.layoutDispatching);
@@ -102,6 +104,7 @@ public class MachineryBookingActivity extends AppCompatActivity implements OnMap
         
         bottomSheet = findViewById(R.id.bottomSheet);
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
+        bottomButtonContainer = findViewById(R.id.bottomButtonContainer);
         
         tvLocationAddress = findViewById(R.id.tvLocationAddress);
         pbLocationProgress = findViewById(R.id.pbLocationProgress);
@@ -136,6 +139,8 @@ public class MachineryBookingActivity extends AppCompatActivity implements OnMap
         btnFindMachines.setEnabled(isValid);
         
         if (isValid) {
+            ((com.google.android.material.card.MaterialCardView)btnFindMachines).setCardBackgroundColor(android.graphics.Color.parseColor("#22C55E"));
+            tvConfirmBtnText.setTextColor(android.graphics.Color.WHITE);
             try {
                 double duration = Double.parseDouble(durationStr);
                 double size = Double.parseDouble(sizeStr);
@@ -147,6 +152,8 @@ public class MachineryBookingActivity extends AppCompatActivity implements OnMap
                 btnFindMachines.setEnabled(false);
             }
         } else {
+            ((com.google.android.material.card.MaterialCardView)btnFindMachines).setCardBackgroundColor(android.graphics.Color.parseColor("#E5E7EB"));
+            tvConfirmBtnText.setTextColor(android.graphics.Color.parseColor("#9CA3AF"));
             tvEstimatedPrice.setText("₹0.00");
         }
     }
@@ -228,6 +235,7 @@ public class MachineryBookingActivity extends AppCompatActivity implements OnMap
     private void cancelDispatch() {
         layoutDispatching.setVisibility(View.GONE);
         layoutBookingForm.setVisibility(View.VISIBLE);
+        bottomButtonContainer.setVisibility(View.VISIBLE);
         ToastUtils.showShort(this, "Request Cancelled");
         // Typically you'd also delete the firestore document here if it was created
     }
@@ -240,6 +248,7 @@ public class MachineryBookingActivity extends AppCompatActivity implements OnMap
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
         layoutBookingForm.setVisibility(View.GONE);
         layoutDispatching.setVisibility(View.VISIBLE);
+        bottomButtonContainer.setVisibility(View.GONE);
         tvDispatchPayload.setText(machineryType + " | " + duration + " Hrs | " + tvEstimatedPrice.getText().toString());
 
         android.util.Log.d("MachineryBooking", "🔍 Searching for machineryType=" + normalizedType);
@@ -250,8 +259,8 @@ public class MachineryBookingActivity extends AppCompatActivity implements OnMap
         List<com.google.android.gms.tasks.Task<com.google.firebase.firestore.QuerySnapshot>> tasks = new java.util.ArrayList<>();
 
         for (com.firebase.geofire.GeoQueryBounds b : bounds) {
-            com.google.firebase.firestore.Query q = db.collection("machinery_providers")
-                    .whereEqualTo("machineryType", normalizedType)
+            com.google.firebase.firestore.Query q = db.collection("drivers")
+                    .whereEqualTo("vehicleType", machineryType)
                     .whereEqualTo("status", "FREE")
                     .orderBy("geoHash")
                     .startAt(b.startHash)
@@ -269,7 +278,7 @@ public class MachineryBookingActivity extends AppCompatActivity implements OnMap
                     for (com.google.firebase.firestore.QueryDocumentSnapshot doc : task.getResult()) {
                         Double lat = doc.getDouble("currentLat");
                         Double lng = doc.getDouble("currentLng");
-                        String provType = doc.getString("machineryType");
+                        String provType = doc.getString("vehicleType");
                         String provStatus = doc.getString("status");
                         
                         if (lat != null && lng != null) {

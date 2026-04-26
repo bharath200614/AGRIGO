@@ -3,6 +3,13 @@ plugins {
     id 'com.google.gms.google-services'
 }
 
+// Load API keys from local.properties (gitignored)
+def localProperties = new Properties()
+def localPropertiesFile = rootProject.file('local.properties')
+if (localPropertiesFile.exists()) {
+    localProperties.load(new FileInputStream(localPropertiesFile))
+}
+
 android {
     namespace 'com.agrigo'
     compileSdk 34
@@ -15,6 +22,12 @@ android {
         versionName "1.0.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        // Inject API keys from local.properties into BuildConfig and Manifest
+        buildConfigField "String", "ML_API_BASE_URL", "\"${localProperties.getProperty('ML_API_BASE_URL', 'https://machine-learning-b5hm.onrender.com/')}\""
+        manifestPlaceholders = [
+            MAPS_API_KEY: localProperties.getProperty('MAPS_API_KEY', '')
+        ]
     }
 
     buildTypes {
@@ -32,6 +45,7 @@ android {
 
     buildFeatures {
         viewBinding false
+        buildConfig true
     }
 }
 

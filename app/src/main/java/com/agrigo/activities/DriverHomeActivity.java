@@ -22,7 +22,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DriverHomeActivity extends AppCompatActivity {
+public class DriverHomeActivity extends BaseActivity {
 
     private TextView textWelcome;
     private MaterialCardView cardRequests;
@@ -34,12 +34,16 @@ public class DriverHomeActivity extends AppCompatActivity {
     private TextView textRequestCount;
     private TextView textEarnings;
     private TextView tvDriverStatus;
+    private androidx.appcompat.widget.SwitchCompat switchAvailability;
     private RecyclerView recyclerRequests;
     private LinearLayout layoutEmptyState;
+    private com.agrigo.adapters.DriverRequestAdapter requestAdapter;
+    private List<com.agrigo.models.DriverRequest> requestList = new ArrayList<>();
 
     private com.google.firebase.firestore.ListenerRegistration requestsListener;
 
     private FirebaseAuth mAuth;
+    private FirebaseFirestore db;
     private PreferenceManager preferenceManager;
 
     @Override
@@ -48,6 +52,7 @@ public class DriverHomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_driver_home);
 
         mAuth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
         preferenceManager = new PreferenceManager(this);
 
         // Guard: if not authenticated, go to WelcomeActivity
@@ -92,11 +97,25 @@ public class DriverHomeActivity extends AppCompatActivity {
         textRequestCount = findViewById(R.id.text_request_count);
         textEarnings = findViewById(R.id.text_earnings_amount);
         tvDriverStatus = findViewById(R.id.tv_driver_status);
+        switchAvailability = findViewById(R.id.switch_availability);
         recyclerRequests = findViewById(R.id.recycler_requests);
         layoutEmptyState = findViewById(R.id.layout_empty_state);
 
         if (recyclerRequests != null) {
             recyclerRequests.setLayoutManager(new LinearLayoutManager(this));
+            requestAdapter = new com.agrigo.adapters.DriverRequestAdapter(requestList, new com.agrigo.adapters.DriverRequestAdapter.OnRequestClickListener() {
+                @Override
+                public void onAcceptClick(com.agrigo.models.DriverRequest request) {
+                    acceptTransportRequest(request);
+                }
+
+                @Override
+                public void onDeclineClick(com.agrigo.models.DriverRequest request) {
+                    requestList.remove(request);
+                    requestAdapter.notifyDataSetChanged();
+                }
+            });
+            recyclerRequests.setAdapter(requestAdapter);
         }
     }
 
@@ -106,11 +125,26 @@ public class DriverHomeActivity extends AppCompatActivity {
         });
 
         cardActiveTracking.setOnClickListener(v -> {
-            startActivity(new Intent(DriverHomeActivity.this, TrackingActivity.class));
+            String driverId = mAuth.getCurrentUser().getUid();
+            FirebaseFirestore.getInstance().collection("transport_requests")
+                .whereEqualTo("driverId", driverId)
+                .whereIn("status", java.util.Arrays.asList("ACCEPTED", "ON_TRIP", "ARRIVED"))
+                .get()
+                .addOnSuccessListener(querySnapshot -> {
+                    if (!querySnapshot.isEmpty()) {
+                        String activeId = querySnapshot.getDocuments().get(0).getId();
+                        Intent intent = new Intent(DriverHomeActivity.this, TrackingActivity.class);
+                        intent.putExtra("REQUEST_ID", activeId);
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(this, "No active trip to track", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(e -> Toast.makeText(this, "Error finding active trip", Toast.LENGTH_SHORT).show());
         });
 
         cardEarnings.setOnClickListener(v -> {
-            Toast.makeText(this, "Earnings details coming soon", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(this, DriverEarningsActivity.class));
         });
 
         if (cardProfileNav != null) {
@@ -124,6 +158,26 @@ public class DriverHomeActivity extends AppCompatActivity {
         });
 
         buttonLogout.setOnClickListener(v -> handleLogout());
+
+        if (switchAvailability != null) {
+            switchAvailability.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                updateAvailability(isChecked);
+            });
+            // Set initial state
+            db.collection("drivers").document(mAuth.getUid()).get().addOnSuccessListener(doc -> {
+                if (doc.exists() && doc.contains("isAvailable")) {
+                    switchAvailability.setChecked(doc.getBoolean("isAvailable"));
+                }
+            });
+        }
+    }
+
+    private void updateAvailability(boolean available) {
+        String uid = mAuth.getUid();
+        db.collection("drivers").document(uid).update("isAvailable", available, "status", available ? "AVAILABLE" : "OFFLINE")
+            .addOnSuccessListener(aVoid -> {
+                tvDriverStatus.setText(available ? "Online — Accepting Loads" : "Offline — No Requests");
+            });
     }
 
     private void handleLogout() {
@@ -148,15 +202,23 @@ public class DriverHomeActivity extends AppCompatActivity {
                 .addSnapshotListener((value, error) -> {
                     if (error != null) return;
                     if (value != null) {
-                        int count = 0;
+                        requestList.clear();
                         for (com.google.firebase.firestore.DocumentSnapshot doc : value.getDocuments()) {
                             // Only count requests matching the driver's vehicle type
-                            String reqVehicleType = doc.getString("vehicleType");
-                            if (reqVehicleType != null && reqVehicleType.toLowerCase().trim().equals(myVehicleType)) {
-                                count++;
+                            com.agrigo.models.DriverRequest request = doc.toObject(com.agrigo.models.DriverRequest.class);
+                            if (request != null) {
+                                request.setId(doc.getId());
+                                String reqVehicleType = request.getVehicleType();
+                                if (reqVehicleType != null && reqVehicleType.toLowerCase().trim().equals(myVehicleType)) {
+                                    requestList.add(request);
+                                }
                             }
                         }
 
+                        // Sort by newest first
+                        java.util.Collections.sort(requestList, (a, b) -> Long.compare(b.getTimestamp(), a.getTimestamp()));
+
+                        int count = requestList.size();
                         if (textRequestCount != null) {
                             textRequestCount.setText(String.valueOf(count));
                         }
@@ -166,9 +228,31 @@ public class DriverHomeActivity extends AppCompatActivity {
                         }
                         if (recyclerRequests != null) {
                             recyclerRequests.setVisibility(count > 0 ? View.VISIBLE : View.GONE);
+                            requestAdapter.notifyDataSetChanged();
                         }
                     }
                 });
+    }
+
+    private void acceptTransportRequest(com.agrigo.models.DriverRequest request) {
+        String uid = mAuth.getUid();
+        com.google.firebase.firestore.DocumentReference docRef = db.collection("transport_requests").document(request.getId());
+        
+        db.runTransaction(transaction -> {
+            com.google.firebase.firestore.DocumentSnapshot snapshot = transaction.get(docRef);
+            String status = snapshot.getString("status");
+            if ("REQUESTED".equals(status)) {
+                transaction.update(docRef, "status", "ACCEPTED", "driverId", uid, "assignedDriverId", uid);
+                transaction.update(db.collection("drivers").document(uid), "isAvailable", false, "status", "BUSY");
+                return null;
+            } else {
+                throw new com.google.firebase.firestore.FirebaseFirestoreException("Job taken", com.google.firebase.firestore.FirebaseFirestoreException.Code.ABORTED);
+            }
+        }).addOnSuccessListener(aVoid -> {
+            Intent intent = new Intent(this, TrackingActivity.class);
+            intent.putExtra("REQUEST_ID", request.getId());
+            startActivity(intent);
+        }).addOnFailureListener(e -> Toast.makeText(this, "Failed to accept job", Toast.LENGTH_SHORT).show());
     }
 
     private void fetchTodayEarnings() {

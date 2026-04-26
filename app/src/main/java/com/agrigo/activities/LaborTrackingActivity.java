@@ -42,7 +42,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class LaborTrackingActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class LaborTrackingActivity extends BaseActivity implements OnMapReadyCallback {
 
     private static final String TAG = "LaborTracking";
 

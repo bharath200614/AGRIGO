@@ -37,7 +37,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-public class LaborBookingActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class LaborBookingActivity extends BaseActivity implements OnMapReadyCallback {
 
     private ImageView btnBack;
     private LinearLayout[] categoryViews;

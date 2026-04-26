@@ -22,7 +22,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
-public class LaborEarningsActivity extends AppCompatActivity {
+public class LaborEarningsActivity extends BaseActivity {
 
     private static final String TAG = "LaborEarnings";
 

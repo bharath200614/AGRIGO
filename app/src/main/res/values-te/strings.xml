@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- App Information -->
+    <string name="app_name">AgriGo</string>
+    <string name="app_version">వెర్షన్ 1.0.0</string>
+    <string name="profile">నా ప్రొఫైల్</string>
+
+    <!-- Welcome Screen -->
+    <string name="welcome_subtitle">స్మార్ట్ రైతుల కోసం స్మార్ట్ రవాణా</string>
+    <string name="get_started">ప్రారంభించండి</string>
+
+    <!-- Login Screen -->
+    <string name="login_title">తిరిగి స్వాగతం</string>
+    <string name="login_subtitle">మీ ఖాతాకు లాగిన్ చేయండి</string>
+    <string name="email_address">ఈమెయిల్ అడ్రస్</string>
+    <string name="password">పాస్‌వర్డ్</string>
+    <string name="login_button">లాగిన్</string>
+    <string name="register_button">రిజిస్టర్</string>
+    <string name="dont_have_account">ఖాతా లేదా?</string>
+    <string name="create_account">ఖాతాను సృష్టించండి</string>
+
+    <!-- Registration Screen -->
+    <string name="register_title">ఖాతాను సృష్టించండి</string>
+    <string name="full_name">పూర్తి పేరు</string>
+    <string name="role_selection">మీ పాత్రను ఎంచుకోండి</string>
+    <string name="role_farmer">రైతు</string>
+    <string name="role_driver">డ్రైవర్</string>
+    <string name="register_account">ఖాతాను రిజిస్టర్ చేయండి</string>
+
+    <!-- Farmer Dashboard -->
+    <string name="hello_farmer">హలో, రైతు!</string>
+    <string name="crop_selection">మీ పంటను ఎంచుకోండి</string>
+    <string name="weight_input">బరువు (కేజీలలో)</string>
+    <string name="book_now">ఇప్పుడే బుక్ చేయండి</string>
+    <string name="service_transport">రవాణా</string>
+    <string name="service_machinery">యంత్రాలు</string>
+    <string name="service_labor">కూలీ</string>
+    <string name="dashboard_services_title">మా సేవలు</string>
+    <string name="dashboard_quick_actions">త్వరిత చర్యలు</string>
+
+    <!-- My Bookings -->
+    <string name="my_bookings">నా బుకింగ్‌లు</string>
+    <string name="booking_date">తేదీ</string>
+    <string name="booking_status">స్థితి</string>
+    <string name="status_ongoing">కొనసాగుతోంది</string>
+    <string name="status_completed">పూర్తయింది</string>
+    <string name="status_requested">అభ్యర్థించబడింది</string>
+    <string name="no_bookings">బుకింగ్‌లు లేవు</string>
+
+    <!-- Tracking Screen -->
+    <string name="track_vehicle">వాహనాన్ని ట్రాక్ చేయండి</string>
+    <string name="driver_information">డ్రైవర్ సమాచారం</string>
+    <string name="call_driver">డ్రైవర్‌కు కాల్ చేయండి</string>
+    <string name="cancel_ride">రైడ్ రద్దు చేయండి</string>
+
+    <!-- Navigation Drawer & Profile -->
+    <string name="nav_home">హోమ్</string>
+    <string name="nav_my_bookings">నా బుకింగ్‌లు</string>
+    <string name="nav_track_vehicle">వాహనాన్ని ట్రాక్ చేయండి</string>
+    <string name="nav_help">సహాయం &amp; మద్దతు</string>
+    <string name="nav_settings">సెట్టింగులు</string>
+    <string name="nav_logout">లాగ్ అవుట్</string>
+    <string name="save">సేవ్</string>
+    <string name="cancel">రద్దు</string>
+    <string name="edit">సవరించండి</string>
+    <string name="ok">సరే</string>
+    
+    <!-- Profile Page -->
+    <string name="full_name_label">పూర్తి పేరు</string>
+    <string name="phone_label">ఫోన్ నంబర్</string>
+    <string name="role_label">పాత్ర</string>
+    <string name="language_label">భాషను మార్చండి</string>
+    <string name="welcome_back">తిరిగి స్వాగతం 👋</string>
+    <string name="work_availability">పని అందుబాటు</string>
+    <string name="currently_offline">ప్రస్తుతం ఆఫ్ లైన్</string>
+    <string name="currently_online">ప్రస్తుతం ఆన్ లైన్</string>
+    <string name="nearby_field_map">దగ్గరలోని ఫీల్డ్ మ్యాప్</string>
+    <string name="bookings">బుకింగ్‌లు</string>
+    <string name="tracking">ట్రాకింగ్</string>
+    <string name="earnings">సంపాదన</string>
+    <string name="nearby_jobs">దగ్గరలోని పని అవకాశాలు</string>
+    <string name="no_nearby_jobs">దగ్గరలో ఎటువంటి అభ్యర్థనలు లేవు</string>
+    <string name="logout_safely">సురక్షితంగా నిష్క్రమించండి</string>
+    <string name="earnings_today">నేటి సంపాదన</string>
+    <string name="driver_status">డ్రైవర్ స్థితి</string>
+    <string name="online_accepting">ఆన్‌లైన్ — లోడ్‌లను అంగీకరిస్తున్నారు</string>
+    <string name="offline_not_accepting">ఆఫ్‌లైన్ — లోడ్‌లను అంగీకరించడం లేదు</string>
+    <string name="load_requests">అభ్యర్థనలు</string>
+    <string name="available_load_requests">అందుబాటులో ఉన్న లోడ్ అభ్యర్థనలు</string>
+    <string name="no_load_requests">ప్రస్తుతం ఎటువంటి లోడ్ అభ్యర్థనలు లేవు</string>
+    <string name="new_requests_appear">కొత్త అభ్యర్థనలు ఇక్కడ కనిపిస్తాయి</string>
+    <string name="reject">తిరస్కరించు</string>
+    <string name="accept">అంగీకరించు</string>
+    <string name="status_pending">పెండింగ్‌లో ఉంది</string>
+    <string name="status_accepted">అంగీకరించబడింది</string>
+    <string name="status_online_label">పని స్థితి: ఆన్‌లైన్</string>
+    <string name="status_offline_label">పని స్థితి: ఆఫ్‌లైన్</string>
+    <string name="day">రోజు</string>
+    <string name="days">రోజులు</string>
+    <string name="posted_by">ద్వారా పోస్ట్ చేయబడింది: </string>
+    <string name="location_not_available">స్థానం అందుబాటులో లేదు</string>
+    <string name="workers_label">కూలీలు</string>
+    <string name="job_full">పని నిండిపోయింది</string>
+    <string name="accept_job">పనిని అంగీకరించు</string>
+    <string name="max_availability">గరిష్ట అందుబాటు (రోజులు)</string>
+    <string name="distance_preference">పని దూరం ప్రాధాన్యత</string>
+    <string name="vehicle_type">వాహనం రకం</string>
+    <string name="book_services">సేవలను బుక్ చేయండి</string>
+    <string name="transport_desc">పంటల కోసం ట్రక్కులను బుక్ చేయండి</string>
+    <string name="machinery_desc">ట్రాక్టర్లు &amp; వ్యవసాయ పనిముట్లను అద్దెకు తీసుకోండి</string>
+    <string name="labor_desc">నైపుణ్యం కలిగిన వ్యవసాయ కూలీలను నియమించుకోండి</string>
+    <string name="track_label">ట్రాక్</string>
+    <string name="quick_actions">త్వరిత చర్యలు</string>
+</resources>

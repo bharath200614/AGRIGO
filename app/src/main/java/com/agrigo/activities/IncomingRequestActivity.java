@@ -26,7 +26,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Transaction;
 
-public class IncomingRequestActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class IncomingRequestActivity extends BaseActivity implements OnMapReadyCallback {
 
     private static final String TAG = "IncomingRequestActivity";
 
@@ -129,9 +129,18 @@ public class IncomingRequestActivity extends AppCompatActivity implements OnMapR
                     Double weight = doc.getDouble("weight");
                     String crop = doc.getString("cropType");
                     String toL = doc.getString("destAddress");
+                    Double estimatedPrice = doc.getDouble("estimatedPrice");
                     
                     tvPickup.setText("Pickup: " + (sourceObj != null ? sourceObj : "Location"));
-                    tvDetails.setText("Drop: " + (toL != null ? toL : "N/A") + "\nCrop: " + crop + " | " + weight + "kg");
+                    
+                    StringBuilder details = new StringBuilder();
+                    details.append("Drop: ").append(toL != null ? toL : "N/A");
+                    details.append("\nCrop: ").append(crop != null ? crop : "N/A");
+                    details.append(" | ").append(weight != null ? String.format("%.0f", weight) : "0").append("kg");
+                    if (estimatedPrice != null && estimatedPrice > 0) {
+                        details.append("\n\uD83D\uDCB0 Estimated Earnings: ₹").append(String.format("%.0f", estimatedPrice));
+                    }
+                    tvDetails.setText(details.toString());
                     
                     lat = doc.getDouble("sourceLat");
                     lng = doc.getDouble("sourceLng");
@@ -148,6 +157,9 @@ public class IncomingRequestActivity extends AppCompatActivity implements OnMapR
                 if (lat != null && lng != null) {
                     targetLocation = new LatLng(lat, lng);
                     updateMap();
+                    
+                    // Calculate real-time distance from driver's current location
+                    calculateLiveDistance(lat, lng);
                 }
                 
                 // Get pre-calculated distance parameter
@@ -159,6 +171,25 @@ public class IncomingRequestActivity extends AppCompatActivity implements OnMapR
                 rejectRequest("Invalid Request");
             }
         });
+    }
+    
+    private void calculateLiveDistance(double farmerLat, double farmerLng) {
+        // Try to get driver's current location from Firestore for accurate distance
+        if (uid != null && !uid.isEmpty()) {
+            String provCol = "TRANSPORT".equals(serviceType) ? "drivers" : "machinery_providers";
+            db.collection(provCol).document(uid).get().addOnSuccessListener(driverDoc -> {
+                if (driverDoc.exists()) {
+                    Double dLat = driverDoc.getDouble("currentLat");
+                    Double dLng = driverDoc.getDouble("currentLng");
+                    if (dLat != null && dLng != null) {
+                        float[] results = new float[1];
+                        android.location.Location.distanceBetween(dLat, dLng, farmerLat, farmerLng, results);
+                        float distKm = results[0] / 1000f;
+                        tvDistance.setText(String.format("%.1f km away", distKm));
+                    }
+                }
+            });
+        }
     }
 
     private void acceptRequest() {

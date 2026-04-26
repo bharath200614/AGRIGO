@@ -18,7 +18,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.material.button.MaterialButton;
 
-public class MapPickerActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class MapPickerActivity extends BaseActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     private TextView tvSelectedAddress;

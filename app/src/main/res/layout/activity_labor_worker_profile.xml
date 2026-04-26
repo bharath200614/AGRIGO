@@ -35,7 +35,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="My Profile"
+            android:text="@string/profile"
             android:textColor="@color/text_primary"
             android:textSize="20sp"
             android:fontFamily="sans-serif"
@@ -92,7 +92,7 @@
                 app:boxCornerRadiusTopEnd="16dp"
                 app:boxCornerRadiusBottomStart="16dp"
                 app:boxCornerRadiusBottomEnd="16dp"
-                android:hint="Full Name">
+                android:hint="@string/full_name">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/editName"
@@ -115,7 +115,7 @@
                 app:boxCornerRadiusTopEnd="16dp"
                 app:boxCornerRadiusBottomStart="16dp"
                 app:boxCornerRadiusBottomEnd="16dp"
-                android:hint="Phone Number">
+                android:hint="@string/phone_label">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/editPhone"
@@ -147,6 +147,67 @@
                     android:fontFamily="sans-serif"
                     android:textSize="16sp" />
             </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Availability Days -->
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:boxCornerRadiusTopStart="16dp"
+                app:boxCornerRadiusTopEnd="16dp"
+                app:boxCornerRadiusBottomStart="16dp"
+                app:boxCornerRadiusBottomEnd="16dp"
+                android:hint="@string/max_availability">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editAvailability"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:fontFamily="sans-serif"
+                    android:textSize="16sp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Distance Slider -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:text="@string/distance_preference"
+                android:textSize="13sp"
+                android:textColor="@color/text_secondary"
+                android:layout_marginBottom="4dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="16dp">
+
+                <com.google.android.material.slider.Slider
+                    android:id="@+id/sliderDistance"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:valueFrom="1.0"
+                    android:valueTo="50.0"
+                    android:stepSize="1.0"
+                    android:value="10.0"
+                    app:thumbColor="@color/primary_blue"
+                    app:trackColorActive="@color/primary_blue" />
+
+                <TextView
+                    android:id="@+id/txtDistanceValue"
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    android:text="10 KM"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/primary_blue"
+                    android:gravity="center" />
+            </LinearLayout>
 
             <!-- Work Type Categories (Multi-select) -->
             <TextView
@@ -248,12 +309,30 @@
 
             </GridLayout>
 
+            <!-- Language Option -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnLanguage"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_marginBottom="16dp"
+                android:text="@string/language_label"
+                app:icon="@drawable/ic_language"
+                app:iconGravity="textStart"
+                app:iconTint="@color/primary_blue"
+                app:cornerRadius="16dp"
+                android:textAllCaps="false"
+                android:fontFamily="sans-serif"
+                android:textSize="16sp"
+                app:strokeColor="@color/primary_blue"
+                android:textColor="@color/text_primary" />
+
             <!-- Save Button -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnSaveProfile"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
-                android:text="Save Profile"
+                android:text="@string/save"
                 app:icon="@drawable/ic_accept"
                 app:iconGravity="textStart"
                 app:cornerRadius="16dp"
@@ -268,7 +347,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
                 android:layout_marginTop="12dp"
-                android:text="Sign Out"
+                android:text="@string/logout"
                 android:textAllCaps="false"
                 android:fontFamily="sans-serif"
                 android:textSize="16sp"

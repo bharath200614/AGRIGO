@@ -29,11 +29,13 @@ public class LaborMyBookingsAdapter extends RecyclerView.Adapter<LaborMyBookings
 
     private List<DocumentSnapshot> bookingList;
     private Context context;
+    private String laborId;
     private OnBookingActionListener listener;
 
-    public LaborMyBookingsAdapter(List<DocumentSnapshot> bookingList, Context context, OnBookingActionListener listener) {
+    public LaborMyBookingsAdapter(List<DocumentSnapshot> bookingList, Context context, String laborId, OnBookingActionListener listener) {
         this.bookingList = bookingList;
         this.context = context;
+        this.laborId = laborId;
         this.listener = listener;
     }
 
@@ -60,22 +62,29 @@ public class LaborMyBookingsAdapter extends RecyclerView.Adapter<LaborMyBookings
         holder.tvWorkType.setText(workType != null ? workType : "Farm Work");
 
         String status = doc.getString("status");
-        holder.tvStatus.setText(status != null ? status : "UNKNOWN");
         
+        boolean isAssignedToMe = false;
+        List<String> assigned = (List<String>) doc.get("assignedWorkers");
+        if (assigned != null && assigned.contains(laborId)) {
+            isAssignedToMe = true;
+        }
+
         // Status styling and Button logic
         if ("COMPLETED".equalsIgnoreCase(status)) {
+            holder.tvStatus.setText("COMPLETED");
             holder.tvStatus.setBackgroundResource(R.drawable.bg_status_completed);
             holder.btnAction.setVisibility(View.GONE);
             holder.btnReject.setVisibility(View.GONE);
-        } else if ("ACCEPTED".equalsIgnoreCase(status)) {
+        } else if ("ACCEPTED".equalsIgnoreCase(status) || isAssignedToMe) {
+            holder.tvStatus.setText("ACCEPTED");
             holder.tvStatus.setBackgroundResource(R.drawable.bg_status_ongoing);
             holder.btnAction.setVisibility(View.VISIBLE);
             holder.btnAction.setText("Track");
             holder.btnAction.setBackgroundTintList(android.content.res.ColorStateList.valueOf(0xFF3B82F6)); // Blue
             holder.btnReject.setVisibility(View.VISIBLE);
-            holder.btnReject.setText("Cancel");
+            holder.btnReject.setText("Reject");
         } else {
-            // REQUESTED or PENDING
+            // REQUESTED or PENDING and NOT assigned to me
             holder.tvStatus.setBackgroundResource(R.drawable.bg_status_requested);
             holder.tvStatus.setText("PENDING");
             holder.btnAction.setVisibility(View.VISIBLE);
@@ -102,7 +111,11 @@ public class LaborMyBookingsAdapter extends RecyclerView.Adapter<LaborMyBookings
         holder.tvEarnings.setText("Earnings: " + (earnings != null ? earnings : "₹0"));
 
         holder.btnAction.setOnClickListener(v -> {
-            if ("ACCEPTED".equalsIgnoreCase(doc.getString("status"))) {
+            boolean amIAssigned = false;
+            List<String> as = (List<String>) doc.get("assignedWorkers");
+            if (as != null && as.contains(laborId)) amIAssigned = true;
+
+            if ("ACCEPTED".equalsIgnoreCase(doc.getString("status")) || amIAssigned) {
                 Intent intent = new Intent(context, LaborTrackingActivity.class);
                 intent.putExtra("BOOKING_ID", doc.getId());
                 context.startActivity(intent);

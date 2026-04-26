@@ -576,14 +576,18 @@
                                     android:layout_marginTop="2dp" />
                             </LinearLayout>
                             
-                            <!-- Call Icon -->
+                            <!-- Call Driver Button -->
                             <ImageView
-                                android:layout_width="40dp"
-                                android:layout_height="40dp"
+                                android:id="@+id/btnCallDriver"
+                                android:layout_width="44dp"
+                                android:layout_height="44dp"
                                 android:src="@drawable/ic_phone"
-                                app:tint="#2E7D32"
-                                android:background="?attr/selectableItemBackgroundBorderless"
-                                android:padding="8dp"/>
+                                app:tint="#FFFFFF"
+                                android:background="@drawable/bg_icon_circle_green"
+                                android:backgroundTint="#16A34A"
+                                android:padding="10dp"
+                                android:clickable="true"
+                                android:focusable="true" />
                         </LinearLayout>
                     </com.google.android.material.card.MaterialCardView>
 

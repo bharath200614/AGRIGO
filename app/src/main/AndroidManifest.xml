@@ -29,12 +29,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="false"
         android:theme="@style/AppTheme"
+        android:localeConfig="@xml/locales_config"
         tools:targetApi="31">
 
         <!-- Google Maps API Key -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyCC7n68iPH8HrHcSG9J1i7XyaRJ9nLUiyA" />
+            android:value="${MAPS_API_KEY}" />
 
 
         <!-- Welcome Activity - Launcher -->
@@ -88,15 +89,6 @@
             android:exported="false"
             android:screenOrientation="portrait" />
 
-        <activity
-            android:name=".activities.MachineryProviderActivity"
-            android:exported="false"
-            android:screenOrientation="portrait" />
-
-        <activity
-            android:name=".activities.MachineryProviderProfileActivity"
-            android:exported="false"
-            android:screenOrientation="portrait" />
 
         <activity
             android:name=".activities.MachineryTrackingActivity"

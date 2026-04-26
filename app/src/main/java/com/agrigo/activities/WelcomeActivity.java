@@ -22,7 +22,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import timber.log.Timber;
 import com.agrigo.utils.DatasetSeeder;
 
-public class WelcomeActivity extends AppCompatActivity {
+public class WelcomeActivity extends BaseActivity {
 
     private ImageView ivAppLogo;
     private TextView tvAppName;

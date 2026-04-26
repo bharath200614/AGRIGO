@@ -31,7 +31,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class MachineryTrackingActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class MachineryTrackingActivity extends BaseActivity implements OnMapReadyCallback {
 
     private ImageView btnBack;
     private TextView tvFarmerName, tvJobDetails;
@@ -64,7 +64,7 @@ public class MachineryTrackingActivity extends AppCompatActivity implements OnMa
         db = FirebaseFirestore.getInstance();
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         preferenceManager = new com.agrigo.utils.PreferenceManager(this);
-        isProvider = "machinery_provider".equalsIgnoreCase(preferenceManager.getUserRole());
+        isProvider = "driver".equalsIgnoreCase(preferenceManager.getUserRole());
         currentUserId = FirebaseAuth.getInstance().getCurrentUser() != null ? FirebaseAuth.getInstance().getCurrentUser().getUid() : preferenceManager.getUserId();
 
         initViews();
@@ -205,7 +205,7 @@ public class MachineryTrackingActivity extends AppCompatActivity implements OnMa
                             java.util.Map<String, Object> provUpdates = new java.util.HashMap<>();
                             provUpdates.put("status", "FREE");
                             provUpdates.put("isAvailable", true);
-                            db.collection("machinery_providers").document(assignedProviderId).update(provUpdates);
+                            db.collection("drivers").document(assignedProviderId).update(provUpdates);
                         }
                     })
                     .addOnFailureListener(e -> {

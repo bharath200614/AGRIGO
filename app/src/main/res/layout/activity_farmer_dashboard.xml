@@ -52,7 +52,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Welcome Back 👋"
+                        android:text="@string/welcome_back"
                         android:textSize="14sp"
                         android:textColor="@color/text_secondary"
                         android:fontFamily="sans-serif" />
@@ -91,7 +91,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Book Services"
+                    android:text="@string/book_services"
                     android:textSize="18sp"
                     android:textStyle="bold"
                     android:textColor="@color/text_primary"
@@ -144,7 +144,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Transport"
+                                android:text="@string/service_transport"
                                 android:textSize="18sp"
                                 android:textStyle="bold"
                                 android:textColor="@color/text_primary" />
@@ -152,7 +152,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Book trucks for crops"
+                                android:text="@string/transport_desc"
                                 android:textSize="13sp"
                                 android:textColor="@color/text_secondary"
                                 android:layout_marginTop="2dp" />
@@ -193,12 +193,12 @@
                             <View
                                 android:layout_width="56dp"
                                 android:layout_height="56dp"
-                                android:background="@drawable/bg_icon_circle_blue"
-                                android:backgroundTint="@color/primary_blue_soft" />
+                                android:background="@drawable/bg_icon_circle_green"
+                                android:backgroundTint="#DCFCE7" />
 
                             <ImageView
-                                android:layout_width="48dp"
-                                android:layout_height="48dp"
+                                android:layout_width="44dp"
+                                android:layout_height="44dp"
                                 android:layout_gravity="center"
                                 android:src="@drawable/ic_tractor"
                                 android:scaleType="fitCenter" />
@@ -213,7 +213,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Machinery"
+                                android:text="@string/service_machinery"
                                 android:textSize="18sp"
                                 android:textStyle="bold"
                                 android:textColor="@color/text_primary" />
@@ -221,7 +221,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Rent tractors &amp; farm tools"
+                                android:text="@string/machinery_desc"
                                 android:textSize="13sp"
                                 android:textColor="@color/text_secondary"
                                 android:layout_marginTop="2dp" />
@@ -269,7 +269,7 @@
                                 android:layout_width="48dp"
                                 android:layout_height="48dp"
                                 android:layout_gravity="center"
-                                android:src="@drawable/ic_farm_labor_generated"
+                                android:src="@drawable/ic_labor_land_prep"
                                 android:scaleType="centerCrop"
                                 app:shapeAppearanceOverlay="@style/ShapeAppearance.AgriGo.Circle" />
                         </FrameLayout>
@@ -283,7 +283,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Farm Labor"
+                                android:text="@string/service_labor"
                                 android:textSize="18sp"
                                 android:textStyle="bold"
                                 android:textColor="@color/text_primary" />
@@ -291,7 +291,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Hire skilled farm workers"
+                                android:text="@string/labor_desc"
                                 android:textSize="13sp"
                                 android:textColor="@color/text_secondary"
                                 android:layout_marginTop="2dp" />
@@ -322,7 +322,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Quick Actions"
+                    android:text="@string/quick_actions"
                     android:textSize="18sp"
                     android:textStyle="bold"
                     android:textColor="@color/text_primary"
@@ -380,7 +380,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="10dp"
-                                android:text="Bookings"
+                                android:text="@string/bookings"
                                 android:textSize="13sp"
                                 android:textStyle="bold"
                                 android:textColor="@color/text_primary"
@@ -428,7 +428,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="10dp"
-                                android:text="Track"
+                                android:text="@string/track_label"
                                 android:textSize="13sp"
                                 android:textStyle="bold"
                                 android:textColor="@color/text_primary"
@@ -476,7 +476,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="10dp"
-                                android:text="Profile"
+                                android:text="@string/profile"
                                 android:textSize="13sp"
                                 android:textStyle="bold"
                                 android:textColor="@color/text_primary"

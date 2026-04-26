@@ -85,7 +85,7 @@ import com.agrigo.adapters.CropGridAdapter;
 import com.agrigo.models.Market;
 import com.agrigo.utils.MarketDataProvider;
 
-public class TransportBookingActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class TransportBookingActivity extends BaseActivity implements OnMapReadyCallback {
 
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 2001;
     private static final double RATE_PER_KM = 15.0;
@@ -206,6 +206,20 @@ public class TransportBookingActivity extends AppCompatActivity implements OnMap
         tvOtpDisplay = findViewById(R.id.tvOtpDisplay);
         tvDriverName = findViewById(R.id.tvDriverName);
         btnTrackDriver = findViewById(R.id.btnTrackDriver);
+
+        // Call Driver button in accepted card
+        ImageView btnCallDriver = findViewById(R.id.btnCallDriver);
+        if (btnCallDriver != null) {
+            btnCallDriver.setOnClickListener(v -> {
+                if (acceptedDriverPhone != null && !acceptedDriverPhone.isEmpty()) {
+                    Intent callIntent = new Intent(Intent.ACTION_DIAL);
+                    callIntent.setData(android.net.Uri.parse("tel:" + acceptedDriverPhone));
+                    startActivity(callIntent);
+                } else {
+                    ToastUtils.showShort(this, "Driver phone not available yet");
+                }
+            });
+        }
 
         if (fabMyLocation != null) {
             fabMyLocation.setVisibility(View.GONE);
@@ -1088,7 +1102,7 @@ public class TransportBookingActivity extends AppCompatActivity implements OnMap
         if (sourceLatLng == null) return;
         
         com.firebase.geofire.GeoLocation center = new com.firebase.geofire.GeoLocation(sourceLatLng.latitude, sourceLatLng.longitude);
-        double radiusInM = 5000;
+        double radiusInM = 15000; // 15km for rural coverage
         
         List<com.firebase.geofire.GeoQueryBounds> bounds = com.firebase.geofire.GeoFireUtils.getGeoHashQueryBounds(center, radiusInM);
         List<com.google.android.gms.tasks.Task<com.google.firebase.firestore.QuerySnapshot>> tasks = new ArrayList<>();
@@ -1176,6 +1190,8 @@ public class TransportBookingActivity extends AppCompatActivity implements OnMap
         updateConfirmButtonState();
     }
 
+    private String acceptedDriverPhone = null;
+
     private void showDriverAccepted(com.google.firebase.firestore.DocumentSnapshot snapshot) {
         clearMockMarkersAndRadar();
         layoutDispatching.setVisibility(View.GONE);
@@ -1193,10 +1209,28 @@ public class TransportBookingActivity extends AppCompatActivity implements OnMap
                 if (driverDoc.exists()) {
                     String name = driverDoc.getString("name");
                     String vehicleNo = driverDoc.getString("vehicleRegNumber");
+                    String vehicleType = driverDoc.getString("vehicleType");
+                    acceptedDriverPhone = driverDoc.getString("phone");
+
+                    // Store driver phone in booking for TrackingActivity
+                    if (lastBookingId != null && acceptedDriverPhone != null) {
+                        db.collection("transport_requests").document(lastBookingId)
+                            .update("driverPhone", acceptedDriverPhone,
+                                    "driverName", name != null ? name : "Driver",
+                                    "driverVehicleNo", vehicleNo != null ? vehicleNo : "",
+                                    "driverVehicleType", vehicleType != null ? vehicleType : "");
+                    }
+
                     if (tvDriverName != null) {
-                        tvDriverName.setText(
-                            (name != null ? name : "Driver") +
-                            (vehicleNo != null ? " (" + vehicleNo + ")" : ""));
+                        StringBuilder info = new StringBuilder();
+                        info.append(name != null ? name : "Driver");
+                        if (vehicleType != null && !vehicleType.isEmpty()) {
+                            info.append("\n").append(vehicleType);
+                        }
+                        if (vehicleNo != null && !vehicleNo.isEmpty()) {
+                            info.append(" • ").append(vehicleNo);
+                        }
+                        tvDriverName.setText(info.toString());
                     }
                     if (tvDriverEta != null) {
                         tvDriverEta.setText("Driver is on the way!");
@@ -1238,11 +1272,24 @@ public class TransportBookingActivity extends AppCompatActivity implements OnMap
             new LatLng(center.latitude + 0.01, center.longitude - 0.015)
         };
 
+        int iconRes = R.drawable.ic_map_marker_truck;
+        String title = "Vehicle";
+        if (tvVehicleType != null && tvVehicleType.getText() != null) {
+            String vt = tvVehicleType.getText().toString().toLowerCase();
+            if (vt.contains("small van")) iconRes = R.drawable.ic_map_marker_small_van;
+            else if (vt.contains("mini truck")) iconRes = R.drawable.ic_map_marker_mini_truck;
+            else if (vt.contains("pickup")) iconRes = R.drawable.ic_map_marker_pickup_truck;
+            else if (vt.contains("large") || vt.contains("lorry")) iconRes = R.drawable.ic_map_marker_large_truck;
+            else if (vt.contains("auto")) iconRes = R.drawable.ic_map_marker_auto;
+            
+            title = tvVehicleType.getText().toString();
+        }
+
         for (LatLng pos : offsets) {
             com.google.android.gms.maps.model.Marker m = transportMap.addMarker(new com.google.android.gms.maps.model.MarkerOptions()
                 .position(pos)
-                .icon(bitmapDescriptorFromVector(R.drawable.ic_auto_vehicle))
-                .title("Eco Transport (Auto)"));
+                .icon(bitmapDescriptorFromVector(iconRes))
+                .title(title));
             if (m != null) driverMarkers.add(m);
         }
     }

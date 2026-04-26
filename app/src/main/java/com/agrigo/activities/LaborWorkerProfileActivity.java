@@ -22,11 +22,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class LaborWorkerProfileActivity extends AppCompatActivity {
+public class LaborWorkerProfileActivity extends BaseActivity {
 
     private ImageView btnBack;
-    private TextInputEditText editName, editPhone, editDailyWage;
-    private MaterialButton btnSaveProfile, btnLogout;
+    private TextInputEditText editName, editPhone, editDailyWage, editAvailability;
+    private com.google.android.material.slider.Slider sliderDistance;
+    private TextView txtDistanceValue;
+    private MaterialButton btnSaveProfile, btnLogout, btnLanguage;
     
     private LinearLayout[] categoryViews;
     private ImageView[] categoryIcons;
@@ -61,8 +63,12 @@ public class LaborWorkerProfileActivity extends AppCompatActivity {
         editName = findViewById(R.id.editName);
         editPhone = findViewById(R.id.editPhone);
         editDailyWage = findViewById(R.id.editDailyWage);
+        editAvailability = findViewById(R.id.editAvailability);
+        sliderDistance = findViewById(R.id.sliderDistance);
+        txtDistanceValue = findViewById(R.id.txtDistanceValue);
         btnSaveProfile = findViewById(R.id.btnSaveProfile);
         btnLogout = findViewById(R.id.btnLogout);
+        btnLanguage = findViewById(R.id.btnLanguage);
 
         categoryViews = new LinearLayout[]{
                 findViewById(R.id.catLandPrep),
@@ -93,9 +99,14 @@ public class LaborWorkerProfileActivity extends AppCompatActivity {
             categoryViews[i].setOnClickListener(v -> toggleCategory(index));
         }
 
+        sliderDistance.addOnChangeListener((slider, value, fromUser) -> {
+            txtDistanceValue.setText((int) value + " KM");
+        });
+
         btnBack.setOnClickListener(v -> onBackPressed());
         btnSaveProfile.setOnClickListener(v -> saveProfile());
         btnLogout.setOnClickListener(v -> logout());
+        btnLanguage.setOnClickListener(v -> showLanguageDialog());
     }
 
     private void toggleCategory(int index) {
@@ -125,6 +136,20 @@ public class LaborWorkerProfileActivity extends AppCompatActivity {
                     if (doc.exists()) {
                         String name = doc.getString("name");
                         String phone = doc.getString("phone");
+                        
+                        Long dailyWage = doc.getLong("dailyWage");
+                        Long avail = doc.getLong("maxAvailabilityDays");
+                        Double dist = doc.getDouble("maxDistanceKm");
+                        
+                        if (name != null) editName.setText(name);
+                        if (phone != null) editPhone.setText(phone);
+                        if (dailyWage != null) editDailyWage.setText(String.valueOf(dailyWage));
+                        if (avail != null) editAvailability.setText(String.valueOf(avail));
+                        if (dist != null) {
+                            sliderDistance.setValue(dist.floatValue());
+                            txtDistanceValue.setText(dist.intValue() + " KM");
+                        }
+
                         List<String> loadedWorkTypes = (List<String>) doc.get("workTypes");
                         
                         // Fallback for old single string data
@@ -173,7 +198,6 @@ public class LaborWorkerProfileActivity extends AppCompatActivity {
         updates.put("name", name);
         updates.put("phone", phone);
         updates.put("workTypes", selectedWorkTypes);
-        // Save first selected as old workType for legacy compatibility if needed
         updates.put("workType", selectedWorkTypes.get(0));
         
         String wageStr = editDailyWage.getText() != null ? editDailyWage.getText().toString().trim() : "";
@@ -182,6 +206,15 @@ public class LaborWorkerProfileActivity extends AppCompatActivity {
                 updates.put("dailyWage", Double.parseDouble(wageStr));
             } catch (NumberFormatException ignored) {}
         }
+
+        String availStr = editAvailability.getText() != null ? editAvailability.getText().toString().trim() : "";
+        if (!availStr.isEmpty()) {
+            try {
+                updates.put("maxAvailabilityDays", Long.parseLong(availStr));
+            } catch (NumberFormatException ignored) {}
+        }
+        
+        updates.put("maxDistanceKm", (double) sliderDistance.getValue());
 
         db.collection("labor_workers").document(laborId).update(updates)
                 .addOnSuccessListener(aVoid -> {
@@ -207,5 +240,24 @@ public class LaborWorkerProfileActivity extends AppCompatActivity {
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         finish();
+    }
+
+    private void showLanguageDialog() {
+        String[] languages = {"English", "తెలుగు (Telugu)"};
+        int checkedItem = com.agrigo.utils.LocaleHelper.getLanguage(this).equals("te") ? 1 : 0;
+
+        new androidx.appcompat.app.AlertDialog.Builder(this)
+                .setTitle(getString(R.string.language_label))
+                .setSingleChoiceItems(languages, checkedItem, (dialog, which) -> {
+                    String langCode = (which == 1) ? "te" : "en";
+                    com.agrigo.utils.LocaleHelper.setLocale(this, langCode);
+                    dialog.dismiss();
+                    
+                    ToastUtils.showShort(this, "Language set to: " + (which == 1 ? "Telugu" : "English"));
+                    
+                    recreate();
+                })
+                .setNegativeButton(getString(R.string.cancel), null)
+                .show();
     }
 }

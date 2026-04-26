@@ -76,7 +76,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-public class TrackingActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class TrackingActivity extends BaseActivity implements OnMapReadyCallback {
 
     private ImageView btnBack;
     private TextView textCurrentStatus;
@@ -90,6 +90,12 @@ public class TrackingActivity extends AppCompatActivity implements OnMapReadyCal
     private TextView textEta;
     private TextView textDistance;
     private FloatingActionButton fabCallFarmer;
+    
+    // Driver Info Card
+    private com.google.android.material.card.MaterialCardView cardDriverInfo;
+    private TextView textDriverName;
+    private TextView textVehicleInfo;
+    private FloatingActionButton fabCallDriver;
     
     // OTP Views
     private LinearLayout layoutOtpEntry;
@@ -165,6 +171,12 @@ public class TrackingActivity extends AppCompatActivity implements OnMapReadyCal
         textEta = findViewById(R.id.text_eta);
         textDistance = findViewById(R.id.text_distance);
         fabCallFarmer = findViewById(R.id.fab_call_farmer);
+        
+        // Driver Info Card
+        cardDriverInfo = findViewById(R.id.card_driver_info);
+        textDriverName = findViewById(R.id.text_driver_name);
+        textVehicleInfo = findViewById(R.id.text_vehicle_info);
+        fabCallDriver = findViewById(R.id.fab_call_driver);
         
         layoutOtpEntry = findViewById(R.id.layout_otp_entry);
         etOtp = findViewById(R.id.et_otp);
@@ -282,7 +294,8 @@ public class TrackingActivity extends AppCompatActivity implements OnMapReadyCal
                             }
                         }
                     } else {
-                        textCargoDetails.setText(String.format(Locale.getDefault(), "Crop Type: %s • Weight: %.0fKG", 
+                        textCargoDetails.setText(String.format(Locale.getDefault(), "OTP to share: %s\nCrop Type: %s • Weight: %.0fKG", 
+                            bookingOtp != null ? bookingOtp : "----",
                             cropType != null ? cropType : "Chilli", 
                             weight != null ? weight : 500.0));
                     }
@@ -346,8 +359,29 @@ public class TrackingActivity extends AppCompatActivity implements OnMapReadyCal
                 String vehicleNo = doc.getString("vehicleRegNumber");
                 remoteVehicleType = doc.getString("vehicleType");
                 
-                if (name != null) {
-                    textPickupAddress.setText(String.format(Locale.getDefault(), "Driver: %s • %s", name, vehicleNo != null ? vehicleNo : "Assigned"));
+                // Show driver info card for farmer
+                if (!isDriver && cardDriverInfo != null) {
+                    cardDriverInfo.setVisibility(View.VISIBLE);
+                    if (textDriverName != null) {
+                        textDriverName.setText(name != null ? name : "Driver");
+                    }
+                    if (textVehicleInfo != null) {
+                        StringBuilder vInfo = new StringBuilder();
+                        if (remoteVehicleType != null) vInfo.append(remoteVehicleType);
+                        if (vehicleNo != null && !vehicleNo.isEmpty()) {
+                            if (vInfo.length() > 0) vInfo.append(" \u2022 ");
+                            vInfo.append(vehicleNo);
+                        }
+                        textVehicleInfo.setText(vInfo.length() > 0 ? vInfo.toString() : "Assigned");
+                    }
+                    if (fabCallDriver != null) {
+                        fabCallDriver.setOnClickListener(v -> {
+                            String phone = (driverPhone != null && !driverPhone.isEmpty()) ? driverPhone : "+919876543210";
+                            Intent intent = new Intent(Intent.ACTION_DIAL);
+                            intent.setData(android.net.Uri.parse("tel:" + phone));
+                            startActivity(intent);
+                        });
+                    }
                 }
                 
                 // Refresh icon if marker already exists
@@ -359,36 +393,54 @@ public class TrackingActivity extends AppCompatActivity implements OnMapReadyCal
     }
 
     private void updateUI() {
-        progressStatus.setProgress(currentState);
+        // Progress: State 1→2, State 2→3, State 3→4, State 4→5
+        progressStatus.setProgress(currentState + 1);
         layoutNavigationInstruction.setVisibility((currentState == 1 || currentState == 3) ? View.VISIBLE : View.GONE);
         layoutOtpEntry.setVisibility(View.GONE);
         btnAction.setVisibility(View.VISIBLE);
+        btnAction.setEnabled(true);
         
         switch (currentState) {
-            case 1:
-                textCurrentStatus.setText(isDriver ? "To Pickup" : "Driver Arriving");
-                if (isDriver) btnAction.setText("Mark as Arrived");
-                break;
-            case 2:
-                textCurrentStatus.setText("Arrived at Pickup");
+            case 1: // Driver on the way to farmer
+                textCurrentStatus.setText(isDriver ? "Navigate to Pickup" : "Driver on the way");
                 if (isDriver) {
+                    btnAction.setText("Mark as Arrived");
+                } else {
+                    btnAction.setText("\uD83D\uDCDE Call Driver");
+                }
+                break;
+            case 2: // Driver arrived, OTP verification
+                textCurrentStatus.setText("Driver Arrived");
+                if (!isDriver) {
                     btnAction.setVisibility(View.GONE);
                     layoutOtpEntry.setVisibility(View.VISIBLE);
                 } else {
-                    btnAction.setText("Call Driver");
+                    btnAction.setText("Waiting for OTP...");
+                    btnAction.setEnabled(false);
                 }
                 layoutNavigationInstruction.setVisibility(View.GONE);
-                textEta.setText("At Pickup");
+                textEta.setText("Arrived at Pickup");
                 break;
-            case 3:
-                textCurrentStatus.setText("On Trip");
-                if (isDriver) btnAction.setText("Complete Trip");
+            case 3: // Trip started
+                textCurrentStatus.setText("Trip Started");
+                if (isDriver) {
+                    btnAction.setText("Complete Trip");
+                } else {
+                    btnAction.setText("\uD83D\uDCDE Call Driver");
+                    btnAction.setVisibility(View.VISIBLE);
+                }
                 break;
-            case 4:
-                textCurrentStatus.setText("Trip Completed");
-                if (isDriver) btnAction.setText("Finish");
+            case 4: // Trip completed
+                textCurrentStatus.setText("Trip Completed \u2705");
+                if (isDriver) {
+                    btnAction.setText("Finish");
+                } else {
+                    btnAction.setVisibility(View.GONE);
+                }
                 layoutNavigationInstruction.setVisibility(View.GONE);
                 textEta.setText("Completed");
+                // Hide driver card on completion
+                if (cardDriverInfo != null) cardDriverInfo.setVisibility(View.GONE);
                 break;
         }
 
@@ -397,8 +449,6 @@ public class TrackingActivity extends AppCompatActivity implements OnMapReadyCal
             textCargoDetails.setTextSize(14f);
             textCargoDetails.setTextColor(ContextCompat.getColor(this, R.color.primary_blue));
             fabCallFarmer.setVisibility(View.GONE);
-            btnAction.setText("Call Driver"); 
-            layoutOtpEntry.setVisibility(View.GONE);
         }
     }
 
@@ -711,47 +761,36 @@ public class TrackingActivity extends AppCompatActivity implements OnMapReadyCal
 
     private BitmapDescriptor getVehicleIcon() {
         String vehicleType = isDriver ? preferenceManager.getVehicleType() : remoteVehicleType;
-        int drawableRes = R.drawable.ic_truck; // Default
+        int drawableRes = R.drawable.ic_map_marker_truck; // Default
 
         if (vehicleType != null) {
             switch (vehicleType.toLowerCase()) {
-                case "auto": drawableRes = R.drawable.ic_auto_vehicle; break;
-                case "small van": drawableRes = R.drawable.ic_small_van; break;
-                case "mini truck": drawableRes = R.drawable.ic_mini_truck; break;
-                case "pickup truck": drawableRes = R.drawable.ic_pickup_truck; break;
+                case "auto": drawableRes = R.drawable.ic_map_marker_auto; break;
+                case "small van": drawableRes = R.drawable.ic_map_marker_small_van; break;
+                case "mini truck": drawableRes = R.drawable.ic_map_marker_mini_truck; break;
+                case "pickup truck": drawableRes = R.drawable.ic_map_marker_pickup_truck; break;
                 case "large truck":
-                case "lorry": drawableRes = R.drawable.ic_large_truck; break;
-                default: drawableRes = R.drawable.ic_truck; break;
+                case "lorry": drawableRes = R.drawable.ic_map_marker_large_truck; break;
+                default: drawableRes = R.drawable.ic_map_marker_truck; break;
             }
         }
 
-        // PNG Bitmap conversion for Google Maps markers
-        try {
-            Bitmap original = android.graphics.BitmapFactory.decodeResource(getResources(), drawableRes);
-            if (original != null) {
-                // Scale to appropriate map marker size (80x80 dp)
-                int targetSize = (int) (80 * getResources().getDisplayMetrics().density);
-                float aspectRatio = (float) original.getWidth() / original.getHeight();
-                int targetWidth = aspectRatio >= 1 ? targetSize : (int) (targetSize * aspectRatio);
-                int targetHeight = aspectRatio >= 1 ? (int) (targetSize / aspectRatio) : targetSize;
-                Bitmap scaled = Bitmap.createScaledBitmap(original, targetWidth, targetHeight, true);
-                return BitmapDescriptorFactory.fromBitmap(scaled);
-            }
-        } catch (Exception e) {
-            // Fallback: try as vector drawable
-            Drawable vectorDrawable = ContextCompat.getDrawable(this, drawableRes);
-            if (vectorDrawable != null) {
-                int h = vectorDrawable.getIntrinsicHeight();
-                int w = vectorDrawable.getIntrinsicWidth();
-                w = (int) (w * 1.6);
-                h = (int) (h * 1.6);
-                vectorDrawable.setBounds(0, 0, w, h);
-                Bitmap bm = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
-                Canvas canvas = new Canvas(bm);
-                vectorDrawable.draw(canvas);
-                return BitmapDescriptorFactory.fromBitmap(bm);
-            }
+        // Enforce 36dp marker size for clean map appearance
+        int sizePx = (int) (36 * getResources().getDisplayMetrics().density);
+        
+        Drawable vectorDrawable = ContextCompat.getDrawable(this, drawableRes);
+        if (vectorDrawable != null) {
+            int h = vectorDrawable.getIntrinsicHeight();
+            int w = vectorDrawable.getIntrinsicWidth();
+            vectorDrawable.setBounds(0, 0, w, h);
+            Bitmap original = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
+            Canvas canvas = new Canvas(original);
+            vectorDrawable.draw(canvas);
+            // Scale to 36dp
+            Bitmap scaled = Bitmap.createScaledBitmap(original, sizePx, sizePx, true);
+            return BitmapDescriptorFactory.fromBitmap(scaled);
         }
+        
         return BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN);
     }
 

@@ -36,6 +36,7 @@ google-services-debug.json
 
 # Logs
 *.log
+log.txt
 
 # Production
 release/

@@ -21,7 +21,7 @@ import com.google.firebase.firestore.Query;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LaborMyBookingsActivity extends AppCompatActivity implements LaborMyBookingsAdapter.OnBookingActionListener {
+public class LaborMyBookingsActivity extends BaseActivity implements LaborMyBookingsAdapter.OnBookingActionListener {
 
     private static final String TAG = "LaborMyBookings";
 
@@ -55,7 +55,7 @@ public class LaborMyBookingsActivity extends AppCompatActivity implements LaborM
         findViewById(R.id.btnBack).setOnClickListener(v -> finish());
 
         rvBookings.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new LaborMyBookingsAdapter(new ArrayList<>(), this, this);
+        adapter = new LaborMyBookingsAdapter(new ArrayList<>(), this, laborId, this);
         rvBookings.setAdapter(adapter);
     }
 
@@ -175,29 +175,35 @@ public class LaborMyBookingsActivity extends AppCompatActivity implements LaborM
     public void onReject(DocumentSnapshot doc) {
         String bookingId = doc.getId();
         String status = doc.getString("status");
+        
+        List<String> assigned = (List<String>) doc.get("assignedWorkers");
+        boolean amIAssigned = assigned != null && assigned.contains(laborId);
 
-        if ("REQUESTED".equalsIgnoreCase(status)) {
-            // Add to rejectedBy array to hide from this user
-            db.collection("labor_bookings").document(bookingId)
-                    .update("rejectedBy", com.google.firebase.firestore.FieldValue.arrayUnion(laborId))
-                    .addOnSuccessListener(aVoid -> ToastUtils.showShort(this, "Job Rejected"));
-        } else if ("ACCEPTED".equalsIgnoreCase(status) || doc.get("assignedWorkers") != null) {
-            // Un-assign if already accepted
+        if (amIAssigned) {
+            // Un-assign from the job
             db.runTransaction(transaction -> {
                 DocumentSnapshot snapshot = transaction.get(db.collection("labor_bookings").document(bookingId));
-                List<String> assigned = (List<String>) snapshot.get("assignedWorkers");
+                List<String> currentAssigned = (List<String>) snapshot.get("assignedWorkers");
                 Long acc = snapshot.getLong("workersAccepted");
                 
-                if (assigned != null && assigned.contains(laborId)) {
-                    assigned.remove(laborId);
+                if (currentAssigned != null && currentAssigned.contains(laborId)) {
+                    currentAssigned.remove(laborId);
                     long newAcc = (acc != null ? acc : 1) - 1;
+                    
+                    // If we drop below required, status goes back to REQUESTED
                     transaction.update(snapshot.getReference(), 
-                        "assignedWorkers", assigned,
+                        "assignedWorkers", currentAssigned,
                         "workersAccepted", newAcc,
                         "status", "REQUESTED");
                 }
                 return null;
-            }).addOnSuccessListener(aVoid -> ToastUtils.showShort(this, "Booking Cancelled"));
+            }).addOnSuccessListener(aVoid -> ToastUtils.showShort(this, "Job Rejected"));
+            
+        } else if ("REQUESTED".equalsIgnoreCase(status)) {
+            // Not assigned, just reject it so it hides from feed
+            db.collection("labor_bookings").document(bookingId)
+                    .update("rejectedBy", com.google.firebase.firestore.FieldValue.arrayUnion(laborId))
+                    .addOnSuccessListener(aVoid -> ToastUtils.showShort(this, "Job Rejected"));
         }
     }
 

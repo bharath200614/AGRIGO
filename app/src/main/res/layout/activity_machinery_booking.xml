@@ -115,7 +115,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Drop Location"
+                        android:text="Work Location"
                         android:textSize="13sp"
                         android:textColor="@color/text_secondary"
                         android:fontFamily="sans-serif"
@@ -129,7 +129,7 @@
                         app:cardElevation="0dp"
                         app:cardBackgroundColor="#F0FDF4"
                         app:strokeWidth="1dp"
-                        app:strokeColor="#4ADE80">
+                        app:strokeColor="#BBF7D0">
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -148,9 +148,9 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:text="Locating..."
-                                android:textColor="#333333"
+                                android:textColor="#1F2937"
                                 android:textSize="14sp"
-                                android:textStyle="bold" />
+                                android:fontFamily="sans-serif-medium" />
                             <ProgressBar
                                 android:id="@+id/pbLocationProgress"
                                 android:layout_width="20dp"
@@ -176,14 +176,15 @@
                         android:layout_marginBottom="12dp"
                         app:cardCornerRadius="12dp"
                         app:cardElevation="0dp"
-                        app:cardBackgroundColor="@color/gray_very_light"
-                        app:strokeWidth="0dp">
+                        app:cardBackgroundColor="#F9FAFB"
+                        app:strokeWidth="1dp"
+                        app:strokeColor="#E5E7EB">
 
                         <Spinner
                             android:id="@+id/spinnerMachineryType"
                             android:layout_width="match_parent"
-                            android:layout_height="48dp"
-                            android:paddingHorizontal="12dp"
+                            android:layout_height="64dp"
+                            android:paddingHorizontal="4dp"
                             android:background="@android:color/transparent"
                             android:spinnerMode="dropdown" />
                     </com.google.android.material.card.MaterialCardView>
@@ -193,7 +194,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:layout_marginBottom="12dp">
+                        android:layout_marginBottom="16dp">
 
                         <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="0dp"
@@ -204,9 +205,8 @@
                             app:boxCornerRadiusTopEnd="12dp"
                             app:boxCornerRadiusBottomStart="12dp"
                             app:boxCornerRadiusBottomEnd="12dp"
-                            app:boxBackgroundColor="@color/gray_very_light"
+                            app:boxBackgroundColor="#F9FAFB"
                             app:boxStrokeWidth="0dp"
-                            app:suffixText="Acres"
                             app:hintEnabled="false">
 
                             <com.google.android.material.textfield.TextInputEditText
@@ -215,10 +215,9 @@
                                 android:layout_height="wrap_content"
                                 android:hint="Land Size"
                                 android:inputType="numberDecimal"
-                                android:paddingTop="14dp"
-                                android:paddingBottom="14dp"
+                                android:paddingVertical="16dp"
                                 android:textSize="15sp"
-                                android:textColor="@color/text_primary" />
+                                android:textColor="#1F2937" />
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <com.google.android.material.textfield.TextInputLayout
@@ -230,9 +229,8 @@
                             app:boxCornerRadiusTopEnd="12dp"
                             app:boxCornerRadiusBottomStart="12dp"
                             app:boxCornerRadiusBottomEnd="12dp"
-                            app:boxBackgroundColor="@color/gray_very_light"
+                            app:boxBackgroundColor="#F9FAFB"
                             app:boxStrokeWidth="0dp"
-                            app:suffixText="Hours"
                             app:hintEnabled="false">
 
                             <com.google.android.material.textfield.TextInputEditText
@@ -241,55 +239,51 @@
                                 android:layout_height="wrap_content"
                                 android:hint="Duration"
                                 android:inputType="number"
-                                android:paddingTop="14dp"
-                                android:paddingBottom="14dp"
+                                android:paddingVertical="16dp"
                                 android:textSize="15sp"
-                                android:textColor="@color/text_primary" />
+                                android:textColor="#1F2937" />
                         </com.google.android.material.textfield.TextInputLayout>
                     </LinearLayout>
 
-                    <!-- Dynamic Price Display -->
-                    <LinearLayout
+                    <!-- Dynamic Price Display - Premium Green Card -->
+                    <com.google.android.material.card.MaterialCardView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical"
-                        android:layout_marginBottom="16dp"
-                        android:background="@drawable/bg_card_blue_tint"
-                        android:backgroundTint="#F0FDF4"
-                        android:padding="12dp">
-                        
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Estimated Price:"
-                            android:textColor="#15803D"
-                            android:textSize="14sp"
-                            android:fontFamily="sans-serif-medium" />
+                        android:layout_marginBottom="24dp"
+                        app:cardCornerRadius="16dp"
+                        app:cardElevation="0dp"
+                        app:cardBackgroundColor="#F0FDF4"
+                        app:strokeWidth="1dp"
+                        app:strokeColor="#DCFCE7">
 
-                        <TextView
-                            android:id="@+id/tvEstimatedPrice"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="₹0.00"
-                            android:textColor="#15803D"
-                            android:textSize="18sp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/btnFindMachines"
+                        <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="60dp"
-                            android:text="CONFIRM MACHINERY BOOKING"
-                            android:textSize="15sp"
-                            android:enabled="false"
-                            app:icon="@drawable/ic_tractor"
-                            app:iconGravity="textStart"
-                            app:iconPadding="8dp"
-                            app:cornerRadius="16dp"
-                            app:backgroundTint="#16A34A" />
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:paddingHorizontal="18dp"
+                            android:paddingVertical="20dp">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Estimated Price:"
+                                android:textColor="#166534"
+                                android:textSize="15sp"
+                                android:fontFamily="sans-serif-medium" />
+
+                            <TextView
+                                android:id="@+id/tvEstimatedPrice"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="₹0.00"
+                                android:textColor="#16A34A"
+                                android:textSize="26sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
                 </LinearLayout>
 
                 <!-- 2. Dispatching Mode -->
@@ -335,10 +329,49 @@
                         android:textColor="#E53935"
                         android:layout_marginTop="24dp" />
                 </LinearLayout>
-
             </FrameLayout>
-
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
+
+    <!-- Fixed Bottom Button Container -->
+    <LinearLayout
+        android:id="@+id/bottomButtonContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:orientation="vertical"
+        android:background="@color/white"
+        android:elevation="20dp">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#F3F4F6" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/btnFindMachines"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:layout_margin="20dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:enabled="false"
+            app:cardBackgroundColor="#E5E7EB"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="0dp"
+            app:strokeWidth="0dp">
+
+            <TextView
+                android:id="@+id/tvConfirmBtnText"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="CONFIRM MACHINERY"
+                android:textColor="#9CA3AF"
+                android:textSize="17sp"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:letterSpacing="0.03" />
+        </com.google.android.material.card.MaterialCardView>
+    </LinearLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

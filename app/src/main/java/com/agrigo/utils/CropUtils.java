@@ -21,12 +21,12 @@ public class CropUtils {
         // ═══════════════════════════════════════
         // Cereals (10)
         // ═══════════════════════════════════════
-        crops.add(new Crop("rice", "Rice", "", R.drawable.ic_crop_rice_generated, 50, 10000));
+        crops.add(new Crop("rice", "Rice", "🌾", R.drawable.ic_crop_cereal, 50, 10000));
         crops.add(new Crop("wheat", "Wheat", "🌾", R.drawable.ic_crop_cereal, 50, 10000));
         crops.add(new Crop("maize", "Maize", "🌽", R.drawable.ic_crop_cereal, 50, 10000));
-        crops.add(new Crop("barley", "Barley", "", R.drawable.ic_crop_barley_generated, 50, 8000));
-        crops.add(new Crop("jowar", "Jowar", "", R.drawable.ic_crop_jowar_generated, 50, 8000));
-        crops.add(new Crop("bajra", "Bajra", "", R.drawable.ic_crop_bajra_generated, 50, 8000));
+        crops.add(new Crop("barley", "Barley", "🌾", R.drawable.ic_crop_cereal, 50, 8000));
+        crops.add(new Crop("jowar", "Jowar", "🌾", R.drawable.ic_crop_cereal, 50, 8000));
+        crops.add(new Crop("bajra", "Bajra", "🌾", R.drawable.ic_crop_cereal, 50, 8000));
         crops.add(new Crop("ragi", "Ragi", "🍘", R.drawable.ic_crop_cereal, 50, 6000));
         crops.add(new Crop("foxtail_millet", "Foxtail Millet", "🌿", R.drawable.ic_crop_cereal, 50, 5000));
         crops.add(new Crop("little_millet", "Little Millet", "🌱", R.drawable.ic_crop_cereal, 50, 5000));

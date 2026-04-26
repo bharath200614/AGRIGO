@@ -12,7 +12,7 @@ import com.agrigo.utils.PreferenceManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class FarmerDashboardActivity extends AppCompatActivity {
+public class FarmerDashboardActivity extends BaseActivity {
 
     private TextView tvFarmerName;
     private ImageView btnNotifications;

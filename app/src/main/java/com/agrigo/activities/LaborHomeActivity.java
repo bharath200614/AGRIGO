@@ -60,7 +60,7 @@ import java.util.Map;
 
 import timber.log.Timber;
 
-public class LaborHomeActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class LaborHomeActivity extends BaseActivity implements OnMapReadyCallback {
 
     private static final String TAG = "LaborHomeAct";
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1002;
@@ -71,7 +71,7 @@ public class LaborHomeActivity extends AppCompatActivity implements OnMapReadyCa
     private TextView textWelcome;
     private View layoutEmptyJobs;
     private View btnProfile;
-    private View cardBookings, cardTracking, cardEarnings;
+    private View cardBookings, cardTracking, cardEarnings, cardProfile;
 
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
@@ -81,6 +81,9 @@ public class LaborHomeActivity extends AppCompatActivity implements OnMapReadyCa
     private ListenerRegistration jobsListener;
     private String laborId;
     private List<String> workerWorkTypesList = new ArrayList<>();
+    private Long workerDailyWage = 500L;
+    private Long workerMaxAvailability = 7L;
+    private Double workerMaxDistanceKm = 25.0;
 
     // Location Tracking
     private FusedLocationProviderClient fusedLocationClient;
@@ -160,7 +163,7 @@ public class LaborHomeActivity extends AppCompatActivity implements OnMapReadyCa
         btnProfile = findViewById(R.id.btnProfile);
         if (btnProfile != null) {
             btnProfile.setOnClickListener(v -> {
-                startActivity(new Intent(this, LaborSettingsActivity.class));
+                startActivity(new Intent(this, LaborWorkerProfileActivity.class));
             });
         }
 
@@ -168,6 +171,7 @@ public class LaborHomeActivity extends AppCompatActivity implements OnMapReadyCa
         cardBookings = findViewById(R.id.cardBookings);
         cardTracking = findViewById(R.id.cardTracking);
         cardEarnings = findViewById(R.id.cardEarnings);
+        cardProfile = findViewById(R.id.cardProfile);
 
         if (cardBookings != null) {
             cardBookings.setOnClickListener(v -> {
@@ -177,13 +181,42 @@ public class LaborHomeActivity extends AppCompatActivity implements OnMapReadyCa
 
         if (cardTracking != null) {
             cardTracking.setOnClickListener(v -> {
-                startActivity(new Intent(this, LaborTrackingActivity.class));
+                ToastUtils.showShort(this, "Finding active tracking...");
+                db.collection("labor_bookings")
+                    .whereArrayContains("assignedWorkers", laborId)
+                    .get()
+                    .addOnSuccessListener(snapshots -> {
+                        String activeId = null;
+                        for (DocumentSnapshot doc : snapshots.getDocuments()) {
+                            String status = doc.getString("status");
+                            if (!"COMPLETED".equalsIgnoreCase(status) && !"CANCELLED".equalsIgnoreCase(status)) {
+                                activeId = doc.getId();
+                                break;
+                            }
+                        }
+                        if (activeId != null) {
+                            Intent intent = new Intent(this, LaborTrackingActivity.class);
+                            intent.putExtra("BOOKING_ID", activeId);
+                            startActivity(intent);
+                        } else {
+                            ToastUtils.showShort(this, "No active job to track right now");
+                        }
+                    })
+                    .addOnFailureListener(e -> {
+                        ToastUtils.showShort(this, "Failed to load active jobs");
+                    });
             });
         }
 
         if (cardEarnings != null) {
             cardEarnings.setOnClickListener(v -> {
                 startActivity(new Intent(this, LaborEarningsActivity.class));
+            });
+        }
+
+        if (cardProfile != null) {
+            cardProfile.setOnClickListener(v -> {
+                startActivity(new Intent(this, LaborWorkerProfileActivity.class));
             });
         }
         
@@ -230,7 +263,17 @@ public class LaborHomeActivity extends AppCompatActivity implements OnMapReadyCa
                         locationMode = mode;
                     }
                     
-                    Log.d(TAG, "Worker types fetched: " + workerWorkTypesList + " | Mode: " + locationMode);
+                    Long wage = doc.getLong("dailyWage");
+                    if (wage != null) workerDailyWage = wage;
+                    
+                    Long avail = doc.getLong("maxAvailabilityDays");
+                    if (avail != null) workerMaxAvailability = avail;
+                    
+                    Double dist = doc.getDouble("maxDistanceKm");
+                    if (dist != null) workerMaxDistanceKm = dist;
+                    
+                    Log.d(TAG, "Worker settings fetched: types=" + workerWorkTypesList + " | Mode=" + locationMode + 
+                            " | wage=" + workerDailyWage + " | avail=" + workerMaxAvailability + " | dist=" + workerMaxDistanceKm);
                     if (switchOnline.isChecked()) {
                         listenForJobs(); 
                     }
@@ -257,12 +300,12 @@ public class LaborHomeActivity extends AppCompatActivity implements OnMapReadyCa
 
     private void updateStatusText(boolean isOnline) {
         if (isOnline) {
-            tvStatusDescription.setText("Working Status: ONLINE");
+            tvStatusDescription.setText(getString(R.string.status_online_label));
             tvStatusDescription.setTextColor(getResources().getColor(R.color.primary_green));
             setEmptyState(true);
             if (findViewById(R.id.cardMap) != null) findViewById(R.id.cardMap).setVisibility(View.VISIBLE);
         } else {
-            tvStatusDescription.setText("Working Status: OFFLINE");
+            tvStatusDescription.setText(getString(R.string.status_offline_label));
             tvStatusDescription.setTextColor(getResources().getColor(R.color.text_secondary));
             setEmptyState(false);
             if (findViewById(R.id.cardMap) != null) findViewById(R.id.cardMap).setVisibility(View.GONE);
@@ -471,7 +514,34 @@ public class LaborHomeActivity extends AppCompatActivity implements OnMapReadyCa
                         }
 
                         if (accepted < required) {
-                            // Filter by distance (Large radius for testing: 25,000km)
+                            // Filter by Max Availability
+                            String durationStr = doc.getString("duration");
+                            int duration = 1;
+                            try { duration = Integer.parseInt(durationStr); } catch(Exception ignored) {}
+                            if (duration > workerMaxAvailability) {
+                                continue; // Skip job: requires more days than worker is available
+                            }
+                            
+                            // Filter by Wage (check if job meets worker's daily wage expectation)
+                            // Farmer's estimatedPrice = duration * workersRequired * farmer's expected per-worker-day-wage
+                            // Therefore, perWorkerDailyWage = estimatedPrice / (duration * workersRequired)
+                            // If farmer hasn't set an estimate, we don't filter it out, or we do? Let's just compare if possible.
+                            String priceStr = doc.getString("estimatedPrice");
+                            if (priceStr != null && !priceStr.isEmpty()) {
+                                try {
+                                    String cleanPrice = priceStr.replaceAll("[^0-9]", "");
+                                    if (!cleanPrice.isEmpty()) {
+                                        long estimatedTotal = Long.parseLong(cleanPrice);
+                                        long perWorkerDailyWage = estimatedTotal / (duration * required);
+                                        // A slight buffer of 10% is good to not miss close jobs
+                                        if (perWorkerDailyWage < workerDailyWage * 0.9) {
+                                            continue; // Skip job: pays less than expected wage
+                                        }
+                                    }
+                                } catch(Exception ignored) {}
+                            }
+
+                            // Filter by distance based on settings
                             if (lastKnownLocation != null) {
                                 Double fLat = doc.getDouble("farmerLat");
                                 Double fLng = doc.getDouble("farmerLng");
@@ -480,7 +550,7 @@ public class LaborHomeActivity extends AppCompatActivity implements OnMapReadyCa
                                             new GeoLocation(fLat, fLng),
                                             new GeoLocation(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude())
                                     );
-                                    if (dist <= 25000000) {
+                                    if (dist <= workerMaxDistanceKm * 1000) {
                                         validJobs.add(doc);
                                     }
                                 }
@@ -490,6 +560,16 @@ public class LaborHomeActivity extends AppCompatActivity implements OnMapReadyCa
                             }
                         }
                     }
+                    
+                    // Sort jobs by timestamp descending (newest first)
+                    validJobs.sort((d1, d2) -> {
+                        Long t1 = d1.getLong("timestamp");
+                        Long t2 = d2.getLong("timestamp");
+                        if (t1 == null) t1 = 0L;
+                        if (t2 == null) t2 = 0L;
+                        return t2.compareTo(t1);
+                    });
+
                     Log.d(TAG, "listenForJobs: valid jobs found = " + validJobs.size());
                     jobAdapter.updateData(validJobs, lastKnownLocation);
                     updateJobMarkers(validJobs);

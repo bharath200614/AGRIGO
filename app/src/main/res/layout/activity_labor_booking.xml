@@ -194,7 +194,7 @@
                                 android:gravity="center"
                                 android:orientation="vertical"
                                 android:padding="8dp">
-                                <ImageView android:id="@+id/iconLandPrep" android:layout_width="32dp" android:layout_height="32dp" android:src="@drawable/ic_tractor" />
+                                <ImageView android:id="@+id/iconLandPrep" android:layout_width="48dp" android:layout_height="48dp" android:src="@drawable/ic_labor_land_prep" />
                                 <TextView android:id="@+id/tvLandPrep" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="4dp" android:text="Land Prep" android:textAlignment="center" android:textColor="#64748B" android:textSize="11sp" android:textStyle="bold" />
                             </LinearLayout>
 
@@ -209,7 +209,7 @@
                                 android:gravity="center"
                                 android:orientation="vertical"
                                 android:padding="8dp">
-                                <ImageView android:id="@+id/iconSowing" android:layout_width="32dp" android:layout_height="32dp" android:src="@drawable/ic_plant" />
+                                <ImageView android:id="@+id/iconSowing" android:layout_width="48dp" android:layout_height="48dp" android:src="@drawable/ic_labor_sowing" />
                                 <TextView android:id="@+id/tvSowing" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="4dp" android:text="Sowing" android:textAlignment="center" android:textColor="#64748B" android:textSize="11sp" android:textStyle="bold" />
                             </LinearLayout>
 
@@ -224,7 +224,7 @@
                                 android:gravity="center"
                                 android:orientation="vertical"
                                 android:padding="8dp">
-                                <ImageView android:id="@+id/iconWeeding" android:layout_width="32dp" android:layout_height="32dp" android:src="@drawable/ic_leaf" />
+                                <ImageView android:id="@+id/iconWeeding" android:layout_width="48dp" android:layout_height="48dp" android:src="@drawable/ic_labor_weeding" />
                                 <TextView android:id="@+id/tvWeeding" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="4dp" android:text="Weeding" android:textAlignment="center" android:textColor="#64748B" android:textSize="11sp" android:textStyle="bold" />
                             </LinearLayout>
 
@@ -239,7 +239,7 @@
                                 android:gravity="center"
                                 android:orientation="vertical"
                                 android:padding="8dp">
-                                <ImageView android:id="@+id/iconIrrigation" android:layout_width="32dp" android:layout_height="32dp" android:src="@drawable/ic_water_drop" />
+                                <ImageView android:id="@+id/iconIrrigation" android:layout_width="48dp" android:layout_height="48dp" android:src="@drawable/ic_labor_irrigation" />
                                 <TextView android:id="@+id/tvIrrigation" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="4dp" android:text="Irrigation" android:textAlignment="center" android:textColor="#64748B" android:textSize="11sp" android:textStyle="bold" />
                             </LinearLayout>
 
@@ -254,7 +254,7 @@
                                 android:gravity="center"
                                 android:orientation="vertical"
                                 android:padding="8dp">
-                                <ImageView android:id="@+id/iconHarvesting" android:layout_width="32dp" android:layout_height="32dp" android:src="@drawable/ic_wheat" />
+                                <ImageView android:id="@+id/iconHarvesting" android:layout_width="48dp" android:layout_height="48dp" android:src="@drawable/ic_labor_harvesting" />
                                 <TextView android:id="@+id/tvHarvesting" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="4dp" android:text="Harvesting" android:textAlignment="center" android:textColor="#64748B" android:textSize="11sp" android:textStyle="bold" />
                             </LinearLayout>
 
